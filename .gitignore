@@ -20,6 +20,9 @@
 # production
 /build
 
+# uploads (optional: remove if you want to commit tour assets)
+/public/uploads
+
 # misc
 .DS_Store
 *.pem
@@ -32,6 +35,8 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.local.example
+!.env.example
 
 # vercel
 .vercel

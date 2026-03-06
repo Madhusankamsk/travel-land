@@ -20,3 +20,47 @@ model User {
 
   @@map("users")
 }
+
+// Prossimi Viaggi = UPCOMING, Storico Viaggi = ARCHIVED
+enum TourStatus {
+  UPCOMING
+  ARCHIVED
+}
+
+model Tour {
+  id                 String    @id @default(cuid())
+  title              String
+  status             TourStatus @default(UPCOMING)
+  durationLabel       String    // e.g. "dal 23 al 30 aprile 2026"
+  heroImageUrl       String?
+  introText          String    @db.Text
+  basePrice          Decimal   @db.Decimal(10, 2) // Euro
+  singleSupplement   Decimal?  @db.Decimal(10, 2)
+  mandatoryInsurance String?   @db.Text
+  optionalInsurance  String?   @db.Text
+  depositLabel       String?   // Acconto
+  balanceDeadline    String?   // Saldo entro
+  included           String    @db.Text // La quota comprende
+  excluded           String    @db.Text // La quota non comprende
+  cancellationPolicy String?   @db.Text
+  programPdfUrl      String?
+  contactStaff       String?   // comma-separated: Eleonora,Sisira,Romeo
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  days               TourDay[]
+
+  @@map("tours")
+}
+
+model TourDay {
+  id          String @id @default(cuid())
+  tourId      String
+  tour        Tour   @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  order       Int    // 1-based day order
+  dayHeading  String // e.g. "23 APRILE: Amman - Jerash"
+  description String @db.Text // HTML rich text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("tour_days")
+}
