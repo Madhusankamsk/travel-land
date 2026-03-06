@@ -9,10 +9,14 @@ datasource db {
   provider = "postgresql"
 }
 
-// Example model – add your own tables below
-model Example {
+model User {
   id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // store bcrypt/hash only
+  role      String   @default("user") // e.g. "admin", "user"
+  is_active Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name      String?
+
+  @@map("users")
 }
