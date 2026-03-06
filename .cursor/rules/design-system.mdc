@@ -236,6 +236,8 @@ Content max-width: `1200px`. Page max-width: `1440px`.
 
 **Select:** Same base as input + custom chevron SVG background-image at `right 16px center`.
 
+**Typebox (inline text field):** Used in search bars and destination fields where the value is user-typed. Same label pattern as search bar fields: 10px/600 uppercase, `letter-spacing: 0.16em`, `--color-terracotta`. Input: borderless, transparent background, `font-size: 15px`, `font-weight: 500` when filled, color `--color-obsidian`; placeholder `#B5A890`. Container: same padding and layout as other search bar fields (e.g. `p-4`), receives hover/focus/selected states (bone bg when selected, focus ring oro). No inner input border; focus ring on the container or `outline: none` on input with container focus-visible. Min width for comfortable tap target. Use `autocomplete` and `aria-label` for accessibility.
+
 **Traveler Selector:** Bordered container with rows (label + sublabel | -/count/+ controls). Counter buttons: 32x32px circle, bone border, white bg.
 
 **Date Picker:** Parchment header with month/nav → 7-column grid. Selected: obsidian bg, white text. In-range: `rgba(26,23,20,0.08)`. Check-in: left-rounded. Check-out: right-rounded. Disabled: `opacity: 0.3`.
@@ -320,6 +322,7 @@ Vertical timeline with 1px bone line at `left: 22px`.
 White bg, radius-xl, padding `16px 24px`, 3+1 column grid, `box-shadow: --shadow-xl`, bone border.
 - Fields: bone right-border dividers, radius-lg hover bg.
 - Field label: 10px uppercase terracotta. Value: 15px/500 obsidian. Placeholder: `#B5A890`.
+- First field (Destination): use **Typebox** — user types destination; same label + borderless input, placeholder "Where to?".
 - Search button: btn-primary appended.
 
 ### Hero Section

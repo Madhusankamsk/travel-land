@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { HeroSearchSection } from "@/components/hero-search-section";
 
 const DESTINATIONS = [
   {
@@ -86,73 +88,8 @@ function StarRating({ count }: { count: number }) {
 export default function Home() {
   return (
     <>
-      {/* ==================== HERO ==================== */}
-      <section className="relative flex min-h-[85vh] flex-col justify-end overflow-hidden bg-obsidian">
-        {/* Placeholder background — replace with real hero image */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1A1714] via-[#2E2921] to-[#1A4A70]" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_100%_60%_at_50%_100%,rgba(26,23,20,0.8)_0%,transparent_60%),radial-gradient(ellipse_80%_80%_at_20%_20%,rgba(46,107,158,0.15)_0%,transparent_50%),radial-gradient(ellipse_60%_60%_at_80%_80%,rgba(184,150,62,0.08)_0%,transparent_50%)]" />
-
-        <div className="relative z-10 mx-auto w-full max-w-[1440px] px-6 pb-12 pt-32 lg:px-20 lg:pb-16">
-          <div className="max-w-[700px]">
-            <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-oro">
-              Featured Journey · Autumn 2025
-            </p>
-            <h1 className="mb-4 font-[family-name:var(--font-cormorant)] text-[clamp(36px,6vw,80px)] font-normal leading-[1.1] tracking-tighter text-[#F0EAE0]">
-              Discover <em className="text-champagne">Italia</em>
-              <br />
-              Like Never Before
-            </h1>
-            <p className="mb-8 max-w-[520px] text-base leading-relaxed text-[#B5A890]">
-              Seven nights of absolute immersion — private Colosseum access,
-              Vatican at dawn, and the finest tables in the Eternal City. Crafted
-              exclusively for the discerning traveler.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/upcoming-trips"
-                className="inline-flex items-center rounded-full bg-oro px-7 py-4 text-base font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-bronze hover:text-white hover:shadow-[var(--shadow-gold)]"
-              >
-                Begin Planning
-              </Link>
-              <Link
-                href="/catalogs"
-                className="inline-flex items-center rounded-full px-7 py-4 text-base font-medium tracking-wide text-[#F0EAE0] transition-colors duration-150 hover:bg-white/10"
-              >
-                View Itineraries
-              </Link>
-            </div>
-          </div>
-
-          {/* Booking Search Bar */}
-          <div className="relative z-10 mt-10 grid grid-cols-1 gap-[1px] overflow-hidden rounded-xl border border-bone bg-white shadow-[var(--shadow-xl)] sm:grid-cols-3 lg:grid-cols-[1fr_1fr_1fr_auto]">
-            <div className="cursor-pointer rounded-lg p-4 transition-colors duration-150 hover:bg-travertine sm:border-r sm:border-bone">
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-terracotta">
-                Destination
-              </p>
-              <p className="text-[15px] font-medium text-obsidian">
-                Where to?
-              </p>
-            </div>
-            <div className="cursor-pointer rounded-lg p-4 transition-colors duration-150 hover:bg-travertine sm:border-r sm:border-bone">
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-terracotta">
-                Check In
-              </p>
-              <p className="text-[15px] text-[#B5A890]">Select date</p>
-            </div>
-            <div className="cursor-pointer rounded-lg p-4 transition-colors duration-150 hover:bg-travertine">
-              <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-terracotta">
-                Travelers
-              </p>
-              <p className="text-[15px] text-[#B5A890]">2 adults</p>
-            </div>
-            <div className="flex items-center p-3">
-              <button className="inline-flex w-full items-center justify-center rounded-full bg-obsidian px-7 py-3.5 text-sm font-medium tracking-wide text-[#F0EAE0] transition-all duration-150 hover:bg-[#2E2921] hover:shadow-[var(--shadow-md)]">
-                Search
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ==================== HERO + SEARCH (Airbnb-style expand) ==================== */}
+      <HeroSearchSection />
 
       {/* ==================== FEATURED DESTINATIONS ==================== */}
       <section className="py-16 lg:py-24">
