@@ -1,21 +1,25 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const AUTH_COOKIE = "auth_session";
 
 function hasAuthCookie() {
   if (typeof document === "undefined") return false;
-  return document.cookie.split(";").some((part) => part.trim().startsWith(`${AUTH_COOKIE}=`));
+  return document.cookie
+    .split(";")
+    .some((part) => part.trim().startsWith(`${AUTH_COOKIE}=`));
 }
 
 export function AuthNavButton() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     setIsAuthenticated(hasAuthCookie());
-  }, []);
+  }, [pathname]);
 
   if (isAuthenticated) {
     return (

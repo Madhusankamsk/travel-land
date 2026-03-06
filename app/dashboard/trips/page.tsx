@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { DeleteTripButton } from "./delete-trip-button";
 
 export default async function TripsPage() {
   const tours = await prisma.tour.findMany({
@@ -66,12 +67,28 @@ export default async function TripsPage() {
                   </td>
                   <td className="px-4 py-3 text-zinc-600">{tour.days.length}</td>
                   <td className="px-4 py-3">
-                    <Link
-                      href={`/dashboard/trips/${tour.id}/edit`}
-                      className="font-medium text-zinc-700 hover:text-zinc-900"
-                    >
-                      Edit
-                    </Link>
+                    <div className="flex items-center gap-3">
+                      {tour.status === "UPCOMING" && (
+                        <Link
+                          href={`/upcoming-trips/${tour.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-medium text-zinc-600 hover:text-zinc-900"
+                        >
+                          View
+                        </Link>
+                      )}
+                      <Link
+                        href={`/dashboard/trips/${tour.id}/edit`}
+                        className="text-xs font-medium text-zinc-700 hover:text-zinc-900"
+                      >
+                        Edit
+                      </Link>
+                      <DeleteTripButton
+                        tourId={tour.id}
+                        tourTitle={tour.title}
+                      />
+                    </div>
                   </td>
                 </tr>
               ))

@@ -69,7 +69,17 @@ export default function LoginPage() {
           </button>
         </form>
         <p className="mt-4 text-center text-xs text-zinc-500">
-          Only admin accounts can sign in.
+          Only admin accounts can access the dashboard.{" "}
+          <span className="block">
+            Need an account?{" "}
+            <a
+              href="/signup"
+              className="font-medium text-zinc-800 hover:text-zinc-900"
+            >
+              Create one
+            </a>
+            .
+          </span>
         </p>
       </div>
     </div>

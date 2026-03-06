@@ -189,3 +189,13 @@ export async function updateTrip(tourId: string, formData: FormData) {
   revalidatePath(`/dashboard/trips/${tourId}/edit`);
   return { success: true };
 }
+
+export async function deleteTrip(formData: FormData) {
+  const id = (formData.get("id") as string) ?? "";
+  if (!id) return;
+
+  await prisma.tour.delete({ where: { id } });
+
+  revalidatePath("/dashboard/trips");
+  revalidatePath("/upcoming-trips");
+}
