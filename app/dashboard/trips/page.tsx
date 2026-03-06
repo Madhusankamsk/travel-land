@@ -55,9 +55,7 @@ export default async function TripsPage() {
                           : "rounded-full bg-zinc-200 px-2 py-0.5 text-xs font-medium text-zinc-700"
                       }
                     >
-                      {tour.status === "UPCOMING"
-                        ? "Prossimi Viaggi"
-                        : "Storico Viaggi"}
+                      {tour.status === "UPCOMING" ? "Upcoming" : "Past"}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-zinc-600">

@@ -7,33 +7,42 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="min-h-screen bg-zinc-50">
-      <header className="border-b border-zinc-200 bg-white">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-          <nav className="flex items-center gap-6">
+      <div className="flex min-h-screen">
+        <aside className="flex w-64 flex-col border-r border-zinc-200 bg-white">
+          <div className="flex h-16 items-center border-b border-zinc-200 px-4">
+            <span className="text-sm font-semibold uppercase tracking-wide text-zinc-700">
+              Admin
+            </span>
+          </div>
+          <nav className="flex-1 space-y-1 px-3 py-4 text-sm">
             <Link
               href="/dashboard"
-              className="text-sm font-medium text-zinc-700 hover:text-zinc-900"
+              className="block rounded-lg px-3 py-2 font-medium text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900"
             >
-              Dashboard
+              Overview
             </Link>
             <Link
               href="/dashboard/trips"
-              className="text-sm font-medium text-zinc-700 hover:text-zinc-900"
+              className="block rounded-lg px-3 py-2 font-medium text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900"
             >
               Trips
             </Link>
           </nav>
-          <form action="/api/auth/signout" method="POST">
+          <form
+            action="/api/auth/signout"
+            method="POST"
+            className="border-t border-zinc-200 p-3"
+          >
             <button
               type="submit"
-              className="text-sm font-medium text-zinc-600 hover:text-zinc-900"
+              className="flex w-full items-center justify-center rounded-lg px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
             >
               Sign out
             </button>
           </form>
-        </div>
-      </header>
-      <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
+        </aside>
+        <main className="flex-1 px-6 py-8">{children}</main>
+      </div>
     </div>
   );
 }

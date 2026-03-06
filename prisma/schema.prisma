@@ -21,7 +21,7 @@ model User {
   @@map("users")
 }
 
-// Prossimi Viaggi = UPCOMING, Storico Viaggi = ARCHIVED
+// TourStatus: UPCOMING = upcoming trips, ARCHIVED = past trips
 enum TourStatus {
   UPCOMING
   ARCHIVED
@@ -31,17 +31,17 @@ model Tour {
   id                 String    @id @default(cuid())
   title              String
   status             TourStatus @default(UPCOMING)
-  durationLabel       String    // e.g. "dal 23 al 30 aprile 2026"
+  durationLabel       String    // e.g. "23–30 April 2026"
   heroImageUrl       String?
   introText          String    @db.Text
   basePrice          Decimal   @db.Decimal(10, 2) // Euro
   singleSupplement   Decimal?  @db.Decimal(10, 2)
   mandatoryInsurance String?   @db.Text
   optionalInsurance  String?   @db.Text
-  depositLabel       String?   // Acconto
-  balanceDeadline    String?   // Saldo entro
-  included           String    @db.Text // La quota comprende
-  excluded           String    @db.Text // La quota non comprende
+  depositLabel       String?   // Deposit
+  balanceDeadline    String?   // Balance due
+  included           String    @db.Text // Included in the price
+  excluded           String    @db.Text // Not included in the price
   cancellationPolicy String?   @db.Text
   programPdfUrl      String?
   contactStaff       String?   // comma-separated: Eleonora,Sisira,Romeo

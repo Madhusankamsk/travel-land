@@ -94,13 +94,13 @@ export function TripForm({
         <h2 className="mb-4 text-lg font-semibold text-zinc-900">Basic information</h2>
         <div className="flex flex-col gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-zinc-700">Tour title</label>
+            <label className="mb-1 block text-sm font-medium text-zinc-700">Trip title</label>
             <input
               name="title"
               type="text"
               required
               defaultValue={initial?.title}
-              placeholder="e.g. GIORDANIA 2026"
+              placeholder="e.g. Jordan 2026"
               className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
             />
           </div>
@@ -111,8 +111,8 @@ export function TripForm({
               defaultValue={initial?.status ?? "UPCOMING"}
               className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
             >
-              <option value="UPCOMING">Prossimi Viaggi (Upcoming)</option>
-              <option value="ARCHIVED">Storico Viaggi (Past / Archive)</option>
+              <option value="UPCOMING">Upcoming trips</option>
+              <option value="ARCHIVED">Past trips</option>
             </select>
           </div>
           <div>
@@ -122,7 +122,7 @@ export function TripForm({
               type="text"
               required
               defaultValue={initial?.durationLabel}
-              placeholder='e.g. "dal 23 al 30 aprile 2026"'
+              placeholder='e.g. "23–30 April 2026"'
               className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
             />
           </div>
@@ -218,7 +218,7 @@ export function TripForm({
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-zinc-700">Single supplement (Sup. singola)</label>
+            <label className="mb-1 block text-sm font-medium text-zinc-700">Single supplement</label>
             <input
               name="singleSupplement"
               type="number"
@@ -237,7 +237,7 @@ export function TripForm({
               name="mandatoryInsurance"
               type="text"
               defaultValue={initial?.mandatoryInsurance ?? ""}
-              placeholder="e.g. Polizza medica obbligatoria"
+              placeholder="e.g. Mandatory medical insurance"
               className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
             />
           </div>
@@ -247,13 +247,13 @@ export function TripForm({
               name="optionalInsurance"
               type="text"
               defaultValue={initial?.optionalInsurance ?? ""}
-              placeholder="e.g. Polizza annullamento facoltativa"
+              placeholder="e.g. Optional cancellation insurance"
               className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
             />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block text-sm font-medium text-zinc-700">Deposit (Acconto)</label>
+            <label className="mb-1 block text-sm font-medium text-zinc-700">Deposit</label>
               <input
                 name="depositLabel"
                 type="text"
@@ -263,7 +263,7 @@ export function TripForm({
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-zinc-700">Balance deadline (Saldo entro)</label>
+            <label className="mb-1 block text-sm font-medium text-zinc-700">Balance deadline</label>
               <input
                 name="balanceDeadline"
                 type="text"
@@ -281,7 +281,7 @@ export function TripForm({
         <h2 className="mb-4 text-lg font-semibold text-zinc-900">Logistics</h2>
         <div className="grid gap-6 sm:grid-cols-2">
           <div>
-            <label className="mb-1 block text-sm font-medium text-zinc-700">La quota comprende (what’s included)</label>
+            <label className="mb-1 block text-sm font-medium text-zinc-700">Included in the price</label>
             <textarea
               name="included"
               rows={6}
@@ -291,7 +291,7 @@ export function TripForm({
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-zinc-700">La quota non comprende (what’s not included)</label>
+            <label className="mb-1 block text-sm font-medium text-zinc-700">Not included in the price</label>
             <textarea
               name="excluded"
               rows={6}
@@ -308,7 +308,7 @@ export function TripForm({
         <h2 className="mb-4 text-lg font-semibold text-zinc-900">Policies & documentation</h2>
         <div className="flex flex-col gap-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-zinc-700">Cancellation policy (Penalità)</label>
+            <label className="mb-1 block text-sm font-medium text-zinc-700">Cancellation policy</label>
             <textarea
               name="cancellationPolicy"
               rows={4}

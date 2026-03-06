@@ -40,7 +40,7 @@ export async function loginAction(
   cookieStore.set(AUTH_COOKIE, "true", {
     path: "/",
     maxAge: 60 * 60 * 24, // 1 day
-    httpOnly: true,
+    httpOnly: false,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
   });
