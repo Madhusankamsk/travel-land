@@ -1,11 +1,11 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { Suspense, useActionState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { toast } from "@/lib/toast";
 import { loginAction } from "./actions";
 
-export default function LoginPage() {
+function LoginForm() {
   const searchParams = useSearchParams();
   const from = searchParams.get("from") ?? "/dashboard";
 
@@ -83,5 +83,13 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center bg-zinc-50" />}>
+      <LoginForm />
+    </Suspense>
   );
 }
