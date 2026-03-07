@@ -1,6 +1,37 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## Running with Docker Compose
+
+You can run the full app (Next.js + PostgreSQL) with Docker:
+
+```bash
+docker compose up --build
+```
+
+- **App:** http://localhost:3000  
+- **PostgreSQL:** `localhost:5432` (user `postgres`, password `postgres`, database `postgres`)
+
+On first run, the app container will apply Prisma migrations and then start. To seed the database, run:
+
+```bash
+docker compose exec app npx prisma db seed
+```
+
+### Development with Docker
+
+For local development with hot reload and the same Postgres:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+```
+
+This mounts your source into the container and runs `npm run dev`. If you add npm dependencies, rebuild: `docker compose -f docker-compose.yml -f docker-compose.dev.yml build app`.
+
+### Without Docker
+
+See [docs/LOCAL-DEVELOPMENT.md](docs/LOCAL-DEVELOPMENT.md) for running with Supabase CLI and Node locally.
+
+## Getting Started (without Docker)
 
 First, run the development server:
 
