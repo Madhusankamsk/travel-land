@@ -2,10 +2,18 @@
 
 import { compare } from "bcryptjs";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 
 const AUTH_COOKIE = "auth_session";
+
+/** Only use Secure cookie when the request is over HTTPS (or behind a proxy that set x-forwarded-proto). */
+async function useSecureCookie(): Promise<boolean> {
+  if (process.env.NODE_ENV !== "production") return false;
+  const headersList = await headers();
+  const proto = headersList.get("x-forwarded-proto") ?? headersList.get("x-forwarded-ssl");
+  return proto === "https" || proto === "on";
+}
 
 export async function loginAction(
   _prev: unknown,
@@ -42,7 +50,7 @@ export async function loginAction(
     maxAge: 60 * 60 * 24, // 1 day
     httpOnly: false,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: await useSecureCookie(),
   });
 
   const from = (formData.get("from") as string) || "/dashboard";
