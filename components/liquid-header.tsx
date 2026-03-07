@@ -61,7 +61,7 @@ export function LiquidHeader() {
         ref={headerRef}
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
-        className={`liquid-surface liquid-surface--nav mx-auto max-w-[1440px] rounded-2xl transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+        className={`liquid-surface liquid-surface--nav mx-auto max-w-[1440px] rounded-full transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
           isOverlapping ? "liquid-surface--overlap" : ""
         }`}
         style={{
