@@ -79,17 +79,17 @@ export function HeroSearchSection() {
         aria-hidden
       />
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-10 pt-24 lg:px-12 lg:pb-14 lg:pt-28">
-        <div className="flex flex-col items-center p-8 lg:p-12">
-          <div className="max-w-[700px] pb-8 text-center">
-            <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-oro">
+        <div className="flex flex-col items-center p-4 sm:p-6 md:p-8 lg:p-12">
+          <div className="w-full max-w-[700px] pb-8 text-center">
+            <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-oro">
               Featured Journey · Autumn 2025
             </p>
-            <h1 className="mb-4 font-[family-name:var(--font-cormorant)] text-[clamp(36px,6vw,80px)] font-normal leading-[1.1] tracking-tighter text-[#F0EAE0]">
+            <h1 className="mb-4 text-center font-[family-name:var(--font-cormorant)] text-[clamp(36px,6vw,80px)] font-normal leading-[1.1] tracking-tighter text-[#F0EAE0]">
               Discover <em className="text-champagne">Italia</em>
               <br />
               Like Never Before
             </h1>
-            <p className="mx-auto mb-8 max-w-[520px] text-base leading-relaxed text-[#B5A890]">
+            <p className="mx-auto mb-8 max-w-[520px] text-center text-base leading-relaxed text-[#B5A890]">
               Seven nights of absolute immersion — private Colosseum access,
               Vatican at dawn, and the finest tables in the Eternal City. Crafted
               exclusively for the discerning traveler.
