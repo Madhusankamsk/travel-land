@@ -1,0 +1,5140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRAVEL-LAND.IT — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&family=DM+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    /* ============================================================
+   DESIGN TOKENS — CSS CUSTOM PROPERTIES
+   ============================================================ */
+    :root {
+      /* --- PRIMARY PALETTE --- */
+      --color-travertine: #F5F0E8;
+      /* Warm stone, primary bg */
+      --color-parchment: #EDE5D5;
+      /* Elevated surface */
+      --color-bone: #D9CEBA;
+      /* Border, divider */
+      --color-terracotta: #9B5E3B;
+      /* Warm accent */
+      --color-siena: #6B3A2A;
+      /* Deep warm */
+      --color-obsidian: #1A1714;
+      /* Near-black, text */
+
+      --color-azure: #2E6B9E;
+      /* Mediterranean blue */
+      --color-adriatic: #1A4A70;
+      /* Deep blue */
+      --color-seafoam: #A8C5D8;
+      /* Light coastal */
+
+      --color-oro: #B8963E;
+      /* Gold accent */
+      --color-champagne: #E8D5A3;
+      /* Light gold */
+      --color-bronze: #8B6914;
+      /* Dark gold */
+
+      /* --- SEMANTIC COLORS --- */
+      --color-success: #2D6A4F;
+      --color-success-bg: #D8EFE4;
+      --color-warning: #92641A;
+      --color-warning-bg: #FBF0DC;
+      --color-error: #8B2E2E;
+      --color-error-bg: #F5DEDE;
+      --color-info: #2E5B8B;
+      --color-info-bg: #D8E8F5;
+
+      /* --- DARK MODE SURFACES --- */
+      --dark-bg: #0E0C0A;
+      --dark-surface-1: #1A1714;
+      --dark-surface-2: #242019;
+      --dark-surface-3: #2E2921;
+      --dark-surface-4: #3A332A;
+      --dark-text-primary: #F0EAE0;
+      --dark-text-secondary: #B5A890;
+
+      /* --- ELEVATION --- */
+      --shadow-sm: 0 1px 3px rgba(26, 23, 20, 0.08), 0 1px 2px rgba(26, 23, 20, 0.04);
+      --shadow-md: 0 4px 16px rgba(26, 23, 20, 0.10), 0 2px 6px rgba(26, 23, 20, 0.06);
+      --shadow-lg: 0 12px 40px rgba(26, 23, 20, 0.14), 0 4px 12px rgba(26, 23, 20, 0.08);
+      --shadow-xl: 0 24px 64px rgba(26, 23, 20, 0.18), 0 8px 24px rgba(26, 23, 20, 0.10);
+      --shadow-gold: 0 4px 20px rgba(184, 150, 62, 0.20);
+
+      /* --- TYPOGRAPHY --- */
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+      --font-mono: 'DM Mono', monospace;
+
+      /* Desktop Type Scale */
+      --text-display-xl: 80px;
+      --text-display: 64px;
+      --text-headline: 48px;
+      --text-title-lg: 36px;
+      --text-title: 28px;
+      --text-subheadline: 22px;
+      --text-body-lg: 18px;
+      --text-body: 16px;
+      --text-callout: 15px;
+      --text-footnote: 13px;
+      --text-caption: 12px;
+      --text-micro: 10px;
+
+      --leading-tight: 1.1;
+      --leading-snug: 1.25;
+      --leading-normal: 1.5;
+      --leading-relaxed: 1.65;
+      --leading-loose: 1.8;
+
+      --tracking-tighter: -0.03em;
+      --tracking-tight: -0.02em;
+      --tracking-normal: 0;
+      --tracking-wide: 0.04em;
+      --tracking-wider: 0.08em;
+      --tracking-widest: 0.16em;
+
+      /* --- SPACING (8px base) --- */
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --space-12: 48px;
+      --space-16: 64px;
+      --space-24: 96px;
+      --space-32: 128px;
+
+      /* --- BORDER RADIUS --- */
+      --radius-xs: 2px;
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 20px;
+      --radius-2xl: 32px;
+      --radius-full: 9999px;
+
+      /* --- MOTION --- */
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+      --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --dur-instant: 80ms;
+      --dur-fast: 150ms;
+      --dur-normal: 250ms;
+      --dur-slow: 400ms;
+      --dur-enter: 600ms;
+
+      /* --- LAYOUT GRID --- */
+      --grid-cols: 12;
+      --gutter: 32px;
+      --margin: 80px;
+      --max-width: 1440px;
+      --content-max: 1200px;
+    }
+
+    /* ============================================================
+   RESET & BASE
+   ============================================================ */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-travertine);
+      color: var(--color-obsidian);
+      line-height: var(--leading-relaxed);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ============================================================
+   DS LAYOUT
+   ============================================================ */
+    .ds-wrapper {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* Top nav */
+    .ds-topnav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245, 240, 232, 0.88);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--color-bone);
+      padding: var(--space-4) var(--space-16);
+      display: flex;
+      align-items: center;
+      gap: var(--space-8);
+    }
+
+    .ds-topnav-logo {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: var(--tracking-wide);
+      color: var(--color-obsidian);
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .ds-topnav-logo span {
+      color: var(--color-oro);
+    }
+
+    .ds-topnav-links {
+      display: flex;
+      gap: var(--space-6);
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .ds-topnav-links a {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--color-obsidian);
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity var(--dur-fast) var(--ease-out-quart);
+    }
+
+    .ds-topnav-links a:hover {
+      opacity: 1;
+    }
+
+    /* Sidebar + content */
+    .ds-layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: 100vh;
+    }
+
+    .ds-sidebar {
+      position: sticky;
+      top: 57px;
+      height: calc(100vh - 57px);
+      overflow-y: auto;
+      padding: var(--space-8) var(--space-6);
+      border-right: 1px solid var(--color-bone);
+      background: var(--color-travertine);
+    }
+
+    .ds-sidebar::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .ds-sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .ds-sidebar::-webkit-scrollbar-thumb {
+      background: var(--color-bone);
+      border-radius: 2px;
+    }
+
+    .ds-sidebar-section {
+      margin-bottom: var(--space-6);
+    }
+
+    .ds-sidebar-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      margin-bottom: var(--space-2);
+      padding: 0 var(--space-3);
+    }
+
+    .ds-sidebar-link {
+      display: block;
+      font-size: 13px;
+      color: var(--color-obsidian);
+      text-decoration: none;
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-sm);
+      transition: background var(--dur-fast);
+      opacity: 0.75;
+      margin-bottom: 1px;
+    }
+
+    .ds-sidebar-link:hover {
+      background: var(--color-parchment);
+      opacity: 1;
+    }
+
+    .ds-content {
+      padding: var(--space-16) var(--space-16) var(--space-32);
+      max-width: 1100px;
+    }
+
+    /* ============================================================
+   SECTION STRUCTURE
+   ============================================================ */
+    .ds-section {
+      margin-bottom: var(--space-32);
+      padding-top: var(--space-8);
+      border-top: 1px solid var(--color-bone);
+    }
+
+    .ds-section:first-child {
+      border-top: none;
+    }
+
+    .ds-section-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      margin-bottom: var(--space-3);
+    }
+
+    .ds-section-title {
+      font-family: var(--font-display);
+      font-size: var(--text-title-lg);
+      font-weight: 500;
+      letter-spacing: var(--tracking-tight);
+      color: var(--color-obsidian);
+      line-height: var(--leading-tight);
+      margin-bottom: var(--space-4);
+    }
+
+    .ds-section-desc {
+      font-size: 15px;
+      color: var(--color-obsidian);
+      opacity: 0.65;
+      max-width: 640px;
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-8);
+    }
+
+    /* Sub-sections */
+    .ds-subsection {
+      margin-bottom: var(--space-16);
+    }
+
+    .ds-subsection-title {
+      font-family: var(--font-display);
+      font-size: var(--text-subheadline);
+      font-weight: 500;
+      color: var(--color-obsidian);
+      margin-bottom: var(--space-4);
+    }
+
+    /* ============================================================
+   HERO INTRO BLOCK
+   ============================================================ */
+    .ds-hero {
+      background: var(--color-obsidian);
+      color: #F0EAE0;
+      padding: var(--space-32) var(--space-16) var(--space-24);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ds-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 80%, rgba(184, 150, 62, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(46, 107, 158, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .ds-hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-oro);
+      margin-bottom: var(--space-4);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    }
+
+    .ds-hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 6vw, 88px);
+      font-weight: 400;
+      letter-spacing: var(--tracking-tighter);
+      line-height: var(--leading-tight);
+      color: #F0EAE0;
+      margin-bottom: var(--space-6);
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .ds-hero-title em {
+      font-style: italic;
+      color: var(--color-champagne);
+    }
+
+    .ds-hero-subtitle {
+      font-size: 17px;
+      line-height: var(--leading-loose);
+      color: #E2E8F0;
+      max-width: 600px;
+      margin-bottom: var(--space-8);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .ds-hero-meta {
+      display: flex;
+      gap: var(--space-8);
+      flex-wrap: wrap;
+    }
+
+    .ds-hero-meta-item {
+      font-size: 12px;
+      letter-spacing: var(--tracking-wide);
+      color: #E2E8F0;
+      text-transform: uppercase;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    }
+
+    .ds-hero-meta-item strong {
+      color: var(--color-champagne);
+      margin-right: 6px;
+    }
+
+    /* ============================================================
+   COLOR SYSTEM
+   ============================================================ */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+    }
+
+    .color-swatch {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(26, 23, 20, 0.06);
+    }
+
+    .color-swatch-preview {
+      height: 80px;
+      width: 100%;
+    }
+
+    .color-swatch-info {
+      padding: var(--space-3) var(--space-4);
+      background: white;
+    }
+
+    .color-swatch-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--color-obsidian);
+      margin-bottom: 2px;
+    }
+
+    .color-swatch-hex {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #7A7060;
+    }
+
+    .color-swatch-wcag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: var(--radius-xs);
+      margin-top: var(--space-1);
+    }
+
+    .wcag-aaa {
+      background: #D8EFE4;
+      color: #2D6A4F;
+    }
+
+    .wcag-aa {
+      background: #FBF0DC;
+      color: #92641A;
+    }
+
+    .wcag-fail {
+      background: #F5DEDE;
+      color: #8B2E2E;
+    }
+
+    /* Semantic colors row */
+    .semantic-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+    }
+
+    .semantic-card {
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .semantic-card-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-2);
+    }
+
+    .semantic-card-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+    }
+
+    .semantic-card-desc {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    /* Dark mode surface stack */
+    .surface-stack {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: var(--dark-bg);
+      padding: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .surface-layer {
+      border-radius: var(--radius-lg);
+      padding: var(--space-4) var(--space-6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .surface-layer-info {
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .surface-layer-hex {
+      font-size: 11px;
+      opacity: 0.5;
+    }
+
+    /* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+    .type-specimen {
+      background: white;
+      border: 1px solid var(--color-bone);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      margin-bottom: var(--space-4);
+    }
+
+    .type-specimen-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      margin-bottom: var(--space-3);
+      opacity: 0.8;
+    }
+
+    .type-specimen-scale {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: var(--space-4);
+      align-items: baseline;
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-bone);
+    }
+
+    .type-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .type-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #7A7060;
+      flex-shrink: 0;
+    }
+
+    .type-meta strong {
+      display: block;
+      color: var(--color-obsidian);
+      font-size: 12px;
+      margin-bottom: 2px;
+    }
+
+    /* ============================================================
+   SPACING
+   ============================================================ */
+    .spacing-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .spacing-table th {
+      text-align: left;
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-parchment);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      border-bottom: 1px solid var(--color-bone);
+    }
+
+    .spacing-table td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--color-bone);
+      vertical-align: middle;
+    }
+
+    .spacing-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .spacing-visual {
+      background: var(--color-oro);
+      opacity: 0.4;
+      height: 16px;
+      border-radius: var(--radius-xs);
+      display: inline-block;
+    }
+
+    .spacing-token {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      background: var(--color-parchment);
+      padding: 2px 8px;
+      border-radius: var(--radius-xs);
+    }
+
+    /* ============================================================
+   GRID VISUALIZATION
+   ============================================================ */
+    .grid-viz {
+      border: 1px solid var(--color-bone);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: white;
+      margin-bottom: var(--space-4);
+    }
+
+    .grid-viz-header {
+      padding: var(--space-4) var(--space-6);
+      background: var(--color-parchment);
+      border-bottom: 1px solid var(--color-bone);
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .grid-viz-label {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .grid-viz-spec {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #7A7060;
+    }
+
+    .grid-viz-body {
+      padding: var(--space-6);
+    }
+
+    .grid-demo {
+      display: grid;
+      gap: 8px;
+      background: rgba(184, 150, 62, 0.08);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+    }
+
+    .grid-demo.cols-12 {
+      grid-template-columns: repeat(12, 1fr);
+    }
+
+    .grid-demo.cols-8 {
+      grid-template-columns: repeat(8, 1fr);
+    }
+
+    .grid-demo.cols-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .grid-col {
+      background: rgba(184, 150, 62, 0.25);
+      border: 1px solid rgba(184, 150, 62, 0.4);
+      border-radius: var(--radius-xs);
+      height: 32px;
+    }
+
+    /* ============================================================
+   COMPONENTS
+   ============================================================ */
+
+    /* --- BUTTONS --- */
+    .comp-section {
+      background: white;
+      border: 1px solid var(--color-bone);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      margin-bottom: var(--space-6);
+    }
+
+    .comp-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      margin-bottom: var(--space-6);
+    }
+
+    .comp-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      align-items: center;
+      margin-bottom: var(--space-6);
+    }
+
+    .comp-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .comp-label {
+      font-size: 11px;
+      color: #7A7060;
+      width: 100%;
+      margin-bottom: var(--space-2);
+      font-family: var(--font-mono);
+    }
+
+    /* Button base */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: var(--tracking-wide);
+      border: none;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      text-decoration: none;
+      transition:
+        background var(--dur-fast) var(--ease-out-quart),
+        box-shadow var(--dur-fast) var(--ease-out-quart),
+        transform var(--dur-fast) var(--ease-out-quart),
+        opacity var(--dur-fast);
+      white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--color-oro);
+      outline-offset: 3px;
+    }
+
+    /* Primary */
+    .btn-primary {
+      background: var(--color-obsidian);
+      color: #F0EAE0;
+      padding: 14px 28px;
+    }
+
+    .btn-primary:hover {
+      background: #2E2921;
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Gold CTA */
+    .btn-gold {
+      background: var(--color-oro);
+      color: var(--color-obsidian);
+      padding: 14px 28px;
+    }
+
+    .btn-gold:hover {
+      background: var(--color-bronze);
+      color: white;
+      box-shadow: var(--shadow-gold);
+    }
+
+    /* Secondary */
+    .btn-secondary {
+      background: white;
+      color: var(--color-obsidian);
+      border: 1.5px solid var(--color-bone);
+      padding: 13px 27px;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--color-obsidian);
+      background: var(--color-travertine);
+    }
+
+    /* Ghost */
+    .btn-ghost {
+      background: transparent;
+      color: var(--color-obsidian);
+      padding: 14px 28px;
+    }
+
+    .btn-ghost:hover {
+      background: var(--color-parchment);
+    }
+
+    /* Subtle */
+    .btn-subtle {
+      background: var(--color-parchment);
+      color: var(--color-siena);
+      padding: 10px 20px;
+      font-size: 13px;
+    }
+
+    .btn-subtle:hover {
+      background: var(--color-bone);
+    }
+
+    /* Destructive */
+    .btn-destructive {
+      background: #F5DEDE;
+      color: var(--color-error);
+      padding: 14px 28px;
+    }
+
+    .btn-destructive:hover {
+      background: #EDCECE;
+    }
+
+    /* Sizes */
+    .btn-sm {
+      font-size: 12px;
+      padding: 9px 18px;
+    }
+
+    .btn-lg {
+      font-size: 16px;
+      padding: 18px 36px;
+    }
+
+    .btn-icon {
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: var(--radius-full);
+      justify-content: center;
+    }
+
+    /* Disabled */
+    .btn:disabled,
+    .btn.disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Loading state */
+    .btn-loading::after {
+      content: '';
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      margin-left: var(--space-2);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* --- CARDS --- */
+    .destination-card {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: white;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-bone);
+      transition: box-shadow var(--dur-normal) var(--ease-out-quart), transform var(--dur-normal) var(--ease-out-quart);
+      cursor: pointer;
+    }
+
+    .destination-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+
+    .destination-card-image {
+      height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .destination-card-image .img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-4);
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.5);
+      position: relative;
+    }
+
+    .destination-card-badge {
+      position: absolute;
+      top: var(--space-4);
+      left: var(--space-4);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(26, 23, 20, 0.7);
+      color: var(--color-champagne);
+      backdrop-filter: blur(8px);
+    }
+
+    .destination-card-body {
+      padding: var(--space-6);
+    }
+
+    .destination-card-location {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      margin-bottom: var(--space-2);
+    }
+
+    .destination-card-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--color-obsidian);
+      margin-bottom: var(--space-2);
+      line-height: var(--leading-snug);
+    }
+
+    .destination-card-desc {
+      font-size: 13px;
+      color: #7A7060;
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-4);
+    }
+
+    .destination-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--color-bone);
+    }
+
+    .destination-card-price {}
+
+    .destination-card-price-from {
+      font-size: 11px;
+      color: #7A7060;
+    }
+
+    .destination-card-price-value {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--color-obsidian);
+    }
+
+    .destination-card-price-value small {
+      font-size: 13px;
+      opacity: 0.6;
+    }
+
+    .destination-card-stars {
+      display: flex;
+      gap: 2px;
+      color: var(--color-oro);
+      font-size: 13px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    /* Tour package card */
+    .package-card {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: white;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-bone);
+      display: grid;
+      grid-template-columns: 280px 1fr;
+    }
+
+    .package-card-image {
+      height: 100%;
+      min-height: 240px;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-6);
+      position: relative;
+    }
+
+    .package-card-body {
+      padding: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .package-card-tags {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-4);
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: var(--tracking-wide);
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-bone);
+      color: #7A7060;
+    }
+
+    .tag-luxury {
+      background: rgba(184, 150, 62, 0.1);
+      border-color: rgba(184, 150, 62, 0.3);
+      color: var(--color-bronze);
+    }
+
+    .tag-bestseller {
+      background: rgba(46, 107, 158, 0.08);
+      border-color: rgba(46, 107, 158, 0.25);
+      color: var(--color-azure);
+    }
+
+    .tag-exclusive {
+      background: rgba(26, 23, 20, 0.06);
+      border-color: var(--color-bone);
+      color: var(--color-obsidian);
+    }
+
+    .package-card-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--color-obsidian);
+      line-height: var(--leading-snug);
+      margin-bottom: var(--space-3);
+    }
+
+    .package-card-meta {
+      display: flex;
+      gap: var(--space-6);
+      margin-bottom: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .package-card-meta-item {
+      font-size: 13px;
+      color: #7A7060;
+    }
+
+    .package-card-meta-item strong {
+      color: var(--color-obsidian);
+      font-weight: 500;
+    }
+
+    .package-card-desc {
+      font-size: 14px;
+      color: #7A7060;
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-6);
+    }
+
+    .package-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--space-6);
+      border-top: 1px solid var(--color-bone);
+    }
+
+    /* --- FORMS --- */
+    .form-group {
+      margin-bottom: var(--space-6);
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--color-obsidian);
+      margin-bottom: var(--space-2);
+      opacity: 0.75;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--color-obsidian);
+      background: var(--color-travertine);
+      border: 1.5px solid var(--color-bone);
+      border-radius: var(--radius-md);
+      transition:
+        border-color var(--dur-fast) var(--ease-out-quart),
+        box-shadow var(--dur-fast) var(--ease-out-quart);
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .form-input::placeholder {
+      color: #B5A890;
+    }
+
+    .form-input:hover {
+      border-color: #C0B098;
+    }
+
+    .form-input:focus {
+      border-color: var(--color-obsidian);
+      box-shadow: 0 0 0 3px rgba(26, 23, 20, 0.08);
+    }
+
+    .form-input.error {
+      border-color: var(--color-error);
+      box-shadow: 0 0 0 3px rgba(139, 46, 46, 0.08);
+    }
+
+    .form-input.success {
+      border-color: var(--color-success);
+    }
+
+    .form-hint {
+      font-size: 12px;
+      color: #7A7060;
+      margin-top: var(--space-2);
+    }
+
+    .form-error {
+      font-size: 12px;
+      color: var(--color-error);
+      margin-top: var(--space-2);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Select */
+    .form-select {
+      width: 100%;
+      padding: 14px 40px 14px 16px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--color-obsidian);
+      background: var(--color-travertine);
+      border: 1.5px solid var(--color-bone);
+      border-radius: var(--radius-md);
+      outline: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%231A1714' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      transition: border-color var(--dur-fast);
+    }
+
+    .form-select:focus {
+      border-color: var(--color-obsidian);
+      box-shadow: 0 0 0 3px rgba(26, 23, 20, 0.08);
+    }
+
+    /* Traveler selector */
+    .traveler-selector {
+      border: 1.5px solid var(--color-bone);
+      border-radius: var(--radius-md);
+      background: var(--color-travertine);
+      padding: var(--space-4);
+    }
+
+    .traveler-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--color-bone);
+    }
+
+    .traveler-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .traveler-label {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .traveler-sublabel {
+      font-size: 12px;
+      color: #7A7060;
+    }
+
+    .traveler-control {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .traveler-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--color-bone);
+      background: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all var(--dur-fast);
+      color: var(--color-obsidian);
+    }
+
+    .traveler-btn:hover {
+      border-color: var(--color-obsidian);
+      background: var(--color-travertine);
+    }
+
+    .traveler-count {
+      font-size: 16px;
+      font-weight: 500;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    /* Date picker preview */
+    .date-picker-preview {
+      border: 1.5px solid var(--color-bone);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: white;
+    }
+
+    .date-picker-header {
+      padding: var(--space-4) var(--space-6);
+      background: var(--color-parchment);
+      border-bottom: 1px solid var(--color-bone);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .date-picker-month {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .date-picker-nav {
+      font-size: 18px;
+      cursor: pointer;
+      opacity: 0.5;
+    }
+
+    .date-picker-grid {
+      padding: var(--space-4) var(--space-6);
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .date-picker-day-label {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: #7A7060;
+      padding: var(--space-2);
+    }
+
+    .date-cell {
+      text-align: center;
+      padding: 8px 4px;
+      font-size: 13px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: background var(--dur-fast);
+    }
+
+    .date-cell:hover {
+      background: var(--color-parchment);
+    }
+
+    .date-cell.selected {
+      background: var(--color-obsidian);
+      color: white;
+      border-radius: var(--radius-sm);
+    }
+
+    .date-cell.in-range {
+      background: rgba(26, 23, 20, 0.08);
+    }
+
+    .date-cell.check-in {
+      background: var(--color-obsidian);
+      color: white;
+      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    }
+
+    .date-cell.check-out {
+      background: var(--color-obsidian);
+      color: white;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .date-cell.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    /* Toggle */
+    .toggle-wrapper {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 28px;
+      border-radius: 14px;
+      background: var(--color-bone);
+      cursor: pointer;
+      transition: background var(--dur-normal) var(--ease-out-quart);
+    }
+
+    .toggle.on {
+      background: var(--color-obsidian);
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--dur-normal) var(--ease-spring);
+    }
+
+    .toggle.on::after {
+      transform: translateX(20px);
+    }
+
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* --- FEEDBACK / ALERTS --- */
+    .alert {
+      border-radius: var(--radius-lg);
+      padding: var(--space-4) var(--space-6);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+
+    .alert-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: var(--radius-full);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      margin-top: 1px;
+    }
+
+    .alert-content {
+      flex: 1;
+    }
+
+    .alert-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .alert-desc {
+      font-size: 13px;
+      line-height: 1.5;
+      opacity: 0.85;
+    }
+
+    .alert-success {
+      background: var(--color-success-bg);
+    }
+
+    .alert-success .alert-icon {
+      background: var(--color-success);
+      color: white;
+    }
+
+    .alert-success .alert-title {
+      color: var(--color-success);
+    }
+
+    .alert-warning {
+      background: var(--color-warning-bg);
+    }
+
+    .alert-warning .alert-icon {
+      background: var(--color-warning);
+      color: white;
+    }
+
+    .alert-warning .alert-title {
+      color: var(--color-warning);
+    }
+
+    .alert-error {
+      background: var(--color-error-bg);
+    }
+
+    .alert-error .alert-icon {
+      background: var(--color-error);
+      color: white;
+    }
+
+    .alert-error .alert-title {
+      color: var(--color-error);
+    }
+
+    .alert-info {
+      background: var(--color-info-bg);
+    }
+
+    .alert-info .alert-icon {
+      background: var(--color-info);
+      color: white;
+    }
+
+    .alert-info .alert-title {
+      color: var(--color-info);
+    }
+
+    /* Toast */
+    .toast-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-5);
+      border-radius: var(--radius-full);
+      background: var(--color-obsidian);
+      color: #F0EAE0;
+      box-shadow: var(--shadow-lg);
+      font-size: 13px;
+      width: fit-content;
+      animation: toastIn var(--dur-enter) var(--ease-out-quart);
+    }
+
+    .toast-success {
+      background: var(--color-success);
+    }
+
+    .toast-warning {
+      background: var(--color-warning);
+    }
+
+    .toast-error {
+      background: var(--color-error);
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .badge-luxury {
+      background: rgba(184, 150, 62, 0.15);
+      color: var(--color-bronze);
+      border: 1px solid rgba(184, 150, 62, 0.35);
+    }
+
+    .badge-bestseller {
+      background: rgba(46, 107, 158, 0.1);
+      color: var(--color-adriatic);
+      border: 1px solid rgba(46, 107, 158, 0.25);
+    }
+
+    .badge-exclusive {
+      background: var(--color-obsidian);
+      color: var(--color-champagne);
+    }
+
+    .badge-limited {
+      background: var(--color-warning-bg);
+      color: var(--color-warning);
+      border: 1px solid rgba(146, 100, 26, 0.25);
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    /* --- PROGRESS --- */
+    .progress-steps {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: var(--space-8);
+    }
+
+    .progress-step {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex: 1;
+    }
+
+    .progress-step:last-child {
+      flex: 0;
+    }
+
+    .progress-step-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--color-bone);
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: #B5A890;
+      flex-shrink: 0;
+      transition: all var(--dur-normal);
+    }
+
+    .progress-step.active .progress-step-circle {
+      border-color: var(--color-obsidian);
+      background: var(--color-obsidian);
+      color: white;
+    }
+
+    .progress-step.done .progress-step-circle {
+      border-color: var(--color-success);
+      background: var(--color-success);
+      color: white;
+    }
+
+    .progress-step-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #B5A890;
+    }
+
+    .progress-step.active .progress-step-label {
+      color: var(--color-obsidian);
+    }
+
+    .progress-step.done .progress-step-label {
+      color: var(--color-success);
+    }
+
+    .progress-step-line {
+      flex: 1;
+      height: 1px;
+      background: var(--color-bone);
+      margin: 0 var(--space-3);
+    }
+
+    .progress-step-line.done {
+      background: var(--color-success);
+    }
+
+    /* Loading skeleton */
+    @keyframes shimmer {
+      0% {
+        background-position: -600px 0;
+      }
+
+      100% {
+        background-position: 600px 0;
+      }
+    }
+
+    .skeleton {
+      background: linear-gradient(90deg, var(--color-parchment) 25%, var(--color-bone) 50%, var(--color-parchment) 75%);
+      background-size: 600px 100%;
+      animation: shimmer 1.5s infinite linear;
+      border-radius: var(--radius-md);
+    }
+
+    .skeleton-line {
+      height: 14px;
+      margin-bottom: var(--space-3);
+    }
+
+    .skeleton-line.short {
+      width: 40%;
+    }
+
+    .skeleton-line.medium {
+      width: 65%;
+    }
+
+    .skeleton-line.long {
+      width: 90%;
+    }
+
+    .skeleton-block {
+      height: 200px;
+      width: 100%;
+      border-radius: var(--radius-xl);
+      margin-bottom: var(--space-4);
+    }
+
+    /* --- NAVIGATION --- */
+    .nav-demo {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid var(--color-bone);
+      margin-bottom: var(--space-4);
+    }
+
+    .nav-header {
+      background: rgba(245, 240, 232, 0.95);
+      backdrop-filter: blur(20px);
+      padding: 0 var(--space-8);
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--color-bone);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: var(--tracking-wide);
+      color: var(--color-obsidian);
+    }
+
+    .nav-logo span {
+      color: var(--color-oro);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: var(--space-8);
+      list-style: none;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: var(--tracking-wide);
+      color: var(--color-obsidian);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity var(--dur-fast);
+      cursor: pointer;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      opacity: 1;
+    }
+
+    .nav-link.active {
+      border-bottom: 1.5px solid var(--color-obsidian);
+      padding-bottom: 2px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .nav-lang-btn {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--color-bone);
+      background: transparent;
+      cursor: pointer;
+      color: var(--color-obsidian);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--dur-fast);
+    }
+
+    .nav-lang-btn:hover {
+      border-color: var(--color-obsidian);
+    }
+
+    /* Mega menu */
+    .mega-menu-demo {
+      background: white;
+      border-top: 1px solid var(--color-bone);
+      padding: var(--space-8);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 240px;
+      gap: var(--space-8);
+    }
+
+    .mega-menu-col-title {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      margin-bottom: var(--space-4);
+    }
+
+    .mega-menu-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) 0;
+      text-decoration: none;
+      color: var(--color-obsidian);
+      font-size: 14px;
+      border-bottom: 1px solid var(--color-bone);
+      cursor: pointer;
+      transition: color var(--dur-fast);
+    }
+
+    .mega-menu-item:hover {
+      color: var(--color-terracotta);
+    }
+
+    .mega-menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .mega-menu-city-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-bone);
+      flex-shrink: 0;
+    }
+
+    .mega-menu-featured {
+      background: var(--color-obsidian);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+      color: #F0EAE0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mega-menu-featured::before {
+      content: 'Roma';
+      font-family: var(--font-display);
+      font-size: 80px;
+      font-weight: 300;
+      font-style: italic;
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      color: rgba(255, 255, 255, 0.06);
+      line-height: 1;
+    }
+
+    .mega-menu-featured-label {
+      font-size: 10px;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-champagne);
+      margin-bottom: var(--space-2);
+    }
+
+    .mega-menu-featured-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      color: #F0EAE0;
+    }
+
+    /* --- REVIEW CARDS --- */
+    .review-card {
+      background: white;
+      border: 1px solid var(--color-bone);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+    }
+
+    .review-stars {
+      display: flex;
+      gap: 3px;
+      color: var(--color-oro);
+      margin-bottom: var(--space-4);
+      font-size: 16px;
+    }
+
+    .review-quote {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--color-obsidian);
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-6);
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .review-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-full);
+      background: var(--color-parchment);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--color-terracotta);
+      border: 2px solid var(--color-bone);
+    }
+
+    .review-author-name {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .review-author-location {
+      font-size: 12px;
+      color: #7A7060;
+    }
+
+    /* --- ITINERARY TIMELINE --- */
+    .itinerary-timeline {
+      position: relative;
+    }
+
+    .itinerary-timeline::before {
+      content: '';
+      position: absolute;
+      left: 22px;
+      top: 40px;
+      bottom: 40px;
+      width: 1px;
+      background: var(--color-bone);
+    }
+
+    .itinerary-day {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: var(--space-6);
+      margin-bottom: var(--space-8);
+      align-items: start;
+    }
+
+    .itinerary-day-number {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-full);
+      background: var(--color-obsidian);
+      color: #F0EAE0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .itinerary-day-content {
+      background: white;
+      border: 1px solid var(--color-bone);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+    }
+
+    .itinerary-day-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: var(--space-2);
+    }
+
+    .itinerary-day-location {
+      font-size: 12px;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      margin-bottom: var(--space-4);
+    }
+
+    .itinerary-activities {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .itinerary-activity {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-size: 13px;
+      color: #7A7060;
+    }
+
+    .itinerary-activity::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-oro);
+      flex-shrink: 0;
+    }
+
+    /* --- HERO SECTION PREVIEW --- */
+    .hero-preview {
+      background: var(--color-obsidian);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-24) var(--space-16);
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      margin-bottom: var(--space-4);
+    }
+
+    .hero-preview::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 100% 60% at 50% 100%, rgba(26, 23, 20, 0.8) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 80% at 20% 20%, rgba(46, 107, 158, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 60% at 80% 80%, rgba(184, 150, 62, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-preview-content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+    }
+
+    .hero-preview-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-oro);
+      margin-bottom: var(--space-4);
+    }
+
+    .hero-preview-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 400;
+      color: #F0EAE0;
+      line-height: var(--leading-tight);
+      margin-bottom: var(--space-4);
+      letter-spacing: var(--tracking-tighter);
+    }
+
+    .hero-preview-title em {
+      font-style: italic;
+      color: var(--color-champagne);
+    }
+
+    .hero-preview-subtitle {
+      font-size: 16px;
+      color: #B5A890;
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-8);
+      max-width: 520px;
+    }
+
+    .hero-preview-actions {
+      display: flex;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    /* Booking search bar */
+    .booking-bar {
+      background: white;
+      border-radius: var(--radius-xl);
+      padding: var(--space-4) var(--space-6);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 1px;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--color-bone);
+      margin-top: var(--space-6);
+      position: relative;
+      z-index: 1;
+    }
+
+    .booking-bar-field {
+      padding: var(--space-3) var(--space-4);
+      border-right: 1px solid var(--color-bone);
+      cursor: pointer;
+      transition: background var(--dur-fast);
+      border-radius: var(--radius-lg);
+    }
+
+    .booking-bar-field:last-of-type {
+      border-right: none;
+    }
+
+    .booking-bar-field:hover {
+      background: var(--color-travertine);
+    }
+
+    .booking-bar-field-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      margin-bottom: 4px;
+    }
+
+    .booking-bar-field-value {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--color-obsidian);
+    }
+
+    .booking-bar-field-value.placeholder {
+      color: #B5A890;
+      font-weight: 400;
+    }
+
+    /* --- STATS WIDGET --- */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+
+    .stat-card {
+      background: white;
+      border: 1px solid var(--color-bone);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6);
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 500;
+      color: var(--color-obsidian);
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #7A7060;
+      letter-spacing: var(--tracking-wide);
+    }
+
+    /* --- PRICING TABLE --- */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+      margin-bottom: var(--space-6);
+    }
+
+    .pricing-card {
+      background: white;
+      border: 1.5px solid var(--color-bone);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      position: relative;
+    }
+
+    .pricing-card.featured {
+      background: var(--color-obsidian);
+      border-color: transparent;
+      color: #F0EAE0;
+    }
+
+    .pricing-featured-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-oro);
+      color: var(--color-obsidian);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      padding: 4px 16px;
+      border-radius: var(--radius-full);
+    }
+
+    .pricing-tier {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      margin-bottom: var(--space-4);
+      opacity: 0.6;
+    }
+
+    .pricing-price {
+      font-family: var(--font-display);
+      font-size: 44px;
+      font-weight: 500;
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+
+    .pricing-price small {
+      font-size: 16px;
+      opacity: 0.6;
+    }
+
+    .pricing-period {
+      font-size: 13px;
+      opacity: 0.5;
+      margin-bottom: var(--space-6);
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: var(--space-8);
+    }
+
+    .pricing-features li {
+      font-size: 13px;
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .pricing-card.featured .pricing-features li {
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .pricing-check {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--color-success);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      flex-shrink: 0;
+    }
+
+    .pricing-card.featured .pricing-check {
+      background: var(--color-oro);
+    }
+
+    /* --- ACCORDION / FAQ --- */
+    .accordion {
+      border: 1px solid var(--color-bone);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .accordion-item {
+      border-bottom: 1px solid var(--color-bone);
+    }
+
+    .accordion-item:last-child {
+      border-bottom: none;
+    }
+
+    .accordion-trigger {
+      width: 100%;
+      padding: var(--space-6) var(--space-8);
+      background: white;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--color-obsidian);
+      transition: background var(--dur-fast);
+    }
+
+    .accordion-trigger:hover {
+      background: var(--color-travertine);
+    }
+
+    .accordion-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--color-bone);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      transition: transform var(--dur-normal) var(--ease-out-quart);
+    }
+
+    .accordion-item.open .accordion-icon {
+      transform: rotate(45deg);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--dur-slow) var(--ease-out-quart);
+    }
+
+    .accordion-item.open .accordion-content {
+      max-height: 200px;
+    }
+
+    .accordion-body {
+      padding: 0 var(--space-8) var(--space-6);
+      font-size: 14px;
+      color: #7A7060;
+      line-height: var(--leading-relaxed);
+      background: white;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .breadcrumb-item {
+      font-size: 13px;
+      color: #7A7060;
+      text-decoration: none;
+      transition: color var(--dur-fast);
+      cursor: pointer;
+    }
+
+    .breadcrumb-item:hover {
+      color: var(--color-obsidian);
+    }
+
+    .breadcrumb-item.active {
+      color: var(--color-obsidian);
+      font-weight: 500;
+    }
+
+    .breadcrumb-sep {
+      font-size: 11px;
+      color: #B5A890;
+    }
+
+    /* Footer */
+    .footer-preview {
+      background: var(--color-obsidian);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-16);
+      color: #F0EAE0;
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: var(--space-12);
+      padding-bottom: var(--space-12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: var(--space-8);
+    }
+
+    .footer-brand-name {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: var(--space-4);
+    }
+
+    .footer-brand-name span {
+      color: var(--color-oro);
+    }
+
+    .footer-tagline {
+      font-style: italic;
+      font-family: var(--font-display);
+      font-size: 16px;
+      color: #7A7060;
+      margin-bottom: var(--space-6);
+    }
+
+    .footer-col-title {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-champagne);
+      margin-bottom: var(--space-4);
+      opacity: 0.7;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: #7A7060;
+      text-decoration: none;
+      transition: color var(--dur-fast);
+      cursor: pointer;
+    }
+
+    .footer-links a:hover {
+      color: #F0EAE0;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #7A7060;
+    }
+
+    .footer-lang-row {
+      display: flex;
+      gap: var(--space-3);
+    }
+
+    .footer-lang {
+      font-size: 11px;
+      color: #7A7060;
+      cursor: pointer;
+      transition: color var(--dur-fast);
+    }
+
+    .footer-lang:hover {
+      color: #F0EAE0;
+    }
+
+    .footer-lang.active {
+      color: var(--color-champagne);
+    }
+
+    /* --- DESIGN TOKENS DISPLAY --- */
+    .token-block {
+      background: var(--color-obsidian);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6) var(--space-8);
+      margin-bottom: var(--space-4);
+      overflow-x: auto;
+    }
+
+    .token-code {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #B5A890;
+      line-height: 1.8;
+      white-space: pre;
+    }
+
+    .token-key {
+      color: var(--color-champagne);
+    }
+
+    .token-val {
+      color: #7EC8A0;
+    }
+
+    .token-str {
+      color: var(--color-seafoam);
+    }
+
+    /* --- PRINCIPLES --- */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+      margin-bottom: var(--space-8);
+    }
+
+    .principle-card {
+      background: white;
+      border: 1px solid var(--color-bone);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .principle-card::before {
+      content: attr(data-number);
+      position: absolute;
+      top: -20px;
+      right: -10px;
+      font-family: var(--font-display);
+      font-size: 120px;
+      font-weight: 300;
+      color: rgba(184, 150, 62, 0.06);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .principle-number {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      margin-bottom: var(--space-3);
+    }
+
+    .principle-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--color-obsidian);
+      line-height: var(--leading-snug);
+      margin-bottom: var(--space-4);
+    }
+
+    .principle-desc {
+      font-size: 14px;
+      color: #7A7060;
+      line-height: var(--leading-relaxed);
+      margin-bottom: var(--space-6);
+    }
+
+    .principle-example {
+      background: var(--color-travertine);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      font-size: 12px;
+      color: var(--color-obsidian);
+      margin-bottom: var(--space-3);
+    }
+
+    .principle-example-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--color-success);
+      margin-bottom: var(--space-2);
+    }
+
+    .principle-anti {
+      background: var(--color-error-bg);
+      border-radius: var(--radius-lg);
+      padding: var(--space-4);
+      font-size: 12px;
+      color: var(--color-obsidian);
+    }
+
+    .principle-anti-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--color-error);
+      margin-bottom: var(--space-2);
+    }
+
+    /* Do / Don't */
+    .dos-donts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+      margin-bottom: var(--space-8);
+    }
+
+    .do-card {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1.5px solid rgba(45, 106, 79, 0.3);
+    }
+
+    .dont-card {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1.5px solid rgba(139, 46, 46, 0.25);
+    }
+
+    .do-card-header {
+      background: var(--color-success-bg);
+      padding: var(--space-3) var(--space-6);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-success);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .dont-card-header {
+      background: var(--color-error-bg);
+      padding: var(--space-3) var(--space-6);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: var(--color-error);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .do-card-body,
+    .dont-card-body {
+      padding: var(--space-6);
+      background: white;
+      font-size: 13px;
+      color: var(--color-obsidian);
+      line-height: var(--leading-relaxed);
+    }
+
+    .do-card-body strong,
+    .dont-card-body strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: var(--space-3);
+      font-family: var(--font-display);
+      font-weight: 500;
+    }
+
+    /* ============================================================
+   ADMIN DASHBOARD
+   ============================================================ */
+    .admin-preview {
+      background: #F8F7F5;
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+      border: 1px solid var(--color-bone);
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: 500px;
+      margin-bottom: var(--space-4);
+    }
+
+    .admin-sidebar {
+      background: var(--color-obsidian);
+      padding: var(--space-6);
+      color: #F0EAE0;
+    }
+
+    .admin-logo {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--color-champagne);
+      margin-bottom: var(--space-8);
+      letter-spacing: var(--tracking-wide);
+    }
+
+    .admin-nav-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      color: #7A7060;
+      margin-bottom: var(--space-2);
+      padding: 0 var(--space-3);
+    }
+
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-3);
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      color: #B5A890;
+      cursor: pointer;
+      transition: all var(--dur-fast);
+      margin-bottom: 2px;
+    }
+
+    .admin-nav-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #F0EAE0;
+    }
+
+    .admin-nav-item.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #F0EAE0;
+    }
+
+    .admin-nav-item-icon {
+      width: 16px;
+      opacity: 0.7;
+      font-size: 14px;
+    }
+
+    .admin-main {
+      padding: var(--space-8);
+    }
+
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-8);
+    }
+
+    .admin-title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 500;
+    }
+
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+    }
+
+    .admin-stat {
+      background: white;
+      border: 1px solid var(--color-bone);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+    }
+
+    .admin-stat-label {
+      font-size: 11px;
+      color: #7A7060;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      margin-bottom: var(--space-2);
+    }
+
+    .admin-stat-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 500;
+    }
+
+    .admin-stat-change {
+      font-size: 12px;
+      color: var(--color-success);
+      margin-top: 2px;
+    }
+
+    /* Table */
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .admin-table th {
+      text-align: left;
+      padding: var(--space-3) var(--space-4);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-wider);
+      text-transform: uppercase;
+      color: var(--color-terracotta);
+      border-bottom: 1px solid var(--color-bone);
+      background: var(--color-parchment);
+    }
+
+    .admin-table td {
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--color-bone);
+      font-size: 13px;
+    }
+
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .admin-table tr:hover td {
+      background: var(--color-travertine);
+    }
+
+    /* ============================================================
+   PAGE LAYOUT PREVIEWS
+   ============================================================ */
+    .page-preview-frame {
+      border: 1px solid var(--color-bone);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: var(--color-travertine);
+      margin-bottom: var(--space-4);
+    }
+
+    .page-block {
+      padding: var(--space-8);
+      border-bottom: 1px solid var(--color-bone);
+      position: relative;
+    }
+
+    .page-block:last-child {
+      border-bottom: none;
+    }
+
+    .page-block-label {
+      position: absolute;
+      top: var(--space-3);
+      right: var(--space-4);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: var(--tracking-widest);
+      text-transform: uppercase;
+      background: var(--color-parchment);
+      border: 1px solid var(--color-bone);
+      color: #7A7060;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+    }
+
+    /* Image gallery grid */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: var(--space-3);
+      height: 280px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .gallery-cell {
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .gallery-cell.main {
+      grid-row: span 2;
+    }
+
+    /* Map placeholder */
+    .map-container {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      background: linear-gradient(135deg, #E8E0D0 0%, #D4C9B5 100%);
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 1px solid var(--color-bone);
+    }
+
+    .map-pin {
+      width: 32px;
+      height: 32px;
+      background: var(--color-terracotta);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+
+    .map-pin::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 12px;
+      height: 12px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .map-label {
+      position: absolute;
+      bottom: var(--space-4);
+      left: var(--space-6);
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-style: italic;
+      color: var(--color-siena);
+      opacity: 0.7;
+    }
+
+    /* ============================================================
+   UTILITY
+   ============================================================ */
+    .mt-4 {
+      margin-top: var(--space-4);
+    }
+
+    .mt-6 {
+      margin-top: var(--space-6);
+    }
+
+    .mt-8 {
+      margin-top: var(--space-8);
+    }
+
+    .mb-4 {
+      margin-bottom: var(--space-4);
+    }
+
+    .mb-6 {
+      margin-bottom: var(--space-6);
+    }
+
+    .mb-8 {
+      margin-bottom: var(--space-8);
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-6);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--space-6);
+    }
+
+    .divide-y>*+* {
+      border-top: 1px solid var(--color-bone);
+    }
+
+    /* Interaction demo classes */
+    .interactive {
+      cursor: pointer;
+    }
+
+    .interactive:hover .destination-card {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+
+    /* ============================================================
+   ACCESSIBILITY FOCUS OVERRIDE (demo)
+   ============================================================ */
+    *:focus-visible {
+      outline: 2px solid var(--color-oro);
+      outline-offset: 2px;
+    }
+
+    /* ============================================================
+   SCROLL TO TOP
+   ============================================================ */
+    .scroll-top {
+      position: fixed;
+      bottom: var(--space-8);
+      right: var(--space-8);
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-full);
+      background: var(--color-obsidian);
+      color: #F0EAE0;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: var(--shadow-lg);
+      transition: transform var(--dur-fast) var(--ease-out-quart);
+      z-index: 999;
+      text-decoration: none;
+    }
+
+    .scroll-top:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-xl);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- STICKY TOP NAV -->
+  <div class="ds-topnav">
+    <a href="#hero" class="ds-topnav-logo" style="display:flex; align-items:center; gap:8px;"><img
+        src="images/header.png" alt="TRAVEL-LAND.IT Logo" style="height: 28px;"></a>
+    <ul class="ds-topnav-links">
+      <li><a href="#foundations">Foundations</a></li>
+      <li><a href="#colors">Colors</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#grid">Grid</a></li>
+      <li><a href="#spacing">Spacing</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#cards">Cards</a></li>
+      <li><a href="#forms">Forms</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#navigation">Navigation</a></li>
+      <li><a href="#patterns">Patterns</a></li>
+      <li><a href="#tokens">Tokens</a></li>
+      <li><a href="#principles">Principles</a></li>
+    </ul>
+  </div>
+
+  <div class="ds-wrapper">
+
+    <!-- HEADER SHOWCASE SECTION -->
+    <div class="ds-section" style="padding-top: 24px; padding-bottom: 24px;">
+      <div class="ds-section-eyebrow">Showcase</div>
+      <h2 class="ds-section-title">Header Image Showcase</h2>
+    </div>
+
+    <!-- HERO -->
+    <div id="hero" class="ds-hero"
+      style="background: url('images/arches2.jpg') center/cover no-repeat; border-radius: var(--radius-2xl); margin-bottom: 64px; box-shadow: inset 0 0 100px rgba(0,0,0,0.3);">
+      <div class="ds-hero-eyebrow">Design System · Version 1.0</div>
+      <h1 class="ds-hero-title">TRAVEL-LAND<em>.IT</em><br>Design System</h1>
+      <p class="ds-hero-subtitle">A comprehensive, Apple HIG-inspired design system for Italy's premier luxury travel
+        platform. Crafted for elegance, conversion, and seamless international accessibility.</p>
+      <div class="ds-hero-meta">
+        <span class="ds-hero-meta-item"><strong>30+</strong> Components</span>
+        <span class="ds-hero-meta-item"><strong>6</strong> Brand Colors</span>
+        <span class="ds-hero-meta-item"><strong>9</strong> Type Weights</span>
+        <span class="ds-hero-meta-item"><strong>WCAG AA/AAA</strong> Compliance</span>
+        <span class="ds-hero-meta-item"><strong>Dark Mode</strong> Ready</span>
+        <span class="ds-hero-meta-item"><strong>Multilingual</strong> Optimized</span>
+      </div>
+    </div>
+
+    <div class="ds-layout">
+      <!-- SIDEBAR -->
+      <nav class="ds-sidebar">
+        <div class="ds-sidebar-section">
+          <div class="ds-sidebar-label">Foundations</div>
+          <a href="#colors" class="ds-sidebar-link">Color System</a>
+          <a href="#typography" class="ds-sidebar-link">Typography</a>
+          <a href="#grid" class="ds-sidebar-link">Layout Grid</a>
+          <a href="#spacing" class="ds-sidebar-link">Spacing</a>
+        </div>
+        <div class="ds-sidebar-section">
+          <div class="ds-sidebar-label">Components</div>
+          <a href="#navigation" class="ds-sidebar-link">Navigation</a>
+          <a href="#buttons" class="ds-sidebar-link">Buttons</a>
+          <a href="#forms" class="ds-sidebar-link">Forms & Input</a>
+          <a href="#cards" class="ds-sidebar-link">Cards</a>
+          <a href="#feedback" class="ds-sidebar-link">Feedback</a>
+          <a href="#data-display" class="ds-sidebar-link">Data Display</a>
+          <a href="#media" class="ds-sidebar-link">Media & Hero</a>
+        </div>
+        <div class="ds-sidebar-section">
+          <div class="ds-sidebar-label">Patterns</div>
+          <a href="#page-templates" class="ds-sidebar-link">Page Templates</a>
+          <a href="#booking-flow" class="ds-sidebar-link">Booking Flow</a>
+          <a href="#admin" class="ds-sidebar-link">Admin Dashboard</a>
+        </div>
+        <div class="ds-sidebar-section">
+          <div class="ds-sidebar-label">Documentation</div>
+          <a href="#tokens" class="ds-sidebar-link">Design Tokens</a>
+          <a href="#principles" class="ds-sidebar-link">Principles</a>
+          <a href="#dos-donts" class="ds-sidebar-link">Do's & Don'ts</a>
+          <a href="#dev-guide" class="ds-sidebar-link">Developer Guide</a>
+        </div>
+      </nav>
+
+      <!-- MAIN CONTENT -->
+      <main class="ds-content">
+
+        <!-- ====================================================
+           SECTION 1: FOUNDATIONS
+           ==================================================== -->
+        <div id="foundations" class="ds-section">
+          <div class="ds-section-eyebrow">Section 01</div>
+          <h2 class="ds-section-title">Foundations</h2>
+          <p class="ds-section-desc">The atomic building blocks of the TRAVEL-LAND.IT visual language — color, type,
+            grid, and space — crafted for luxury editorial expression and conversion-focused clarity.</p>
+        </div>
+
+        <!-- COLORS -->
+        <div id="colors" class="ds-subsection">
+          <h3 class="ds-subsection-title">Color System</h3>
+          <p class="ds-section-desc">Inspired by Italian stone architecture, terracotta, Mediterranean coastlines, and
+            refined gold — a palette that communicates warmth, heritage, and exclusivity without loudness.</p>
+
+          <div class="ds-section-eyebrow" style="margin-bottom:12px">Primary Palette</div>
+          <div class="color-grid">
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#F5F0E8"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Travertine</div>
+                <div class="color-swatch-hex">#F5F0E8 · RGB(245,240,232)</div>
+                <span class="color-swatch-wcag wcag-aaa">AAA Background</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#EDE5D5"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Parchment</div>
+                <div class="color-swatch-hex">#EDE5D5 · RGB(237,229,213)</div>
+                <span class="color-swatch-wcag wcag-aaa">AAA Surface</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#9B5E3B"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Terracotta</div>
+                <div class="color-swatch-hex">#9B5E3B · RGB(155,94,59)</div>
+                <span class="color-swatch-wcag wcag-aa">AA on Light</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#1A1714"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Obsidian</div>
+                <div class="color-swatch-hex">#1A1714 · RGB(26,23,20)</div>
+                <span class="color-swatch-wcag wcag-aaa">AAA Text</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#B8963E"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Oro (Gold)</div>
+                <div class="color-swatch-hex">#B8963E · RGB(184,150,62)</div>
+                <span class="color-swatch-wcag wcag-aa">AA on Dark</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#2E6B9E"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Azure</div>
+                <div class="color-swatch-hex">#2E6B9E · RGB(46,107,158)</div>
+                <span class="color-swatch-wcag wcag-aa">AA on Light</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Extended palette -->
+          <div class="ds-section-eyebrow" style="margin-bottom:12px;margin-top:24px">Extended Palette</div>
+          <div class="color-grid">
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#6B3A2A"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Siena</div>
+                <div class="color-swatch-hex">#6B3A2A</div><span class="color-swatch-wcag wcag-aaa">AAA on Light</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#D9CEBA"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Bone</div>
+                <div class="color-swatch-hex">#D9CEBA</div><span class="color-swatch-wcag wcag-fail">Decorative</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#E8D5A3"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Champagne</div>
+                <div class="color-swatch-hex">#E8D5A3</div><span class="color-swatch-wcag wcag-fail">On Dark Only</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#8B6914"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Bronze</div>
+                <div class="color-swatch-hex">#8B6914</div><span class="color-swatch-wcag wcag-aa">AA on Light</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#1A4A70"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Adriatic</div>
+                <div class="color-swatch-hex">#1A4A70</div><span class="color-swatch-wcag wcag-aaa">AAA on Light</span>
+              </div>
+            </div>
+            <div class="color-swatch">
+              <div class="color-swatch-preview" style="background:#A8C5D8"></div>
+              <div class="color-swatch-info">
+                <div class="color-swatch-name">Seafoam</div>
+                <div class="color-swatch-hex">#A8C5D8</div><span class="color-swatch-wcag wcag-fail">Decorative</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Semantic -->
+          <div class="ds-section-eyebrow" style="margin-bottom:12px;margin-top:24px">Semantic Colors</div>
+          <div class="semantic-row">
+            <div class="semantic-card" style="background:var(--color-success-bg)">
+              <div class="semantic-card-dot" style="background:var(--color-success)"></div>
+              <div class="semantic-card-label" style="color:var(--color-success)">Success</div>
+              <div class="semantic-card-desc">Booking confirmed · Payment accepted · Itinerary saved</div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--color-success);margin-top:4px">#2D6A4F
+              </div>
+            </div>
+            <div class="semantic-card" style="background:var(--color-warning-bg)">
+              <div class="semantic-card-dot" style="background:var(--color-warning)"></div>
+              <div class="semantic-card-label" style="color:var(--color-warning)">Warning</div>
+              <div class="semantic-card-desc">Limited availability · Expiring offer · Final slots</div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--color-warning);margin-top:4px">#92641A
+              </div>
+            </div>
+            <div class="semantic-card" style="background:var(--color-error-bg)">
+              <div class="semantic-card-dot" style="background:var(--color-error)"></div>
+              <div class="semantic-card-label" style="color:var(--color-error)">Error</div>
+              <div class="semantic-card-desc">Payment failed · Form error · Unavailable date</div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--color-error);margin-top:4px">#8B2E2E
+              </div>
+            </div>
+            <div class="semantic-card" style="background:var(--color-info-bg)">
+              <div class="semantic-card-dot" style="background:var(--color-info)"></div>
+              <div class="semantic-card-label" style="color:var(--color-info)">Info</div>
+              <div class="semantic-card-desc">Travel updates · Visa reminders · Seasonal notes</div>
+              <div style="font-family:var(--font-mono);font-size:11px;color:var(--color-info);margin-top:4px">#2E5B8B
+              </div>
+            </div>
+          </div>
+
+          <!-- Dark mode surfaces -->
+          <div class="ds-section-eyebrow" style="margin-bottom:12px;margin-top:24px">Dark Mode Surface Hierarchy</div>
+          <div class="surface-stack">
+            <div class="surface-layer" style="background:var(--dark-bg)">
+              <div class="surface-layer-info" style="color:#B5A890">Level 0 · Base Background</div>
+              <div class="surface-layer-hex" style="color:#7A7060">#0E0C0A</div>
+            </div>
+            <div class="surface-layer" style="background:var(--dark-surface-1)">
+              <div class="surface-layer-info" style="color:#B5A890">Level 1 · Primary Surface</div>
+              <div class="surface-layer-hex" style="color:#7A7060">#1A1714 · 4.5:1</div>
+            </div>
+            <div class="surface-layer" style="background:var(--dark-surface-2)">
+              <div class="surface-layer-info" style="color:#B5A890">Level 2 · Card Surface</div>
+              <div class="surface-layer-hex" style="color:#7A7060">#242019 · Elevation +1</div>
+            </div>
+            <div class="surface-layer" style="background:var(--dark-surface-3)">
+              <div class="surface-layer-info" style="color:#B5A890">Level 3 · Modal / Dropdown</div>
+              <div class="surface-layer-hex" style="color:#7A7060">#2E2921 · Elevation +2</div>
+            </div>
+            <div class="surface-layer" style="background:var(--dark-surface-4)">
+              <div class="surface-layer-info" style="color:#B5A890">Level 4 · Tooltip / Overlay</div>
+              <div class="surface-layer-hex" style="color:#7A7060">#3A332A · Elevation +3</div>
+            </div>
+          </div>
+
+          <!-- Color usage philosophy -->
+          <div
+            style="margin-top:var(--space-8);background:white;border:1px solid var(--color-bone);border-radius:var(--radius-xl);padding:var(--space-8)">
+            <div class="comp-title">Color Usage Philosophy</div>
+            <div class="grid-2">
+              <div>
+                <div style="font-size:14px;font-weight:600;margin-bottom:var(--space-3)">Oro (Gold) — Use Sparingly
+                </div>
+                <p style="font-size:13px;color:#7A7060;line-height:1.6">Reserve gold exclusively for: primary CTAs on
+                  dark backgrounds, premium badges (Luxury / Exclusive), decorative flourishes, and active selection
+                  states. Max 3 gold elements per viewport. Never use gold as a background color for large areas.</p>
+              </div>
+              <div>
+                <div style="font-size:14px;font-weight:600;margin-bottom:var(--space-3)">Travertine — The Dominant
+                  Surface</div>
+                <p style="font-size:13px;color:#7A7060;line-height:1.6">Travertine (#F5F0E8) is the primary background
+                  for 90% of the platform. It communicates warmth, stone, heritage. White is reserved for elevated card
+                  surfaces. Never use pure #FFFFFF as a page background — it undermines the editorial luxury feel.</p>
+              </div>
+              <div>
+                <div style="font-size:14px;font-weight:600;margin-bottom:var(--space-3)">Conversion-Guided Color</div>
+                <p style="font-size:13px;color:#7A7060;line-height:1.6">Primary CTAs use Obsidian (dark) on light pages
+                  and Oro on dark surfaces. The contrast hierarchy guides the eye: Gold → Obsidian → Terracotta →
+                  neutral. Limit CTA colors to a single accent per screen section.</p>
+              </div>
+              <div>
+                <div style="font-size:14px;font-weight:600;margin-bottom:var(--space-3)">Multilingual Clarity</div>
+                <p style="font-size:13px;color:#7A7060;line-height:1.6">Avoid conveying meaning through color alone.
+                  Always pair semantic colors with icons and text labels — essential for RTL languages and colorblind
+                  accessibility. Warning states use amber + icon; never amber alone.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TYPOGRAPHY -->
+        <div id="typography" class="ds-section">
+          <div class="ds-section-eyebrow">Section 01.2</div>
+          <h2 class="ds-section-title">Typography</h2>
+          <p class="ds-section-desc">A premium editorial typographic system pairing Cormorant Garamond (editorial
+            display) with DM Sans (interface clarity). Designed for luxury storytelling and international readability at
+            scale.</p>
+
+          <div class="type-specimen">
+            <div class="type-specimen-label">Desktop Scale (1440px) — Cormorant Garamond + DM Sans</div>
+            <div class="type-specimen-scale">
+
+              <div class="type-row">
+                <div class="type-meta"><strong>Display XL</strong>80px · Garamond 400<br>−0.03em · lh 1.1</div>
+                <div
+                  style="font-family:var(--font-display);font-size:56px;font-weight:400;letter-spacing:-0.03em;line-height:1.1;color:var(--color-obsidian);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                  Discover <em>Italia</em></div>
+              </div>
+
+              <div class="type-row">
+                <div class="type-meta"><strong>Display</strong>64px · Garamond 400<br>−0.02em · lh 1.1</div>
+                <div
+                  style="font-family:var(--font-display);font-size:44px;font-weight:400;letter-spacing:-0.02em;line-height:1.1;color:var(--color-obsidian)">
+                  Curated Journeys</div>
+              </div>
+
+              <div class="type-row">
+                <div class="type-meta"><strong>Headline</strong>48px · Garamond 500<br>−0.02em · lh 1.15</div>
+                <div
+                  style="font-family:var(--font-display);font-size:36px;font-weight:500;letter-spacing:-0.02em;line-height:1.15;color:var(--color-obsidian)">
+                  Amalfi Coast, Campania</div>
+              </div>
+
+              <div class="type-row">
+                <div class="type-meta"><strong>Title Large</strong>36px · Garamond 500<br>−0.02em · lh 1.2</div>
+                <div
+                  style="font-family:var(--font-display);font-size:28px;font-weight:500;letter-spacing:-0.02em;line-height:1.2;color:var(--color-obsidian)">
+                  The Rome Heritage Experience</div>
+              </div>
+
+              <div class="type-row">
+                <div class="type-meta"><strong>Title</strong>28px · Garamond 500<br>−0.01em · lh 1.25</div>
+                <div
+                  style="font-family:var(--font-display);font-size:22px;font-weight:500;letter-spacing:-0.01em;line-height:1.25;color:var(--color-obsidian)">
+                  Private Colosseum Tour at Sunrise</div>
+              </div>
+
+              <div class="type-row">
+                <div class="type-meta"><strong>Subheadline</strong>22px · DM Sans 400<br>0em · lh 1.4</div>
+                <div
+                  style="font-family:var(--font-body);font-size:18px;font-weight:400;line-height:1.4;color:var(--color-obsidian)">
+                  Immerse yourself in centuries of Italian history</div>
+              </div>
+
+              <div class="type-row">
+                <div class="type-meta"><strong>Body Large</strong>18px · DM Sans 400<br>0em · lh 1.65</div>
+                <div
+                  style="font-family:var(--font-body);font-size:16px;font-weight:400;line-height:1.65;color:var(--color-obsidian)">
+                  Each itinerary is handcrafted by our in-country specialists, blending cultural depth with effortless
+                  luxury logistics.</div>
+              </div>
+
+              <div class="type-row">
+                <div class="type-meta"><strong>Body</strong>16px · DM Sans 400<br>0em · lh 1.65</div>
+                <div style="font-family:var(--font-body);font-size:14px;font-weight:400;line-height:1.65;color:#7A7060">
+                  Your dedicated Travel Designer will coordinate private transfers, exclusive access, and
+                  Michelin-starred dining reservations throughout your journey.</div>
+              </div>
+
+              <div class="type-row">
+                <div class="type-meta"><strong>Callout</strong>15px · DM Sans 500<br>0.04em · lh 1.5</div>
+                <div
+                  style="font-family:var(--font-body);font-size:13px;font-weight:500;letter-spacing:0.04em;color:var(--color-terracotta)">
+                  7 Nights · Private Villa · 2 Guests</div>
+              </div>
+
+              <div class="type-row">
+                <div class="type-meta"><strong>Caption / Footnote</strong>12–13px · DM Sans 400<br>0em · lh 1.5</div>
+                <div style="font-family:var(--font-body);font-size:12px;color:#B5A890">Prices from €4,800 per person ·
+                  Subject to availability</div>
+              </div>
+
+              <div class="type-row" style="border-bottom:none">
+                <div class="type-meta"><strong>UI Micro / Label</strong>10–11px · DM Sans 600<br>0.12em · ALL CAPS</div>
+                <div
+                  style="font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--color-terracotta)">
+                  DESTINATIONS · BOOK NOW · FEATURED</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Responsive scale table -->
+          <div
+            style="background:white;border:1px solid var(--color-bone);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:var(--space-6)">
+            <table class="spacing-table" style="font-size:12px">
+              <thead>
+                <tr>
+                  <th>Style</th>
+                  <th>Desktop 1440px</th>
+                  <th>Tablet 768px</th>
+                  <th>Mobile 375px</th>
+                  <th>Font</th>
+                  <th>Weight</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Display XL</td>
+                  <td>80px</td>
+                  <td>56px</td>
+                  <td>40px</td>
+                  <td>Cormorant</td>
+                  <td>400</td>
+                </tr>
+                <tr>
+                  <td>Display</td>
+                  <td>64px</td>
+                  <td>48px</td>
+                  <td>34px</td>
+                  <td>Cormorant</td>
+                  <td>400</td>
+                </tr>
+                <tr>
+                  <td>Headline</td>
+                  <td>48px</td>
+                  <td>36px</td>
+                  <td>28px</td>
+                  <td>Cormorant</td>
+                  <td>500</td>
+                </tr>
+                <tr>
+                  <td>Title Large</td>
+                  <td>36px</td>
+                  <td>28px</td>
+                  <td>24px</td>
+                  <td>Cormorant</td>
+                  <td>500</td>
+                </tr>
+                <tr>
+                  <td>Title</td>
+                  <td>28px</td>
+                  <td>22px</td>
+                  <td>20px</td>
+                  <td>Cormorant</td>
+                  <td>500</td>
+                </tr>
+                <tr>
+                  <td>Subheadline</td>
+                  <td>22px</td>
+                  <td>18px</td>
+                  <td>17px</td>
+                  <td>DM Sans</td>
+                  <td>400</td>
+                </tr>
+                <tr>
+                  <td>Body Large</td>
+                  <td>18px</td>
+                  <td>17px</td>
+                  <td>16px</td>
+                  <td>DM Sans</td>
+                  <td>400</td>
+                </tr>
+                <tr>
+                  <td>Body</td>
+                  <td>16px</td>
+                  <td>15px</td>
+                  <td>15px</td>
+                  <td>DM Sans</td>
+                  <td>400</td>
+                </tr>
+                <tr>
+                  <td>Callout</td>
+                  <td>15px</td>
+                  <td>14px</td>
+                  <td>13px</td>
+                  <td>DM Sans</td>
+                  <td>500</td>
+                </tr>
+                <tr>
+                  <td>Footnote</td>
+                  <td>13px</td>
+                  <td>12px</td>
+                  <td>12px</td>
+                  <td>DM Sans</td>
+                  <td>400</td>
+                </tr>
+                <tr>
+                  <td>Caption</td>
+                  <td>12px</td>
+                  <td>11px</td>
+                  <td>11px</td>
+                  <td>DM Sans</td>
+                  <td>400</td>
+                </tr>
+                <tr>
+                  <td>UI Micro</td>
+                  <td>10px</td>
+                  <td>10px</td>
+                  <td>10px</td>
+                  <td>DM Sans</td>
+                  <td>600 · UC</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- GRID -->
+        <div id="grid" class="ds-section">
+          <div class="ds-section-eyebrow">Section 01.3</div>
+          <h2 class="ds-section-title">Layout Grid</h2>
+          <p class="ds-section-desc">A precision 12-column grid system that adapts gracefully across breakpoints,
+            prioritizing hero storytelling, destination imagery, and clear booking flows.</p>
+
+          <div class="grid-viz">
+            <div class="grid-viz-header">
+              <span class="grid-viz-label">Desktop — 1440px</span>
+              <span class="grid-viz-spec">12 columns · 32px gutter · 80px margin · max-width 1440px</span>
+            </div>
+            <div class="grid-viz-body">
+              <div class="grid-demo cols-12">
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-viz">
+            <div class="grid-viz-header">
+              <span class="grid-viz-label">Tablet — 768px</span>
+              <span class="grid-viz-spec">8 columns · 24px gutter · 32px margin</span>
+            </div>
+            <div class="grid-viz-body">
+              <div class="grid-demo cols-8">
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-viz">
+            <div class="grid-viz-header">
+              <span class="grid-viz-label">Mobile — 375px</span>
+              <span class="grid-viz-spec">4 columns · 16px gutter · 20px margin</span>
+            </div>
+            <div class="grid-viz-body">
+              <div class="grid-demo cols-4">
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+                <div class="grid-col"></div>
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="background:white;border:1px solid var(--color-bone);border-radius:var(--radius-xl);padding:var(--space-8)">
+            <div class="comp-title">Breakpoints & Layout Rules</div>
+            <table class="spacing-table">
+              <thead>
+                <tr>
+                  <th>Breakpoint</th>
+                  <th>Viewport</th>
+                  <th>Columns</th>
+                  <th>Gutter</th>
+                  <th>Margin</th>
+                  <th>Max Width</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>xs</td>
+                  <td>≤ 375px</td>
+                  <td>4</td>
+                  <td>16px</td>
+                  <td>20px</td>
+                  <td>100%</td>
+                </tr>
+                <tr>
+                  <td>sm</td>
+                  <td>≤ 640px</td>
+                  <td>4</td>
+                  <td>16px</td>
+                  <td>24px</td>
+                  <td>100%</td>
+                </tr>
+                <tr>
+                  <td>md</td>
+                  <td>≤ 768px</td>
+                  <td>8</td>
+                  <td>24px</td>
+                  <td>32px</td>
+                  <td>100%</td>
+                </tr>
+                <tr>
+                  <td>lg</td>
+                  <td>≤ 1024px</td>
+                  <td>12</td>
+                  <td>24px</td>
+                  <td>48px</td>
+                  <td>100%</td>
+                </tr>
+                <tr>
+                  <td>xl</td>
+                  <td>≤ 1280px</td>
+                  <td>12</td>
+                  <td>32px</td>
+                  <td>64px</td>
+                  <td>1280px</td>
+                </tr>
+                <tr>
+                  <td>2xl</td>
+                  <td>≥ 1440px</td>
+                  <td>12</td>
+                  <td>32px</td>
+                  <td>80px</td>
+                  <td>1440px</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SPACING -->
+        <div id="spacing" class="ds-section">
+          <div class="ds-section-eyebrow">Section 01.4</div>
+          <h2 class="ds-section-title">Spacing System</h2>
+          <p class="ds-section-desc">An 8px base unit scale providing luxury breathing room across all components.
+            Generous vertical rhythm communicates premium quality and editorial calm.</p>
+
+          <div
+            style="background:white;border:1px solid var(--color-bone);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:var(--space-6)">
+            <table class="spacing-table">
+              <thead>
+                <tr>
+                  <th>Token</th>
+                  <th>Value</th>
+                  <th>Visual</th>
+                  <th>Usage Intent</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="spacing-token">--space-1</span></td>
+                  <td>4px</td>
+                  <td>
+                    <div class="spacing-visual" style="width:4px"></div>
+                  </td>
+                  <td>Icon gaps, indicator dots, micro-spacing</td>
+                </tr>
+                <tr>
+                  <td><span class="spacing-token">--space-2</span></td>
+                  <td>8px</td>
+                  <td>
+                    <div class="spacing-visual" style="width:8px"></div>
+                  </td>
+                  <td>Label margins, tag padding, tight pairs</td>
+                </tr>
+                <tr>
+                  <td><span class="spacing-token">--space-3</span></td>
+                  <td>12px</td>
+                  <td>
+                    <div class="spacing-visual" style="width:12px"></div>
+                  </td>
+                  <td>Input padding (vertical), list items</td>
+                </tr>
+                <tr>
+                  <td><span class="spacing-token">--space-4</span></td>
+                  <td>16px</td>
+                  <td>
+                    <div class="spacing-visual" style="width:16px"></div>
+                  </td>
+                  <td>Component padding (default), card gaps</td>
+                </tr>
+                <tr>
+                  <td><span class="spacing-token">--space-6</span></td>
+                  <td>24px</td>
+                  <td>
+                    <div class="spacing-visual" style="width:24px"></div>
+                  </td>
+                  <td>Card padding, section sub-elements</td>
+                </tr>
+                <tr>
+                  <td><span class="spacing-token">--space-8</span></td>
+                  <td>32px</td>
+                  <td>
+                    <div class="spacing-visual" style="width:32px"></div>
+                  </td>
+                  <td>Card body padding, modal padding</td>
+                </tr>
+                <tr>
+                  <td><span class="spacing-token">--space-12</span></td>
+                  <td>48px</td>
+                  <td>
+                    <div class="spacing-visual" style="width:48px"></div>
+                  </td>
+                  <td>Section internal spacing, form gaps</td>
+                </tr>
+                <tr>
+                  <td><span class="spacing-token">--space-16</span></td>
+                  <td>64px</td>
+                  <td>
+                    <div class="spacing-visual" style="width:64px"></div>
+                  </td>
+                  <td>Page section padding, major content gaps</td>
+                </tr>
+                <tr>
+                  <td><span class="spacing-token">--space-24</span></td>
+                  <td>96px</td>
+                  <td>
+                    <div class="spacing-visual" style="width:96px"></div>
+                  </td>
+                  <td>Hero sections, section transitions</td>
+                </tr>
+                <tr>
+                  <td><span class="spacing-token">--space-32</span></td>
+                  <td>128px</td>
+                  <td>
+                    <div class="spacing-visual" style="width:100px"></div>
+                  </td>
+                  <td>Page top/bottom breathing, luxury margins</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ====================================================
+           SECTION 2: COMPONENTS
+           ==================================================== -->
+        <div id="components" class="ds-section">
+          <div class="ds-section-eyebrow">Section 02</div>
+          <h2 class="ds-section-title">Components</h2>
+          <p class="ds-section-desc">A complete component ecosystem designed for luxury travel — every state, variant,
+            and accessibility detail considered for an international audience.</p>
+        </div>
+
+        <!-- NAVIGATION -->
+        <div id="navigation" class="ds-subsection">
+          <h3 class="ds-subsection-title">Navigation</h3>
+
+          <div class="nav-demo">
+            <div class="nav-header">
+              <div class="nav-logo"><img src="images/header.png" alt="Logo" style="height: 24px;"></div>
+              <ul class="nav-links">
+                <li><a class="nav-link active">Destinations</a></li>
+                <li><a class="nav-link">Experiences</a></li>
+                <li><a class="nav-link">Itineraries</a></li>
+                <li><a class="nav-link">About</a></li>
+              </ul>
+              <div class="nav-actions">
+                <button class="nav-lang-btn">🌐 EN · IT · DE</button>
+                <button class="btn btn-gold btn-sm">Plan Your Trip</button>
+              </div>
+            </div>
+            <!-- Mega menu expanded -->
+            <div class="mega-menu-demo">
+              <div>
+                <div class="mega-menu-col-title">By Region</div>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Tuscany & Chianti</a>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Amalfi Coast</a>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Sicilian Odyssey</a>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Lake Como & Lombard</a>
+              </div>
+              <div>
+                <div class="mega-menu-col-title">By City</div>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Rome · La Città Eterna</a>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Venice · La Serenissima</a>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Florence · La Culla</a>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Milan · La Moda</a>
+              </div>
+              <div>
+                <div class="mega-menu-col-title">By Experience</div>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Culinary Journeys</a>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Art & Architecture</a>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Private Villas</a>
+                <a class="mega-menu-item"><span class="mega-menu-city-dot"></span>Yacht Charters</a>
+              </div>
+              <div>
+                <div class="mega-menu-featured">
+                  <div class="mega-menu-featured-label">Featured</div>
+                  <div class="mega-menu-featured-title">Roma Eterna — 7 Night Private Experience</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Breadcrumb -->
+          <div
+            style="background:white;border:1px solid var(--color-bone);border-radius:var(--radius-xl);padding:var(--space-6);margin-top:var(--space-4)">
+            <div class="comp-title">Breadcrumb Navigation</div>
+            <div class="breadcrumb">
+              <a class="breadcrumb-item">Home</a>
+              <span class="breadcrumb-sep">›</span>
+              <a class="breadcrumb-item">Destinations</a>
+              <span class="breadcrumb-sep">›</span>
+              <a class="breadcrumb-item">Tuscany</a>
+              <span class="breadcrumb-sep">›</span>
+              <span class="breadcrumb-item active">Chianti Wine & Heritage Tour</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BUTTONS -->
+        <div id="buttons" class="ds-subsection">
+          <h3 class="ds-subsection-title">Buttons</h3>
+
+          <div class="comp-section">
+            <div class="comp-title">Button Variants</div>
+
+            <div class="comp-label">Primary — Obsidian (default CTA on light surfaces)</div>
+            <div class="comp-row">
+              <button class="btn btn-primary btn-sm">Book Now</button>
+              <button class="btn btn-primary">Plan Your Itinerary</button>
+              <button class="btn btn-primary btn-lg">Begin Your Journey</button>
+              <button class="btn btn-primary disabled">Unavailable</button>
+            </div>
+
+            <div class="comp-label">Gold Accent — Reserved for highest conversion moments</div>
+            <div class="comp-row">
+              <button class="btn btn-gold btn-sm">Inquire</button>
+              <button class="btn btn-gold">Request This Experience</button>
+              <button class="btn btn-gold btn-lg">Reserve Your Journey</button>
+            </div>
+
+            <div class="comp-label">Secondary — Outlined, supporting actions</div>
+            <div class="comp-row">
+              <button class="btn btn-secondary btn-sm">View Details</button>
+              <button class="btn btn-secondary">Explore Itinerary</button>
+              <button class="btn btn-secondary btn-lg">Download PDF</button>
+            </div>
+
+            <div class="comp-label">Ghost · Subtle · Destructive</div>
+            <div class="comp-row">
+              <button class="btn btn-ghost">Learn More</button>
+              <button class="btn btn-subtle">See All Reviews</button>
+              <button class="btn btn-destructive">Cancel Booking</button>
+            </div>
+
+            <div class="comp-label">Loading state</div>
+            <div class="comp-row">
+              <button class="btn btn-primary btn-loading" style="opacity:0.8">Processing</button>
+              <button class="btn btn-gold btn-loading" style="opacity:0.8">Confirming</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORMS -->
+        <div id="forms" class="ds-subsection">
+          <h3 class="ds-subsection-title">Forms & Input</h3>
+
+          <div class="comp-section">
+            <div class="comp-title">Text Input States</div>
+            <div class="grid-2">
+              <div>
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <input class="form-input" type="text" placeholder="Maria Rossi">
+                  <div class="form-hint">As it appears on your passport</div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <input class="form-input success" type="email" value="maria@example.com">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Departure Date</label>
+                  <input class="form-input error" type="text" placeholder="Select date">
+                  <div class="form-error">⚠ Please select a valid departure date</div>
+                </div>
+              </div>
+              <div>
+                <div class="form-group">
+                  <label class="form-label">Destination</label>
+                  <select class="form-select">
+                    <option>Select a destination...</option>
+                    <option>Rome, Italy</option>
+                    <option>Florence, Italy</option>
+                    <option>Venice, Italy</option>
+                    <option>Amalfi Coast</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Special Requests</label>
+                  <textarea class="form-input" rows="4"
+                    placeholder="Dietary requirements, accessibility needs, special occasions..."></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-section">
+            <div class="comp-title">Traveler Selector</div>
+            <div style="max-width:360px">
+              <div class="traveler-selector">
+                <div class="traveler-row">
+                  <div>
+                    <div class="traveler-label">Adults</div>
+                    <div class="traveler-sublabel">Ages 13+</div>
+                  </div>
+                  <div class="traveler-control">
+                    <button class="traveler-btn">−</button>
+                    <div class="traveler-count">2</div>
+                    <button class="traveler-btn">+</button>
+                  </div>
+                </div>
+                <div class="traveler-row">
+                  <div>
+                    <div class="traveler-label">Children</div>
+                    <div class="traveler-sublabel">Ages 2–12</div>
+                  </div>
+                  <div class="traveler-control">
+                    <button class="traveler-btn">−</button>
+                    <div class="traveler-count">0</div>
+                    <button class="traveler-btn">+</button>
+                  </div>
+                </div>
+                <div class="traveler-row">
+                  <div>
+                    <div class="traveler-label">Infants</div>
+                    <div class="traveler-sublabel">Under 2</div>
+                  </div>
+                  <div class="traveler-control">
+                    <button class="traveler-btn" style="opacity:0.3;cursor:not-allowed">−</button>
+                    <div class="traveler-count">0</div>
+                    <button class="traveler-btn">+</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-section">
+            <div class="comp-title">Date Picker</div>
+            <div style="max-width:360px">
+              <div class="date-picker-preview">
+                <div class="date-picker-header">
+                  <span class="date-picker-nav">‹</span>
+                  <span class="date-picker-month">October 2025</span>
+                  <span class="date-picker-nav">›</span>
+                </div>
+                <div class="date-picker-grid">
+                  <div class="date-picker-day-label">M</div>
+                  <div class="date-picker-day-label">T</div>
+                  <div class="date-picker-day-label">W</div>
+                  <div class="date-picker-day-label">T</div>
+                  <div class="date-picker-day-label">F</div>
+                  <div class="date-picker-day-label">S</div>
+                  <div class="date-picker-day-label">S</div>
+                  <div class="date-cell disabled">29</div>
+                  <div class="date-cell disabled">30</div>
+                  <div class="date-cell">1</div>
+                  <div class="date-cell">2</div>
+                  <div class="date-cell">3</div>
+                  <div class="date-cell">4</div>
+                  <div class="date-cell">5</div>
+                  <div class="date-cell">6</div>
+                  <div class="date-cell">7</div>
+                  <div class="date-cell">8</div>
+                  <div class="date-cell">9</div>
+                  <div class="date-cell check-in">10</div>
+                  <div class="date-cell in-range">11</div>
+                  <div class="date-cell in-range">12</div>
+                  <div class="date-cell in-range">13</div>
+                  <div class="date-cell in-range">14</div>
+                  <div class="date-cell in-range">15</div>
+                  <div class="date-cell in-range">16</div>
+                  <div class="date-cell check-out">17</div>
+                  <div class="date-cell">18</div>
+                  <div class="date-cell">19</div>
+                  <div class="date-cell">20</div>
+                  <div class="date-cell">21</div>
+                  <div class="date-cell">22</div>
+                  <div class="date-cell">23</div>
+                  <div class="date-cell">24</div>
+                  <div class="date-cell">25</div>
+                  <div class="date-cell">26</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-section">
+            <div class="comp-title">Toggle Switches</div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+              <div class="toggle-wrapper">
+                <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+                <span class="toggle-label">Receive travel inspiration emails</span>
+              </div>
+              <div class="toggle-wrapper">
+                <div class="toggle" onclick="this.classList.toggle('on')"></div>
+                <span class="toggle-label">Enable WhatsApp concierge notifications</span>
+              </div>
+              <div class="toggle-wrapper">
+                <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+                <span class="toggle-label">Show prices in local currency (EUR)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARDS -->
+        <div id="cards" class="ds-subsection">
+          <h3 class="ds-subsection-title">Cards</h3>
+
+          <div class="card-grid" style="margin-bottom:var(--space-6)">
+            <div class="destination-card">
+              <div class="destination-card-image">
+                <div class="img-placeholder" style="background: url('images/Catalogo2023.jpg') center/cover no-repeat;">
+                  <span class="destination-card-badge">Bestseller</span>
+                  Roma
+                </div>
+              </div>
+              <div class="destination-card-body">
+                <div class="destination-card-location">Lazio, Italy</div>
+                <div class="destination-card-title">Roma Eterna — 7 Nights</div>
+                <div class="destination-card-desc">Private Colosseum access, Vatican at dawn, hidden rioni and Michelin
+                  dining.</div>
+                <div class="destination-card-footer">
+                  <div class="destination-card-price">
+                    <div class="destination-card-price-from">From</div>
+                    <div class="destination-card-price-value">€6,400 <small>pp</small></div>
+                  </div>
+                  <div class="destination-card-stars">★★★★★</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="destination-card">
+              <div class="destination-card-image">
+                <div class="img-placeholder" style="background: url('images/Tanzania.jpg') center/cover no-repeat;">
+                  <span class="destination-card-badge"
+                    style="background:rgba(184,150,62,0.9);color:#1A1714">Exclusive</span>
+                  Venezia
+                </div>
+              </div>
+              <div class="destination-card-body">
+                <div class="destination-card-location">Veneto, Italy</div>
+                <div class="destination-card-title">La Serenissima — 5 Nights</div>
+                <div class="destination-card-desc">Private gondola, Palazzo stay, Murano glass workshop, exclusive
+                  Biennale access.</div>
+                <div class="destination-card-footer">
+                  <div class="destination-card-price">
+                    <div class="destination-card-price-from">From</div>
+                    <div class="destination-card-price-value">€9,200 <small>pp</small></div>
+                  </div>
+                  <div class="destination-card-stars">★★★★★</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="destination-card">
+              <div class="destination-card-image">
+                <div class="img-placeholder"
+                  style="background: url('images/Turismo sostenibile.jpg') center/cover no-repeat;">
+                  <span class="destination-card-badge">Limited Slots</span>
+                  Toscana
+                </div>
+              </div>
+              <div class="destination-card-body">
+                <div class="destination-card-location">Tuscany, Italy</div>
+                <div class="destination-card-title">Chianti Harvest Week</div>
+                <div class="destination-card-desc">Participate in the vendemmia, private cellar tastings, villa stay,
+                  truffle hunting.</div>
+                <div class="destination-card-footer">
+                  <div class="destination-card-price">
+                    <div class="destination-card-price-from">From</div>
+                    <div class="destination-card-price-value">€5,800 <small>pp</small></div>
+                  </div>
+                  <div class="destination-card-stars">★★★★☆</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Package card -->
+          <div class="package-card" style="margin-bottom:var(--space-4)">
+            <div class="package-card-image" style="background: url('images/arches2.jpg') center/cover no-repeat;">
+              <div
+                style="font-family:var(--font-display);font-size:56px;font-weight:300;font-style:italic;color:rgba(255,255,255,0.9);line-height:1;text-shadow: 2px 2px 8px rgba(0,0,0,0.6);">
+                Amalfi</div>
+            </div>
+            <div class="package-card-body">
+              <div>
+                <div class="package-card-tags">
+                  <span class="tag tag-luxury">✦ Luxury</span>
+                  <span class="tag tag-bestseller">Bestseller</span>
+                  <span class="tag">8 Days</span>
+                  <span class="tag">Coastal</span>
+                </div>
+                <div class="package-card-title">The Amalfi Coast in Full</div>
+                <div class="package-card-meta">
+                  <div class="package-card-meta-item"><strong>8 nights</strong> · 4 villas</div>
+                  <div class="package-card-meta-item">Private transfers</div>
+                  <div class="package-card-meta-item">Yacht day charter</div>
+                  <div class="package-card-meta-item">2 Michelin dinners</div>
+                </div>
+                <div class="package-card-desc">From Positano to Ravello, this curated itinerary traces the world's most
+                  photographed coastline in private style — with exclusive villa access, a full-day yacht charter, and
+                  an intimate cooking class with a local chef.</div>
+              </div>
+              <div class="package-card-footer">
+                <div>
+                  <div style="font-size:11px;color:#7A7060">From</div>
+                  <div style="font-family:var(--font-display);font-size:32px;font-weight:500">€11,400 <span
+                      style="font-size:14px;opacity:0.5">per person</span></div>
+                </div>
+                <div style="display:flex;gap:var(--space-3)">
+                  <button class="btn btn-secondary">View Details</button>
+                  <button class="btn btn-gold">Inquire Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review card -->
+          <div style="margin-top:var(--space-6)">
+            <div class="ds-section-eyebrow" style="margin-bottom:12px">Review Card</div>
+            <div class="review-card">
+              <div class="review-stars">★★★★★</div>
+              <div class="review-quote">"An experience that transcended every expectation. Our Travel Designer thought
+                of everything — from a private Mass in the Sistine Chapel to a last-minute table at Le Calandre. Simply
+                the finest travel experience of our lives."</div>
+              <div class="review-author">
+                <div class="review-avatar">JM</div>
+                <div>
+                  <div class="review-author-name">Jonathan & Maria Whittaker</div>
+                  <div class="review-author-location">London, United Kingdom · Rome & Tuscany, October 2024</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FEEDBACK -->
+        <div id="feedback" class="ds-subsection">
+          <h3 class="ds-subsection-title">Feedback & Alerts</h3>
+
+          <div class="comp-section">
+            <div class="comp-title">Alert States</div>
+            <div class="alert alert-success">
+              <div class="alert-icon">✓</div>
+              <div class="alert-content">
+                <div class="alert-title">Booking Confirmed — Reference #TL-2024-8847</div>
+                <div class="alert-desc">Your Roma Eterna experience is confirmed for October 10–17. A detailed itinerary
+                  has been sent to maria@example.com. Your Travel Designer will contact you within 24 hours.</div>
+              </div>
+            </div>
+            <div class="alert alert-warning">
+              <div class="alert-icon">!</div>
+              <div class="alert-content">
+                <div class="alert-title">Limited Availability — Only 2 Spots Remaining</div>
+                <div class="alert-desc">The Chianti Harvest Week has high demand for your selected dates. We recommend
+                  completing your inquiry today to secure your place.</div>
+              </div>
+            </div>
+            <div class="alert alert-error">
+              <div class="alert-icon">✕</div>
+              <div class="alert-content">
+                <div class="alert-title">Payment Failed — Please Review Your Details</div>
+                <div class="alert-desc">We were unable to process your card ending in 4242. Please check your billing
+                  address or try a different payment method. Your booking has been held for 15 minutes.</div>
+              </div>
+            </div>
+            <div class="alert alert-info">
+              <div class="alert-icon">i</div>
+              <div class="alert-content">
+                <div class="alert-title">Travel Update — Venice Entry Fee (Effective April 2025)</div>
+                <div class="alert-desc">Venice has introduced a day-visit fee. All TRAVEL-LAND.IT guests with our
+                  curated packages are pre-registered and exempt. No action required.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-section">
+            <div class="comp-title">Toast Notifications</div>
+            <div class="toast-container">
+              <div class="toast toast-success">✓ &nbsp;Itinerary saved to your account</div>
+              <div class="toast toast-warning">⚡ &nbsp;This package sells out 2 weeks before departure</div>
+              <div class="toast toast-error">✕ &nbsp;Session expired — please sign in again</div>
+              <div class="toast">📧 &nbsp;Inquiry sent to your Travel Designer</div>
+            </div>
+          </div>
+
+          <div class="comp-section">
+            <div class="comp-title">Badges & Status Labels</div>
+            <div class="comp-row">
+              <span class="badge badge-luxury"><span class="badge-dot"></span>Luxury</span>
+              <span class="badge badge-bestseller">Bestseller</span>
+              <span class="badge badge-exclusive">Exclusive Access</span>
+              <span class="badge badge-limited"><span class="badge-dot"></span>2 Spots Left</span>
+            </div>
+          </div>
+
+          <div class="comp-section">
+            <div class="comp-title">Multi-Step Booking Progress</div>
+            <div class="progress-steps">
+              <div class="progress-step done">
+                <div class="progress-step-circle">✓</div>
+                <div class="progress-step-label">Select</div>
+                <div class="progress-step-line done"></div>
+              </div>
+              <div class="progress-step done">
+                <div class="progress-step-circle">✓</div>
+                <div class="progress-step-label">Travelers</div>
+                <div class="progress-step-line done"></div>
+              </div>
+              <div class="progress-step active">
+                <div class="progress-step-circle">3</div>
+                <div class="progress-step-label">Details</div>
+                <div class="progress-step-line"></div>
+              </div>
+              <div class="progress-step">
+                <div class="progress-step-circle">4</div>
+                <div class="progress-step-label">Review</div>
+                <div class="progress-step-line"></div>
+              </div>
+              <div class="progress-step">
+                <div class="progress-step-circle">5</div>
+                <div class="progress-step-label">Confirm</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="comp-section">
+            <div class="comp-title">Skeleton Loading State</div>
+            <div class="grid-3">
+              <div>
+                <div class="skeleton skeleton-block"></div>
+                <div class="skeleton skeleton-line short"></div>
+                <div class="skeleton skeleton-line medium"></div>
+                <div class="skeleton skeleton-line long"></div>
+              </div>
+              <div>
+                <div class="skeleton skeleton-block"></div>
+                <div class="skeleton skeleton-line short"></div>
+                <div class="skeleton skeleton-line medium"></div>
+                <div class="skeleton skeleton-line long"></div>
+              </div>
+              <div>
+                <div class="skeleton skeleton-block"></div>
+                <div class="skeleton skeleton-line short"></div>
+                <div class="skeleton skeleton-line medium"></div>
+                <div class="skeleton skeleton-line long"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DATA DISPLAY -->
+        <div id="data-display" class="ds-subsection">
+          <h3 class="ds-subsection-title">Data Display</h3>
+
+          <!-- Stats -->
+          <div class="ds-section-eyebrow" style="margin-bottom:12px">Stats Widget</div>
+          <div class="stats-grid" style="margin-bottom:var(--space-6)">
+            <div class="stat-card">
+              <div class="stat-value">500<span style="color:var(--color-oro);font-size:28px">+</span></div>
+              <div class="stat-label">Curated Tours</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">98<span style="color:var(--color-oro);font-size:28px">%</span></div>
+              <div class="stat-label">Guest Satisfaction</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">12</div>
+              <div class="stat-label">Italian Regions</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">40<span style="color:var(--color-oro);font-size:28px">+</span></div>
+              <div class="stat-label">Countries Served</div>
+            </div>
+          </div>
+
+          <!-- Itinerary timeline -->
+          <div class="ds-section-eyebrow" style="margin-bottom:12px">Itinerary Timeline</div>
+          <div class="itinerary-timeline" style="margin-bottom:var(--space-6)">
+            <div class="itinerary-day">
+              <div class="itinerary-day-number">1</div>
+              <div class="itinerary-day-content">
+                <div class="itinerary-day-location">Rome, Lazio</div>
+                <div class="itinerary-day-title">Arrival & The Eternal City</div>
+                <div class="itinerary-activities">
+                  <div class="itinerary-activity">Private transfer from Fiumicino — Maserati Quattroporte</div>
+                  <div class="itinerary-activity">Check-in: Palazzo Dama (5★ · Prati district)</div>
+                  <div class="itinerary-activity">Evening aperitivo on the Janiculum Hill at sunset</div>
+                  <div class="itinerary-activity">Dinner: Il Pagliaccio (2 Michelin stars)</div>
+                </div>
+              </div>
+            </div>
+            <div class="itinerary-day">
+              <div class="itinerary-day-number">2</div>
+              <div class="itinerary-day-content">
+                <div class="itinerary-day-location">Rome · Vatican</div>
+                <div class="itinerary-day-title">Vatican Before the Crowds</div>
+                <div class="itinerary-activities">
+                  <div class="itinerary-activity">Pre-dawn private access: Sistine Chapel at 6:00 AM</div>
+                  <div class="itinerary-activity">Expert art historian guide · No queues, no crowds</div>
+                  <div class="itinerary-activity">Breakfast in Trastevere: Flor di Luna</div>
+                  <div class="itinerary-activity">Afternoon: Borghese Gallery private viewing</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pricing table -->
+          <div class="ds-section-eyebrow" style="margin-bottom:12px">Pricing Table</div>
+          <div class="pricing-grid" style="margin-bottom:var(--space-6)">
+            <div class="pricing-card">
+              <div class="pricing-tier">Curated</div>
+              <div class="pricing-price">€2,400 <small>pp</small></div>
+              <div class="pricing-period">per person · 4 nights</div>
+              <ul class="pricing-features">
+                <li>
+                  <div class="pricing-check">✓</div> 4-star hotel
+                </li>
+                <li>
+                  <div class="pricing-check">✓</div> Guided city tours (group)
+                </li>
+                <li>
+                  <div class="pricing-check">✓</div> Daily breakfast
+                </li>
+                <li>
+                  <div class="pricing-check">✓</div> Airport transfers
+                </li>
+              </ul>
+              <button class="btn btn-secondary w-full">Select Curated</button>
+            </div>
+            <div class="pricing-card featured">
+              <div class="pricing-featured-badge">Most Popular</div>
+              <div class="pricing-tier" style="color:var(--color-champagne)">Luxury</div>
+              <div class="pricing-price">€6,400 <small>pp</small></div>
+              <div class="pricing-period">per person · 7 nights</div>
+              <ul class="pricing-features">
+                <li>
+                  <div class="pricing-check">✓</div> 5-star palazzo hotel
+                </li>
+                <li>
+                  <div class="pricing-check">✓</div> Private expert guides
+                </li>
+                <li>
+                  <div class="pricing-check">✓</div> Exclusive early access
+                </li>
+                <li>
+                  <div class="pricing-check">✓</div> 2 Michelin dinners
+                </li>
+                <li>
+                  <div class="pricing-check">✓</div> Maserati transfers
+                </li>
+              </ul>
+              <button class="btn btn-gold w-full">Reserve Luxury</button>
+            </div>
+            <div class="pricing-card">
+              <div class="pricing-tier">Bespoke</div>
+              <div class="pricing-price">Custom</div>
+              <div class="pricing-period">fully tailored · any duration</div>
+              <ul class="pricing-features">
+                <li>
+                  <div class="pricing-check">✓</div> Private villa or yacht
+                </li>
+                <li>
+                  <div class="pricing-check">✓</div> Dedicated Travel Designer
+                </li>
+                <li>
+                  <div class="pricing-check">✓</div> Helicopter transfers
+                </li>
+                <li>
+                  <div class="pricing-check">✓</div> Unlimited concierge
+                </li>
+              </ul>
+              <button class="btn btn-primary w-full">Inquire Bespoke</button>
+            </div>
+          </div>
+
+          <!-- Accordion FAQ -->
+          <div class="ds-section-eyebrow" style="margin-bottom:12px">FAQ Accordion</div>
+          <div class="accordion" style="margin-bottom:var(--space-4)">
+            <div class="accordion-item open">
+              <button class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+                What does "fully curated" mean for my trip?
+                <div class="accordion-icon">+</div>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-body">Every logistical detail is handled by our in-country specialists before you
+                  depart — transfers, reservations, access permits, and contingency plans. You arrive and simply
+                  experience Italy. Your Travel Designer is available 24/7 throughout your journey.</div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+                Can I customize a fixed itinerary?
+                <div class="accordion-icon">+</div>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-body">All itineraries are fully modifiable. Share your preferences and our team
+                  will adapt the experience — additional nights, private chef dinners, family considerations, or
+                  entirely bespoke routing.</div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-trigger" onclick="this.parentElement.classList.toggle('open')">
+                Which languages does your team speak?
+                <div class="accordion-icon">+</div>
+              </button>
+              <div class="accordion-content">
+                <div class="accordion-body">Our team operates fluently in English, Italian, French, German, Spanish, and
+                  Arabic. Mandarin and Japanese service is available on request for our Asian-Pacific guests.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Image gallery -->
+          <div class="ds-section-eyebrow" style="margin-bottom:12px">Image Gallery Grid</div>
+          <div class="gallery-grid" style="margin-bottom:var(--space-4)">
+            <div class="gallery-cell main" style="background:linear-gradient(160deg,#3A2E1C,#6B3A2A)">Roma</div>
+            <div class="gallery-cell" style="background:linear-gradient(160deg,#1A4A70,#2E6B9E)">Venezia</div>
+            <div class="gallery-cell" style="background:linear-gradient(160deg,#2D6A4F,#5B8C3B)">Firenze</div>
+            <div class="gallery-cell" style="background:linear-gradient(160deg,#8B6914,#B8963E)">Toscana</div>
+            <div class="gallery-cell" style="background:linear-gradient(160deg,#1A1714,#3A332A)">Milano</div>
+          </div>
+
+          <!-- Map -->
+          <div class="ds-section-eyebrow" style="margin-bottom:12px">Map Container</div>
+          <div class="map-container">
+            <div class="map-pin"></div>
+            <div class="map-label">Roma, Italy — 41.9028° N, 12.4964° E</div>
+          </div>
+        </div>
+
+        <!-- MEDIA & HERO -->
+        <div id="media" class="ds-subsection">
+          <h3 class="ds-subsection-title">Media & Hero Sections</h3>
+
+          <div class="hero-preview">
+            <div class="hero-preview-content">
+              <div class="hero-preview-eyebrow">Featured Journey · Autumn 2025</div>
+              <h2 class="hero-preview-title">Experience <em>Roma</em><br>Like Never Before</h2>
+              <p class="hero-preview-subtitle">Seven nights of absolute immersion — private Colosseum access, Vatican at
+                dawn, and the finest tables in the Eternal City. Crafted exclusively for the discerning traveler.</p>
+              <div class="hero-preview-actions">
+                <button class="btn btn-gold btn-lg">Begin Planning</button>
+                <button class="btn btn-ghost btn-lg" style="color:#F0EAE0">View Itinerary</button>
+              </div>
+            </div>
+            <div class="booking-bar">
+              <div class="booking-bar-field">
+                <div class="booking-bar-field-label">Destination</div>
+                <div class="booking-bar-field-value">Rome, Italy</div>
+              </div>
+              <div class="booking-bar-field">
+                <div class="booking-bar-field-label">Check In</div>
+                <div class="booking-bar-field-value placeholder">Select date</div>
+              </div>
+              <div class="booking-bar-field">
+                <div class="booking-bar-field-label">Travelers</div>
+                <div class="booking-bar-field-value placeholder">2 adults</div>
+              </div>
+              <button class="btn btn-primary">Search</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div style="margin-top:var(--space-8)">
+          <div class="ds-section-eyebrow" style="margin-bottom:12px">Footer — Editorial Layout</div>
+          <div class="footer-preview">
+            <div class="footer-top">
+              <div>
+                <div class="footer-brand-name">TRAVEL-LAND<span>.IT</span></div>
+                <div class="footer-tagline">Italy, Curated for You.</div>
+                <p style="font-size:13px;color:#7A7060;line-height:1.6;max-width:280px">Crafting bespoke Italian
+                  journeys for the world's most discerning travelers since 2015. ASTA Member · ILTM Select Partner.</p>
+              </div>
+              <div>
+                <div class="footer-col-title">Destinations</div>
+                <ul class="footer-links">
+                  <li><a>Rome</a></li>
+                  <li><a>Venice</a></li>
+                  <li><a>Florence</a></li>
+                  <li><a>Amalfi Coast</a></li>
+                  <li><a>Tuscany</a></li>
+                </ul>
+              </div>
+              <div>
+                <div class="footer-col-title">Experiences</div>
+                <ul class="footer-links">
+                  <li><a>Culinary</a></li>
+                  <li><a>Art & Culture</a></li>
+                  <li><a>Private Villas</a></li>
+                  <li><a>Yacht Charters</a></li>
+                </ul>
+              </div>
+              <div>
+                <div class="footer-col-title">Company</div>
+                <ul class="footer-links">
+                  <li><a>About Us</a></li>
+                  <li><a>Our Designers</a></li>
+                  <li><a>Sustainability</a></li>
+                  <li><a>Careers</a></li>
+                  <li><a>Press</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="footer-bottom">
+              <span>© 2025 TRAVEL-LAND.IT · All rights reserved</span>
+              <div class="footer-lang-row">
+                <span class="footer-lang active">EN</span>
+                <span class="footer-lang">IT</span>
+                <span class="footer-lang">DE</span>
+                <span class="footer-lang">FR</span>
+                <span class="footer-lang">ES</span>
+                <span class="footer-lang">AR</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====================================================
+           SECTION 3: PATTERNS
+           ==================================================== -->
+        <div id="patterns" class="ds-section">
+          <div class="ds-section-eyebrow">Section 03</div>
+          <h2 class="ds-section-title">Patterns</h2>
+          <p class="ds-section-desc">Page templates, user flows, and feedback patterns optimized for luxury conversion
+            and seamless international usability.</p>
+        </div>
+
+        <!-- PAGE TEMPLATES -->
+        <div id="page-templates" class="ds-subsection">
+          <h3 class="ds-subsection-title">Homepage Wireframe Structure</h3>
+          <div class="page-preview-frame">
+            <div class="page-block" style="background:var(--color-obsidian);padding:var(--space-12);">
+              <span class="page-block-label">01 · Hero</span>
+              <div style="font-family:var(--font-display);font-size:36px;color:#F0EAE0;font-style:italic">Full-width
+                cinematic hero · Headline · CTA · Booking bar</div>
+            </div>
+            <div class="page-block" style="background:white">
+              <span class="page-block-label">02 · Featured Destinations</span>
+              <div style="font-family:var(--font-display);font-size:22px;color:var(--color-obsidian)">Destination Card
+                Grid · 3-column · Hover reveal</div>
+              <div style="font-size:13px;color:#7A7060;margin-top:var(--space-2)">Rome · Venice · Florence · Amalfi ·
+                Tuscany · Milan</div>
+            </div>
+            <div class="page-block" style="background:var(--color-parchment)">
+              <span class="page-block-label">03 · Stats Bar</span>
+              <div style="display:flex;gap:var(--space-8)">
+                <div class="stat-card" style="flex:1">
+                  <div class="stat-value">500+</div>
+                  <div class="stat-label">Curated Tours</div>
+                </div>
+                <div class="stat-card" style="flex:1">
+                  <div class="stat-value">98%</div>
+                  <div class="stat-label">Satisfaction</div>
+                </div>
+                <div class="stat-card" style="flex:1">
+                  <div class="stat-value">12</div>
+                  <div class="stat-label">Regions</div>
+                </div>
+                <div class="stat-card" style="flex:1">
+                  <div class="stat-value">40+</div>
+                  <div class="stat-label">Countries</div>
+                </div>
+              </div>
+            </div>
+            <div class="page-block" style="background:white">
+              <span class="page-block-label">04 · Featured Package</span>
+              <div style="font-family:var(--font-display);font-size:22px;color:var(--color-obsidian)">Full-width
+                editorial feature · Package card (horizontal)</div>
+            </div>
+            <div class="page-block" style="background:var(--color-travertine)">
+              <span class="page-block-label">05 · Testimonials</span>
+              <div style="font-family:var(--font-display);font-size:22px;color:var(--color-obsidian)">3-column review
+                cards · Guest spotlight</div>
+            </div>
+            <div class="page-block" style="background:var(--color-obsidian);padding:var(--space-8)">
+              <span class="page-block-label" style="background:rgba(255,255,255,0.1);color:#F0EAE0">06 · CTA
+                Banner</span>
+              <div style="font-family:var(--font-display);font-size:28px;color:#F0EAE0;font-style:italic">"Begin
+                Planning Your Italian Journey" · Gold CTA button</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOOKING FLOW -->
+        <div id="booking-flow" class="ds-subsection">
+          <h3 class="ds-subsection-title">Booking Flow — 5 Steps</h3>
+          <div
+            style="background:white;border:1px solid var(--color-bone);border-radius:var(--radius-xl);padding:var(--space-8)">
+            <div class="progress-steps" style="margin-bottom:var(--space-8)">
+              <div class="progress-step done">
+                <div class="progress-step-circle">✓</div>
+                <div class="progress-step-label">1 · Select</div>
+                <div class="progress-step-line done"></div>
+              </div>
+              <div class="progress-step done">
+                <div class="progress-step-circle">✓</div>
+                <div class="progress-step-label">2 · Dates</div>
+                <div class="progress-step-line done"></div>
+              </div>
+              <div class="progress-step active">
+                <div class="progress-step-circle">3</div>
+                <div class="progress-step-label">3 · Travelers</div>
+                <div class="progress-step-line"></div>
+              </div>
+              <div class="progress-step">
+                <div class="progress-step-circle">4</div>
+                <div class="progress-step-label">4 · Review</div>
+                <div class="progress-step-line"></div>
+              </div>
+              <div class="progress-step">
+                <div class="progress-step-circle">5</div>
+                <div class="progress-step-label">5 · Confirm</div>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <div
+                  style="font-family:var(--font-display);font-size:24px;font-weight:500;margin-bottom:var(--space-6)">
+                  Traveler Details</div>
+                <div class="form-group"><label class="form-label">Lead Traveler Name</label><input class="form-input"
+                    placeholder="As on passport"></div>
+                <div class="form-group"><label class="form-label">Email</label><input class="form-input"
+                    placeholder="Confirmation sent here"></div>
+                <div class="form-group"><label class="form-label">Phone (WhatsApp preferred)</label><input
+                    class="form-input" placeholder="+1 555 000 0000"></div>
+              </div>
+              <div>
+                <div
+                  style="font-family:var(--font-display);font-size:24px;font-weight:500;margin-bottom:var(--space-6)">
+                  Booking Summary</div>
+                <div style="background:var(--color-travertine);border-radius:var(--radius-xl);padding:var(--space-6)">
+                  <div style="font-size:13px;color:#7A7060;margin-bottom:var(--space-2)">Package</div>
+                  <div
+                    style="font-family:var(--font-display);font-size:20px;font-weight:500;margin-bottom:var(--space-4)">
+                    Roma Eterna — 7 Nights</div>
+                  <div
+                    style="display:flex;justify-content:space-between;font-size:13px;padding:var(--space-3) 0;border-bottom:1px solid var(--color-bone)">
+                    <span>Check-in</span><strong>Oct 10, 2025</strong>
+                  </div>
+                  <div
+                    style="display:flex;justify-content:space-between;font-size:13px;padding:var(--space-3) 0;border-bottom:1px solid var(--color-bone)">
+                    <span>Check-out</span><strong>Oct 17, 2025</strong>
+                  </div>
+                  <div
+                    style="display:flex;justify-content:space-between;font-size:13px;padding:var(--space-3) 0;border-bottom:1px solid var(--color-bone)">
+                    <span>Travelers</span><strong>2 Adults</strong>
+                  </div>
+                  <div style="display:flex;justify-content:space-between;padding:var(--space-4) 0 0;"><span
+                      style="font-size:14px">Total</span><strong
+                      style="font-family:var(--font-display);font-size:24px">€12,800</strong></div>
+                </div>
+              </div>
+            </div>
+            <div
+              style="display:flex;justify-content:space-between;margin-top:var(--space-8);padding-top:var(--space-6);border-top:1px solid var(--color-bone)">
+              <button class="btn btn-ghost">← Back to Dates</button>
+              <button class="btn btn-gold btn-lg">Continue to Review →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADMIN DASHBOARD -->
+        <div id="admin" class="ds-subsection">
+          <h3 class="ds-subsection-title">Admin Dashboard</h3>
+          <div class="admin-preview">
+            <div class="admin-sidebar">
+              <div class="admin-logo">TL Admin</div>
+              <div class="admin-nav-label">Operations</div>
+              <div class="admin-nav-item active"><span class="admin-nav-item-icon">◼</span>Dashboard</div>
+              <div class="admin-nav-item"><span class="admin-nav-item-icon">✦</span>Bookings</div>
+              <div class="admin-nav-item"><span class="admin-nav-item-icon">◎</span>Packages</div>
+              <div class="admin-nav-item"><span class="admin-nav-item-icon">☰</span>Itineraries</div>
+              <div class="admin-nav-label" style="margin-top:var(--space-4)">Content</div>
+              <div class="admin-nav-item"><span class="admin-nav-item-icon">◷</span>Destinations</div>
+              <div class="admin-nav-item"><span class="admin-nav-item-icon">★</span>Reviews</div>
+              <div class="admin-nav-label" style="margin-top:var(--space-4)">System</div>
+              <div class="admin-nav-item"><span class="admin-nav-item-icon">⚙</span>Settings</div>
+              <div class="admin-nav-item"><span class="admin-nav-item-icon">◐</span>Users</div>
+            </div>
+            <div class="admin-main">
+              <div class="admin-header">
+                <div class="admin-title">Operations Overview</div>
+                <div style="display:flex;gap:var(--space-3)">
+                  <button class="btn btn-secondary btn-sm">Export Report</button>
+                  <button class="btn btn-primary btn-sm">+ New Package</button>
+                </div>
+              </div>
+              <div class="admin-stats">
+                <div class="admin-stat">
+                  <div class="admin-stat-label">This Month</div>
+                  <div class="admin-stat-value">47</div>
+                  <div class="admin-stat-change">↑ 12% vs last month</div>
+                </div>
+                <div class="admin-stat">
+                  <div class="admin-stat-label">Revenue</div>
+                  <div class="admin-stat-value">€318k</div>
+                  <div class="admin-stat-change">↑ 8.4%</div>
+                </div>
+                <div class="admin-stat">
+                  <div class="admin-stat-label">Avg. Booking</div>
+                  <div class="admin-stat-value">€6,766</div>
+                  <div class="admin-stat-change">↑ 3.1%</div>
+                </div>
+                <div class="admin-stat">
+                  <div class="admin-stat-label">Pending</div>
+                  <div class="admin-stat-value" style="color:var(--color-warning)">9</div>
+                  <div class="admin-stat-change" style="color:var(--color-warning)">Requires action</div>
+                </div>
+              </div>
+              <table class="admin-table" style="background:white;border-radius:var(--radius-lg);overflow:hidden">
+                <thead>
+                  <tr>
+                    <th>Guest</th>
+                    <th>Package</th>
+                    <th>Dates</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Whittaker, J.</td>
+                    <td>Roma Eterna 7N</td>
+                    <td>Oct 10–17</td>
+                    <td>€12,800</td>
+                    <td><span class="badge badge-luxury">Confirmed</span></td>
+                  </tr>
+                  <tr>
+                    <td>Chen, L.</td>
+                    <td>Amalfi Full 8D</td>
+                    <td>Nov 2–10</td>
+                    <td>€18,400</td>
+                    <td><span class="badge badge-limited">Pending</span></td>
+                  </tr>
+                  <tr>
+                    <td>Al-Rashid, F.</td>
+                    <td>Bespoke Tuscany</td>
+                    <td>Sep 28–Oct 5</td>
+                    <td>€24,000</td>
+                    <td><span class="badge badge-bestseller">Confirmed</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ====================================================
+           SECTION 4: DESIGN TOKENS
+           ==================================================== -->
+        <div id="tokens" class="ds-section">
+          <div class="ds-section-eyebrow">Section 04</div>
+          <h2 class="ds-section-title">Design Tokens</h2>
+          <p class="ds-section-desc">Production-ready token structure in JSON format, scalable across web, admin,
+            multilingual, and future mobile surfaces.</p>
+
+          <div class="token-block">
+            <pre class="token-code"><span class="token-key">"color"</span>: {
+  <span class="token-key">"brand"</span>: {
+    <span class="token-key">"travertine"</span>:  { <span class="token-key">"value"</span>: <span class="token-str">"#F5F0E8"</span>, <span class="token-key">"description"</span>: <span class="token-str">"Primary page background"</span> },
+    <span class="token-key">"parchment"</span>:   { <span class="token-key">"value"</span>: <span class="token-str">"#EDE5D5"</span>, <span class="token-key">"description"</span>: <span class="token-str">"Elevated surface, card bg"</span> },
+    <span class="token-key">"bone"</span>:         { <span class="token-key">"value"</span>: <span class="token-str">"#D9CEBA"</span>, <span class="token-key">"description"</span>: <span class="token-str">"Borders, dividers, rules"</span> },
+    <span class="token-key">"terracotta"</span>:  { <span class="token-key">"value"</span>: <span class="token-str">"#9B5E3B"</span>, <span class="token-key">"description"</span>: <span class="token-str">"Warm accent, eyebrows, labels"</span> },
+    <span class="token-key">"siena"</span>:        { <span class="token-key">"value"</span>: <span class="token-str">"#6B3A2A"</span>, <span class="token-key">"description"</span>: <span class="token-str">"Deep warm, hover terracotta"</span> },
+    <span class="token-key">"obsidian"</span>:     { <span class="token-key">"value"</span>: <span class="token-str">"#1A1714"</span>, <span class="token-key">"description"</span>: <span class="token-str">"Primary text, CTA button"</span> },
+    <span class="token-key">"oro"</span>:          { <span class="token-key">"value"</span>: <span class="token-str">"#B8963E"</span>, <span class="token-key">"description"</span>: <span class="token-str">"Gold accent — use sparingly"</span> },
+    <span class="token-key">"azure"</span>:        { <span class="token-key">"value"</span>: <span class="token-str">"#2E6B9E"</span>, <span class="token-key">"description"</span>: <span class="token-str">"Mediterranean blue, info"</span> }
+  },
+  <span class="token-key">"semantic"</span>: {
+    <span class="token-key">"success"</span>:  <span class="token-str">"#2D6A4F"</span>,   <span class="token-key">"warning"</span>: <span class="token-str">"#92641A"</span>,
+    <span class="token-key">"error"</span>:    <span class="token-str">"#8B2E2E"</span>,   <span class="token-key">"info"</span>:    <span class="token-str">"#2E5B8B"</span>
+  }
+},
+<span class="token-key">"typography"</span>: {
+  <span class="token-key">"fontFamily"</span>: {
+    <span class="token-key">"display"</span>: <span class="token-str">"'Cormorant Garamond', Georgia, serif"</span>,
+    <span class="token-key">"body"</span>:    <span class="token-str">"'DM Sans', system-ui, sans-serif"</span>,
+    <span class="token-key">"mono"</span>:    <span class="token-str">"'DM Mono', monospace"</span>
+  },
+  <span class="token-key">"scale"</span>: {
+    <span class="token-key">"displayXL"</span>:  { <span class="token-key">"size"</span>: <span class="token-str">"80px"</span>,  <span class="token-key">"weight"</span>: <span class="token-str">"400"</span>, <span class="token-key">"leading"</span>: <span class="token-str">"1.1"</span>,  <span class="token-key">"tracking"</span>: <span class="token-str">"-0.03em"</span> },
+    <span class="token-key">"display"</span>:    { <span class="token-key">"size"</span>: <span class="token-str">"64px"</span>,  <span class="token-key">"weight"</span>: <span class="token-str">"400"</span>, <span class="token-key">"leading"</span>: <span class="token-str">"1.1"</span>,  <span class="token-key">"tracking"</span>: <span class="token-str">"-0.02em"</span> },
+    <span class="token-key">"headline"</span>:   { <span class="token-key">"size"</span>: <span class="token-str">"48px"</span>,  <span class="token-key">"weight"</span>: <span class="token-str">"500"</span>, <span class="token-key">"leading"</span>: <span class="token-str">"1.15"</span>, <span class="token-key">"tracking"</span>: <span class="token-str">"-0.02em"</span> },
+    <span class="token-key">"body"</span>:       { <span class="token-key">"size"</span>: <span class="token-str">"16px"</span>,  <span class="token-key">"weight"</span>: <span class="token-str">"400"</span>, <span class="token-key">"leading"</span>: <span class="token-str">"1.65"</span>, <span class="token-key">"tracking"</span>: <span class="token-str">"0"</span>       }
+  }
+},
+<span class="token-key">"spacing"</span>: {
+  <span class="token-key">"1"</span>: <span class="token-str">"4px"</span>,  <span class="token-key">"2"</span>: <span class="token-str">"8px"</span>,  <span class="token-key">"3"</span>: <span class="token-str">"12px"</span>, <span class="token-key">"4"</span>: <span class="token-str">"16px"</span>,
+  <span class="token-key">"6"</span>: <span class="token-str">"24px"</span>, <span class="token-key">"8"</span>: <span class="token-str">"32px"</span>, <span class="token-key">"12"</span>: <span class="token-str">"48px"</span>, <span class="token-key">"16"</span>: <span class="token-str">"64px"</span>,
+  <span class="token-key">"24"</span>: <span class="token-str">"96px"</span>, <span class="token-key">"32"</span>: <span class="token-str">"128px"</span>
+},
+<span class="token-key">"borderRadius"</span>: {
+  <span class="token-key">"xs"</span>: <span class="token-str">"2px"</span>, <span class="token-key">"sm"</span>: <span class="token-str">"4px"</span>, <span class="token-key">"md"</span>: <span class="token-str">"8px"</span>, <span class="token-key">"lg"</span>: <span class="token-str">"12px"</span>,
+  <span class="token-key">"xl"</span>: <span class="token-str">"20px"</span>, <span class="token-key">"2xl"</span>: <span class="token-str">"32px"</span>, <span class="token-key">"full"</span>: <span class="token-str">"9999px"</span>
+},
+<span class="token-key">"motion"</span>: {
+  <span class="token-key">"duration"</span>: { <span class="token-key">"instant"</span>: <span class="token-str">"80ms"</span>, <span class="token-key">"fast"</span>: <span class="token-str">"150ms"</span>, <span class="token-key">"normal"</span>: <span class="token-str">"250ms"</span>, <span class="token-key">"slow"</span>: <span class="token-str">"400ms"</span>, <span class="token-key">"enter"</span>: <span class="token-str">"600ms"</span> },
+  <span class="token-key">"easing"</span>: {
+    <span class="token-key">"outQuart"</span>: <span class="token-str">"cubic-bezier(0.25,1,0.5,1)"</span>,
+    <span class="token-key">"spring"</span>:   <span class="token-str">"cubic-bezier(0.34,1.56,0.64,1)"</span>,
+    <span class="token-key">"inOut"</span>:    <span class="token-str">"cubic-bezier(0.4,0,0.2,1)"</span>
+  }
+},
+<span class="token-key">"elevation"</span>: {
+  <span class="token-key">"sm"</span>:   <span class="token-str">"0 1px 3px rgba(26,23,20,.08), 0 1px 2px rgba(26,23,20,.04)"</span>,
+  <span class="token-key">"md"</span>:   <span class="token-str">"0 4px 16px rgba(26,23,20,.10), 0 2px 6px rgba(26,23,20,.06)"</span>,
+  <span class="token-key">"lg"</span>:   <span class="token-str">"0 12px 40px rgba(26,23,20,.14), 0 4px 12px rgba(26,23,20,.08)"</span>,
+  <span class="token-key">"xl"</span>:   <span class="token-str">"0 24px 64px rgba(26,23,20,.18), 0 8px 24px rgba(26,23,20,.10)"</span>,
+  <span class="token-key">"gold"</span>: <span class="token-str">"0 4px 20px rgba(184,150,62,.20)"</span>
+}</pre>
+          </div>
+        </div>
+
+        <!-- ====================================================
+           SECTION 5: DOCUMENTATION
+           ==================================================== -->
+        <div id="principles" class="ds-section">
+          <div class="ds-section-eyebrow">Section 05</div>
+          <h2 class="ds-section-title">Design Principles</h2>
+          <p class="ds-section-desc">Three foundational principles that govern every design decision at TRAVEL-LAND.IT —
+            from a single button to a full-page experience.</p>
+
+          <div class="principles-grid">
+            <div class="principle-card" data-number="1">
+              <div class="principle-number">Principle 01</div>
+              <div class="principle-title">Elegance Through Simplicity</div>
+              <div class="principle-desc">Every element earns its place. Luxury is expressed through restraint —
+                generous white space, editorial typography, and carefully chosen imagery communicate more than
+                decoration ever could.</div>
+              <div class="principle-example">
+                <div class="principle-example-label">✓ Do This</div>
+                A single destination card with ample breathing room, a Cormorant headline, and one clear CTA. Silence is
+                part of the design.
+              </div>
+              <div class="principle-anti">
+                <div class="principle-anti-label">✕ Not This</div>
+                A card crowded with icons, badges, multiple CTAs, and competing colors. Visual noise destroys the luxury
+                signal.
+              </div>
+            </div>
+            <div class="principle-card" data-number="2">
+              <div class="principle-number">Principle 02</div>
+              <div class="principle-title">Experience Before Transaction</div>
+              <div class="principle-desc">The traveler must feel the destination before they're asked to book it.
+                Immersive imagery, evocative copy, and unhurried pacing build the emotional foundation that makes
+                conversion effortless.</div>
+              <div class="principle-example">
+                <div class="principle-example-label">✓ Do This</div>
+                Hero section: full-bleed atmospheric image → evocative headline → story → then the CTA. Let them want it
+                first.
+              </div>
+              <div class="principle-anti">
+                <div class="principle-anti-label">✕ Not This</div>
+                Opening with a price, a "Book Now" button, or a search form before any emotional context has been
+                established.
+              </div>
+            </div>
+            <div class="principle-card" data-number="3">
+              <div class="principle-number">Principle 03</div>
+              <div class="principle-title">Confidence Builds Conversion</div>
+              <div class="principle-desc">Luxury customers don't respond to urgency — they respond to certainty. Every
+                interaction must reinforce trust: clear information hierarchy, reassuring feedback, and frictionless
+                flows.</div>
+              <div class="principle-example">
+                <div class="principle-example-label">✓ Do This</div>
+                Success states are warm and specific: "Your journey is confirmed — ref #TL-8847. Maria will contact you
+                within 24 hours."
+              </div>
+              <div class="principle-anti">
+                <div class="principle-anti-label">✕ Not This</div>
+                Generic "⚡ Only 1 left! Book in the next 10 minutes!" pressure tactics that undermine the premium
+                positioning.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DO'S AND DON'TS -->
+        <div id="dos-donts" class="ds-section">
+          <div class="ds-section-eyebrow">Section 05.2</div>
+          <h2 class="ds-section-title">Do's & Don'ts</h2>
+
+          <div class="dos-donts">
+            <div class="do-card">
+              <div class="do-card-header">✓ Do</div>
+              <div class="do-card-body"><strong>Use Travertine as your page background</strong>The warm off-white
+                communicates Italian stone heritage and creates editorial calm. It makes imagery and text breathe.</div>
+            </div>
+            <div class="dont-card">
+              <div class="dont-card-header">✕ Don't</div>
+              <div class="dont-card-body"><strong>Use pure white (#FFFFFF) as page background</strong>Clinical white
+                strips the warmth and luxury character. It makes the platform feel like a generic booking engine rather
+                than a curated service.</div>
+            </div>
+
+            <div class="do-card">
+              <div class="do-card-header">✓ Do</div>
+              <div class="do-card-body"><strong>Lead with Cormorant Garamond for display text</strong>The serif display
+                font signals culture, heritage, and editorial sophistication — qualities the luxury traveler expects and
+                trusts.</div>
+            </div>
+            <div class="dont-card">
+              <div class="dont-card-header">✕ Don't</div>
+              <div class="dont-card-body"><strong>Use Cormorant at small body sizes</strong>Cormorant Garamond is
+                exclusively for display (22px+). At 14px it becomes illegible. Use DM Sans for all body copy, UI labels,
+                and functional text.</div>
+            </div>
+
+            <div class="do-card">
+              <div class="do-card-header">✓ Do</div>
+              <div class="do-card-body"><strong>Use gold (Oro) for exactly one CTA per section</strong>Scarcity of gold
+                increases its perceived value. Reserve it for the highest-conversion moment in each screen region.</div>
+            </div>
+            <div class="dont-card">
+              <div class="dont-card-header">✕ Don't</div>
+              <div class="dont-card-body"><strong>Use gold as a background or decoration</strong>Gold borders, gold
+                gradients, and decorative gold motifs cheapen the brand and reduce the impact of the gold CTA.</div>
+            </div>
+
+            <div class="do-card">
+              <div class="do-card-header">✓ Do</div>
+              <div class="do-card-body"><strong>Use --space-16 (64px) minimum between major sections</strong>Generous
+                vertical rhythm communicates premium quality. Let the content breathe.</div>
+            </div>
+            <div class="dont-card">
+              <div class="dont-card-header">✕ Don't</div>
+              <div class="dont-card-body"><strong>Compress sections to fit more content above the
+                  fold</strong>Prioritizing "information density" over elegance destroys the luxury experience. Let the
+                scroll be part of the journey.</div>
+            </div>
+
+            <div class="do-card">
+              <div class="do-card-header">✓ Do</div>
+              <div class="do-card-body"><strong>Always pair color-coded alerts with text + icon</strong>Never
+                communicate warnings or errors through color alone — critical for accessibility (WCAG 1.4.1) and
+                international readability.</div>
+            </div>
+            <div class="dont-card">
+              <div class="dont-card-header">✕ Don't</div>
+              <div class="dont-card-body"><strong>Use red borders as the only error indicator</strong>8% of men are
+                colorblind. An invisible form error is a lost booking. Always use icons, text labels, and color
+                together.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DEVELOPER GUIDE -->
+        <div id="dev-guide" class="ds-section">
+          <div class="ds-section-eyebrow">Section 05.3</div>
+          <h2 class="ds-section-title">Developer Implementation Guide</h2>
+
+          <div class="grid-2" style="margin-bottom:var(--space-8)">
+            <div
+              style="background:white;border:1px solid var(--color-bone);border-radius:var(--radius-xl);padding:var(--space-8)">
+              <div class="comp-title">Naming Conventions</div>
+              <p style="font-size:13px;color:#7A7060;line-height:1.7;margin-bottom:var(--space-4)"><strong
+                  style="color:var(--color-obsidian)">CSS tokens:</strong> kebab-case with semantic intent: <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">--color-[name]</code>,
+                <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">--space-[n]</code>
+              </p>
+              <p style="font-size:13px;color:#7A7060;line-height:1.7;margin-bottom:var(--space-4)"><strong
+                  style="color:var(--color-obsidian)">Component classes:</strong> BEM-inspired: <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">.destination-card__title</code>,
+                <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">.btn--gold</code>
+              </p>
+              <p style="font-size:13px;color:#7A7060;line-height:1.7"><strong style="color:var(--color-obsidian)">JS
+                  state:</strong> data attributes for JS hooks: <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">data-state="open"</code>,
+                never class-only state changes</p>
+            </div>
+
+            <div
+              style="background:white;border:1px solid var(--color-bone);border-radius:var(--radius-xl);padding:var(--space-8)">
+              <div class="comp-title">Dark Mode Strategy</div>
+              <p style="font-size:13px;color:#7A7060;line-height:1.7;margin-bottom:var(--space-4)">Use CSS custom
+                property overrides within <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">@media (prefers-color-scheme: dark)</code>
+                and also <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">[data-theme="dark"]</code>
+                for manual toggle support.</p>
+              <p style="font-size:13px;color:#7A7060;line-height:1.7">All color tokens reference semantic names, never
+                hardcoded hex values in components. Swap the token values, not the components.</p>
+            </div>
+
+            <div
+              style="background:white;border:1px solid var(--color-bone);border-radius:var(--radius-xl);padding:var(--space-8)">
+              <div class="comp-title">Accessibility Checklist</div>
+              <div style="font-size:13px;line-height:2;color:#7A7060">
+                ✓ All interactive elements have visible focus rings (2px oro outline)<br>
+                ✓ Minimum touch target: 44×44px (Apple HIG standard)<br>
+                ✓ Color contrast: 4.5:1 AA minimum for all body text<br>
+                ✓ All images have descriptive alt attributes<br>
+                ✓ Semantic HTML: <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">&lt;nav&gt;</code>,
+                <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">&lt;main&gt;</code>,
+                <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">&lt;article&gt;</code>,
+                landmark roles<br>
+                ✓ Form fields: labels programmatically linked via <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">for</code>/<code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">id</code><br>
+                ✓ Error messages: <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">aria-live="polite"</code>
+                regions<br>
+                ✓ Accordion: <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">aria-expanded</code>,
+                <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">aria-controls</code>
+                pairs<br>
+                ✓ Modals: focus trap, <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">Escape</code>
+                key dismissal
+              </div>
+            </div>
+
+            <div
+              style="background:white;border:1px solid var(--color-bone);border-radius:var(--radius-xl);padding:var(--space-8)">
+              <div class="comp-title">Performance & Image Strategy</div>
+              <div style="font-size:13px;line-height:2;color:#7A7060">
+                ✓ Hero images: AVIF → WebP → JPEG fallback chain<br>
+                ✓ Lazy load: all below-fold images with native loading="lazy"<br>
+                ✓ Art direction: <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">&lt;picture&gt;</code>
+                with mobile-optimized crops<br>
+                ✓ LCP target: hero image ≤ 2.5s on 4G mobile<br>
+                ✓ Fonts: <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">font-display: swap</code>,
+                preload critical weights only<br>
+                ✓ Subset fonts to Latin + Latin-Extended for multilingual<br>
+                ✓ Motion: respect <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">prefers-reduced-motion</code>
+                — disable all transitions
+              </div>
+            </div>
+          </div>
+
+          <div
+            style="background:white;border:1px solid var(--color-bone);border-radius:var(--radius-xl);padding:var(--space-8)">
+            <div class="comp-title">Multilingual Considerations</div>
+            <div class="grid-3" style="font-size:13px;color:#7A7060;line-height:1.7">
+              <div>
+                <strong style="color:var(--color-obsidian);display:block;margin-bottom:var(--space-2)">Text
+                  Expansion</strong>
+                German and Finnish can expand English by 35%. Use flexible containers (avoid fixed widths on text), and
+                test all UI labels with German copy. Buttons must wrap gracefully.
+              </div>
+              <div>
+                <strong style="color:var(--color-obsidian);display:block;margin-bottom:var(--space-2)">RTL Support
+                  (Arabic)</strong>
+                Use logical CSS properties: <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">margin-inline-start</code>
+                not <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">margin-left</code>.
+                Set <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">dir="rtl"</code>
+                on <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">&lt;html&gt;</code>
+                and use CSS <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">:dir(rtl)</code>
+                selectors.
+              </div>
+              <div>
+                <strong style="color:var(--color-obsidian);display:block;margin-bottom:var(--space-2)">Font
+                  Fallbacks</strong>
+                Cormorant Garamond has no Arabic or CJK glyphs. Define language-specific font stacks: Arabic → <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">Noto Sans Arabic</code>;
+                Japanese → <code
+                  style="font-family:var(--font-mono);background:var(--color-parchment);padding:2px 6px;border-radius:3px">Noto Serif JP</code>.
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- SCROLL TO TOP -->
+  <a href="#hero" class="scroll-top" title="Back to top">↑</a>
+
+  <script>
+    // Accordion interaction
+    document.querySelectorAll('.accordion-trigger').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        item.classList.toggle('open');
+      });
+    });
+
+    // Toggle demo
+    document.querySelectorAll('.toggle').forEach(toggle => {
+      toggle.addEventListener('click', () => toggle.classList.toggle('on'));
+    });
+
+    // Smooth scroll to top
+    document.querySelector('.scroll-top').addEventListener('click', e => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Active sidebar highlighting
+    const sections = document.querySelectorAll('[id]');
+    const links = document.querySelectorAll('.ds-sidebar-link');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const link = document.querySelector(`.ds-sidebar-link[href="#${entry.target.id}"]`);
+          if (link) link.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+
+</html>

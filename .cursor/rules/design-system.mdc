@@ -1,0 +1,409 @@
+---
+description: TRAVEL-LAND.IT complete design system — colors, typography, spacing, grid, components, patterns, principles. Reference this for ALL UI work.
+alwaysApply: true
+---
+
+# TRAVEL-LAND.IT Design System v1.0
+
+Apple HIG-inspired luxury travel design system for Italy's premier travel platform. Crafted for elegance, conversion, and seamless international accessibility.
+
+---
+
+## Design Principles
+
+1. **Elegance Through Simplicity** — Every element earns its place. Luxury is expressed through restraint: generous white space, editorial typography, and carefully chosen imagery. Silence is part of the design. Never crowd a card with icons, badges, multiple CTAs, and competing colors.
+
+2. **Experience Before Transaction** — The traveler must feel the destination before they're asked to book. Hero section flow: full-bleed atmospheric image → evocative headline → story → then the CTA. Never open with a price or "Book Now" before emotional context.
+
+3. **Confidence Builds Conversion** — Luxury customers respond to certainty, not urgency. Success states are warm and specific ("Your journey is confirmed — ref #TL-8847. Maria will contact you within 24 hours."). Never use countdown pressure tactics ("Only 1 left! Book in 10 minutes!").
+
+---
+
+## Color System
+
+### Primary Palette
+
+| Token                 | Hex       | Usage                              |
+|-----------------------|-----------|-------------------------------------|
+| `--color-travertine`  | `#F5F0E8` | Primary page background (90% of surfaces). Warm stone. |
+| `--color-parchment`   | `#EDE5D5` | Elevated surface, card alt-bg       |
+| `--color-bone`        | `#D9CEBA` | Borders, dividers, rules (decorative only) |
+| `--color-terracotta`  | `#9B5E3B` | Warm accent, eyebrow labels, section labels |
+| `--color-siena`       | `#6B3A2A` | Deep warm, hover state for terracotta |
+| `--color-obsidian`    | `#1A1714` | Near-black, primary text, primary CTA on light bg |
+| `--color-azure`       | `#2E6B9E` | Mediterranean blue, info links       |
+| `--color-adriatic`    | `#1A4A70` | Deep blue                            |
+| `--color-seafoam`     | `#A8C5D8` | Light coastal, decorative            |
+| `--color-oro`         | `#B8963E` | Gold accent — USE SPARINGLY. Max 3 gold elements per viewport. |
+| `--color-champagne`   | `#E8D5A3` | Light gold, italic accents on dark bg |
+| `--color-bronze`      | `#8B6914` | Dark gold, hover state for oro       |
+
+### Semantic Colors
+
+| Token               | Foreground | Background       | Use Case                                |
+|----------------------|-----------|------------------|-----------------------------------------|
+| Success              | `#2D6A4F` | `#D8EFE4`        | Booking confirmed, payment accepted     |
+| Warning              | `#92641A` | `#FBF0DC`        | Limited availability, expiring offer    |
+| Error                | `#8B2E2E` | `#F5DEDE`        | Payment failed, form error              |
+| Info                 | `#2E5B8B` | `#D8E8F5`        | Travel updates, visa reminders          |
+
+### Dark Mode Surface Hierarchy
+
+| Level | Token               | Hex       | Use                    |
+|-------|---------------------|-----------|------------------------|
+| 0     | `--dark-bg`         | `#0E0C0A` | Base background         |
+| 1     | `--dark-surface-1`  | `#1A1714` | Primary surface         |
+| 2     | `--dark-surface-2`  | `#242019` | Card surface            |
+| 3     | `--dark-surface-3`  | `#2E2921` | Modal / Dropdown        |
+| 4     | `--dark-surface-4`  | `#3A332A` | Tooltip / Overlay       |
+| Text  | `--dark-text-primary` | `#F0EAE0` | Primary text (dark)   |
+| Text  | `--dark-text-secondary` | `#B5A890` | Secondary text (dark) |
+
+### Color Rules
+
+- **Travertine is the dominant surface.** Never use pure `#FFFFFF` as a page background. White is reserved for elevated card surfaces only.
+- **Oro (Gold) — use sparingly.** Reserved for: primary CTAs on dark backgrounds, premium badges (Luxury/Exclusive), decorative flourishes, active selection states. Max 3 gold elements per viewport. Never as a large-area background.
+- **Conversion-guided hierarchy:** Gold → Obsidian → Terracotta → Neutral. One accent CTA color per screen section.
+- **Always pair color with icon + text label.** Never convey meaning through color alone (WCAG 1.4.1). Warning = amber + icon + text, never amber alone.
+
+---
+
+## Typography
+
+### Font Families
+
+| Token            | Stack                                      | Usage          |
+|------------------|--------------------------------------------|----------------|
+| `--font-display` | `'Cormorant Garamond', Georgia, serif`     | Headlines, display text (22px+) |
+| `--font-body`    | `'DM Sans', system-ui, sans-serif`         | Body copy, UI labels, all functional text |
+| `--font-mono`    | `'DM Mono', monospace`                     | Code, tokens, technical metadata |
+
+### Type Scale (Desktop → Tablet → Mobile)
+
+| Style         | Desktop | Tablet | Mobile | Font       | Weight | Tracking  | Leading |
+|---------------|---------|--------|--------|------------|--------|-----------|---------|
+| Display XL    | 80px    | 56px   | 40px   | Cormorant  | 400    | -0.03em   | 1.1     |
+| Display       | 64px    | 48px   | 34px   | Cormorant  | 400    | -0.02em   | 1.1     |
+| Headline      | 48px    | 36px   | 28px   | Cormorant  | 500    | -0.02em   | 1.15    |
+| Title Large   | 36px    | 28px   | 24px   | Cormorant  | 500    | -0.02em   | 1.2     |
+| Title         | 28px    | 22px   | 20px   | Cormorant  | 500    | -0.01em   | 1.25    |
+| Subheadline   | 22px    | 18px   | 17px   | DM Sans    | 400    | 0         | 1.4     |
+| Body Large    | 18px    | 17px   | 16px   | DM Sans    | 400    | 0         | 1.65    |
+| Body          | 16px    | 15px   | 15px   | DM Sans    | 400    | 0         | 1.65    |
+| Callout       | 15px    | 14px   | 13px   | DM Sans    | 500    | 0.04em    | 1.5     |
+| Footnote      | 13px    | 12px   | 12px   | DM Sans    | 400    | 0         | 1.5     |
+| Caption       | 12px    | 11px   | 11px   | DM Sans    | 400    | 0         | 1.5     |
+| UI Micro      | 10px    | 10px   | 10px   | DM Sans    | 600    | 0.12em    | — (uppercase) |
+
+### Typography Rules
+
+- Cormorant Garamond is **exclusively for display** (22px+). At 14px it becomes illegible. Use DM Sans for all body copy, UI labels, and functional text.
+- Italic Cormorant is used for evocative/editorial emphasis (destination names, taglines).
+- Eyebrow/label text: DM Sans 600, 10-11px, `letter-spacing: 0.12em`, `text-transform: uppercase`, color terracotta.
+- Secondary/muted text color: `#7A7060` or `#B5A890`.
+
+---
+
+## Spacing System (8px base)
+
+| Token          | Value  | Usage                                       |
+|----------------|--------|---------------------------------------------|
+| `--space-1`    | 4px    | Icon gaps, indicator dots, micro-spacing     |
+| `--space-2`    | 8px    | Label margins, tag padding, tight pairs      |
+| `--space-3`    | 12px   | Input padding (vertical), list items         |
+| `--space-4`    | 16px   | Component padding (default), card gaps       |
+| `--space-6`    | 24px   | Card padding, section sub-elements           |
+| `--space-8`    | 32px   | Card body padding, modal padding             |
+| `--space-12`   | 48px   | Section internal spacing, form gaps          |
+| `--space-16`   | 64px   | Page section padding, major content gaps     |
+| `--space-24`   | 96px   | Hero sections, section transitions           |
+| `--space-32`   | 128px  | Page top/bottom breathing, luxury margins    |
+
+**Rule:** Use `--space-16` (64px) minimum between major page sections. Generous vertical rhythm communicates premium quality. Never compress sections to fit more above the fold.
+
+---
+
+## Layout Grid
+
+| Breakpoint | Viewport   | Columns | Gutter | Margin | Max Width |
+|------------|------------|---------|--------|--------|-----------|
+| xs         | ≤ 375px    | 4       | 16px   | 20px   | 100%      |
+| sm         | ≤ 640px    | 4       | 16px   | 24px   | 100%      |
+| md         | ≤ 768px    | 8       | 24px   | 32px   | 100%      |
+| lg         | ≤ 1024px   | 12      | 24px   | 48px   | 100%      |
+| xl         | ≤ 1280px   | 12      | 32px   | 64px   | 1280px    |
+| 2xl        | ≥ 1440px   | 12      | 32px   | 80px   | 1440px    |
+
+Content max-width: `1200px`. Page max-width: `1440px`.
+
+---
+
+## Border Radius
+
+| Token          | Value    | Usage                      |
+|----------------|----------|----------------------------|
+| `--radius-xs`  | 2px      | Subtle rounding             |
+| `--radius-sm`  | 4px      | Tags, small elements        |
+| `--radius-md`  | 8px      | Inputs, form fields         |
+| `--radius-lg`  | 12px     | Cards, alerts, surface cards |
+| `--radius-xl`  | 20px     | Large cards, sections        |
+| `--radius-2xl` | 32px     | Hero sections, major surfaces |
+| `--radius-full`| 9999px   | Buttons, badges, pills       |
+
+---
+
+## Elevation (Box Shadows)
+
+| Token          | Value | Usage |
+|----------------|-------|-------|
+| `--shadow-sm`  | `0 1px 3px rgba(26,23,20,.08), 0 1px 2px rgba(26,23,20,.04)` | Cards at rest |
+| `--shadow-md`  | `0 4px 16px rgba(26,23,20,.10), 0 2px 6px rgba(26,23,20,.06)` | Hover cards, buttons |
+| `--shadow-lg`  | `0 12px 40px rgba(26,23,20,.14), 0 4px 12px rgba(26,23,20,.08)` | Elevated cards, toasts |
+| `--shadow-xl`  | `0 24px 64px rgba(26,23,20,.18), 0 8px 24px rgba(26,23,20,.10)` | Modals, booking bar |
+| `--shadow-gold`| `0 4px 20px rgba(184,150,62,.20)` | Gold CTA hover |
+
+---
+
+## Motion
+
+| Token           | Value   | Usage                  |
+|-----------------|---------|------------------------|
+| `--dur-instant` | 80ms    | Micro-interactions      |
+| `--dur-fast`    | 150ms   | Hover, focus states     |
+| `--dur-normal`  | 250ms   | Transitions, toggles    |
+| `--dur-slow`    | 400ms   | Accordion expand/collapse |
+| `--dur-enter`   | 600ms   | Toast entrance, page enter |
+
+**Easing curves:**
+- `--ease-out-quart`: `cubic-bezier(0.25, 1, 0.5, 1)` — standard exit
+- `--ease-in-out`: `cubic-bezier(0.4, 0, 0.2, 1)` — standard transition
+- `--ease-spring`: `cubic-bezier(0.34, 1.56, 0.64, 1)` — toggle, playful bounce
+
+**Rule:** Always respect `prefers-reduced-motion` — disable all transitions and animations.
+
+---
+
+## Components
+
+### Buttons
+
+**Base:** `display: inline-flex`, `border-radius: 9999px` (pill), `font-family: DM Sans`, `font-size: 14px`, `font-weight: 500`, `letter-spacing: 0.04em`. Active state: `scale(0.97)`. Focus: `outline: 2px solid var(--color-oro); outline-offset: 3px`.
+
+| Variant       | Background             | Color         | Border                  | Usage |
+|---------------|------------------------|---------------|-------------------------|-------|
+| Primary       | `--color-obsidian`     | `#F0EAE0`     | none                    | Default CTA on light surfaces |
+| Gold          | `--color-oro`          | `--color-obsidian` | none               | Highest conversion moments only |
+| Secondary     | `white`                | `--color-obsidian` | `1.5px solid --color-bone` | Supporting actions |
+| Ghost         | `transparent`          | `--color-obsidian` | none               | Tertiary, "Learn More" |
+| Subtle        | `--color-parchment`    | `--color-siena`    | none               | Low-emphasis, "See All" |
+| Destructive   | `#F5DEDE`              | `--color-error`    | none               | Cancel, delete actions |
+
+**Sizes:** `btn-sm` (12px, 9px 18px), default (14px, 14px 28px), `btn-lg` (16px, 18px 36px), `btn-icon` (44x44px circle).
+
+**States:** Disabled → `opacity: 0.35; cursor: not-allowed`. Loading → spinning border pseudo-element after label.
+
+### Cards
+
+#### Destination Card
+- `border-radius: 20px`, `background: white`, `border: 1px solid --color-bone`, `box-shadow: --shadow-sm`.
+- Hover: `box-shadow: --shadow-lg; transform: translateY(-4px)`.
+- Image area: 220px height, with optional badge (pill, 10px uppercase, dark glass bg with gold text).
+- Body: location eyebrow (11px uppercase terracotta) → title (Cormorant 22px/500) → description (13px #7A7060) → footer with price + stars.
+- Price: "From" label (11px #7A7060) + value (Cormorant 22px/500).
+- Stars: `color: --color-oro`.
+
+#### Package Card (Horizontal)
+- `grid-template-columns: 280px 1fr`. Image left, body right.
+- Tags: pill badges (`tag`, `tag-luxury`, `tag-bestseller`, `tag-exclusive`).
+- Title: Cormorant 28px/500.
+- Meta items: "8 nights · 4 villas", "Private transfers", etc.
+- Footer: price left, buttons right (Secondary + Gold).
+
+#### Review Card
+- White bg, bone border, radius-xl, padding space-8.
+- Gold stars (16px) → italic Cormorant 20px quote → author (avatar circle 44px + name + location).
+
+### Forms
+
+**Input:** `padding: 14px 16px`, `font-size: 15px`, `background: --color-travertine`, `border: 1.5px solid --color-bone`, `border-radius: 8px`.
+- Placeholder color: `#B5A890`.
+- Hover: border `#C0B098`.
+- Focus: border obsidian + `box-shadow: 0 0 0 3px rgba(26,23,20,0.08)`.
+- Error: border `--color-error` + `box-shadow: 0 0 0 3px rgba(139,46,46,0.08)`.
+- Success: border `--color-success`.
+- Label: 12px/500 uppercase, `letter-spacing: 0.08em`, `opacity: 0.75`.
+- Hint: 12px `#7A7060`. Error message: 12px `--color-error` with icon.
+
+**Select:** Same base as input + custom chevron SVG background-image at `right 16px center`.
+
+**Traveler Selector:** Bordered container with rows (label + sublabel | -/count/+ controls). Counter buttons: 32x32px circle, bone border, white bg.
+
+**Date Picker:** Parchment header with month/nav → 7-column grid. Selected: obsidian bg, white text. In-range: `rgba(26,23,20,0.08)`. Check-in: left-rounded. Check-out: right-rounded. Disabled: `opacity: 0.3`.
+
+**Toggle:** 48x28px, bone bg (off) → obsidian bg (on). Thumb: 22x22px white circle, spring easing.
+
+### Feedback & Alerts
+
+**Alert:** `border-radius: 12px`, padding `16px 24px`, flex row with icon (20px circle) + content (title 14px/600 + description 13px).
+- Success: green bg/icon/title. Warning: amber. Error: red. Info: blue.
+
+**Toast:** Pill shape (`border-radius: 9999px`), obsidian bg, `#F0EAE0` text, `box-shadow: --shadow-lg`, 13px. Entrance animation: `translateY(12px) scale(0.96)` → `translateY(0) scale(1)` over 600ms.
+
+**Badges:** 10px/600 uppercase, `letter-spacing: 0.16em`, pill shape, 4px 10px padding.
+- `badge-luxury`: gold tint bg, bronze text, gold border.
+- `badge-bestseller`: blue tint bg, adriatic text, blue border.
+- `badge-exclusive`: obsidian bg, champagne text.
+- `badge-limited`: warning-bg, warning text, amber border.
+
+### Progress Steps (Booking)
+
+5 steps: Select → Dates → Travelers → Review → Confirm.
+- Circle: 36x36px, bone border, white bg, 13px/600.
+- Active: obsidian bg, white text.
+- Done: success bg, white checkmark.
+- Connecting line: 1px bone (done = success color).
+
+### Skeleton Loading
+
+Shimmer animation: linear gradient sweep (`parchment → bone → parchment`) at 1.5s infinite. Lines: 14px height with `short` (40%), `medium` (65%), `long` (90%) widths. Block: 200px height, radius-xl.
+
+### Navigation
+
+**Header:** 72px height, travertine bg with `backdrop-filter: blur(20px) saturate(180%)`, bone bottom border.
+- Logo: Cormorant 20px/500 with gold `.IT` span.
+- Nav links: 13px/500, `letter-spacing: 0.04em`, `opacity: 0.7` → 1 on hover. Active: 1.5px bottom border obsidian.
+- Actions: language button (pill, bone border, 12px uppercase) + gold CTA.
+
+**Mega Menu:** 4-column grid (3 link columns + 1 featured card). Column titles: 10px uppercase terracotta. Items: 14px with dot indicator and bone bottom border. Featured: obsidian bg rounded card with champagne label + Cormorant title.
+
+**Breadcrumb:** Inline flex, 13px `#7A7060` links, `›` separators `#B5A890`. Active item: obsidian, 500 weight.
+
+### Footer
+
+Obsidian bg, radius-2xl, padding space-16.
+- Top grid: `2fr 1fr 1fr 1fr`. Brand column: Cormorant 28px name with gold `.IT`, italic tagline 16px.
+- Column titles: 10px uppercase champagne, `opacity: 0.7`.
+- Links: 13px `#7A7060` → `#F0EAE0` on hover.
+- Bottom: copyright + language switcher row.
+
+### Stats Widget
+
+4-column grid. Stat card: white bg, bone border, radius-xl, padding space-6, centered.
+- Value: Cormorant 40px/500. Suffix (%, +): `color: --color-oro; font-size: 28px`.
+- Label: 12px `#7A7060`, `letter-spacing: 0.04em`.
+
+### Itinerary Timeline
+
+Vertical timeline with 1px bone line at `left: 22px`.
+- Day circle: 44x44px obsidian bg, white text, 13px/600.
+- Content card: white bg, bone border, radius-xl, padding space-6.
+- Title: Cormorant 22px/500. Location: 12px uppercase terracotta.
+- Activities: 13px `#7A7060` with 6px gold dot prefix.
+
+### Pricing Table
+
+3-column grid. Cards: white bg, 1.5px bone border, radius-xl, padding space-8.
+- Featured card: obsidian bg, champagne accents, gold badge at top ("Most Popular").
+- Tier label: 12px/600 uppercase. Price: Cormorant 44px/500. Period: 13px, `opacity: 0.5`.
+- Feature list: 13px with 16px green (or gold on featured) check circles.
+- CTA: full-width button (secondary, gold for featured, primary for bespoke).
+
+### Accordion / FAQ
+
+`border: 1px solid --color-bone`, `border-radius: 20px`, overflow hidden.
+- Trigger: Cormorant 18px/500, white bg, padding `24px 32px`. Hover: travertine bg.
+- Icon: 24x24px circle with bone border, `+` symbol. Open state rotates 45°.
+- Content: `max-height: 0` → `200px` transition at 400ms ease-out-quart. Body: 14px `#7A7060`.
+
+### Booking Search Bar
+
+White bg, radius-xl, padding `16px 24px`, 3+1 column grid, `box-shadow: --shadow-xl`, bone border.
+- Fields: bone right-border dividers, radius-lg hover bg.
+- Field label: 10px uppercase terracotta. Value: 15px/500 obsidian. Placeholder: `#B5A890`.
+- Search button: btn-primary appended.
+
+### Hero Section
+
+Obsidian bg, radius-2xl, padding `96px 64px`, min-height 400px, flex-end vertical.
+- Multi-layer radial gradient overlays for atmospheric depth.
+- Eyebrow: 11px uppercase gold. Title: clamp(36px, 5vw, 64px) Cormorant 400, `#F0EAE0`, italic em in champagne. Subtitle: 16px `#B5A890`.
+- Actions: Gold CTA + Ghost button (white text).
+- Booking bar attached below.
+
+### Image Gallery Grid
+
+`grid-template-columns: 2fr 1fr 1fr`, `grid-template-rows: 1fr 1fr`, gap 12px, height 280px. Main cell spans 2 rows.
+
+### Map Container
+
+Radius-xl, gradient bg, 220px height, centered pin (terracotta teardrop shape with white dot center), bottom-left location label in italic Cormorant.
+
+### Admin Dashboard
+
+Grid: `220px 1fr`. Sidebar: obsidian bg with champagne logo, nav items (13px `#B5A890` → `#F0EAE0` hover, active bg `rgba(255,255,255,0.1)`), grouped by label (9px uppercase `#7A7060`).
+- Main: `#F8F7F5` bg. Header: Cormorant 28px title + action buttons.
+- Stats: 4-column grid, white cards with bone border. Label: 11px uppercase. Value: Cormorant 28px. Change: 12px success color.
+- Table: white bg, parchment header (10px uppercase terracotta), 13px body, hover row bg travertine. Status badges in cells.
+
+---
+
+## Homepage Wireframe Structure
+
+1. **Hero** — Full-width cinematic image, headline, CTA, booking bar
+2. **Featured Destinations** — 3-column destination card grid with hover reveal
+3. **Stats Bar** — 4-column stats (500+ tours, 98% satisfaction, 12 regions, 40+ countries)
+4. **Featured Package** — Full-width editorial horizontal package card
+5. **Testimonials** — 3-column review cards
+6. **CTA Banner** — Obsidian bg, italic Cormorant headline, gold CTA
+
+---
+
+## Do's and Don'ts
+
+| Do | Don't |
+|----|-------|
+| Use Travertine (`#F5F0E8`) as page background | Use pure white (`#FFFFFF`) as page background |
+| Lead with Cormorant Garamond for display text (22px+) | Use Cormorant at small body sizes (<22px) |
+| Use gold (Oro) for exactly ONE CTA per section | Use gold as a background color or decorative fill |
+| Use `--space-16` (64px) minimum between major sections | Compress sections to fit more above the fold |
+| Always pair color-coded alerts with text + icon | Use red borders as the only error indicator |
+| Let the scroll be part of the journey | Prioritize information density over elegance |
+
+---
+
+## Developer Implementation
+
+### Naming Conventions
+- **CSS tokens:** kebab-case with semantic intent: `--color-[name]`, `--space-[n]`
+- **Component classes:** BEM-inspired: `.destination-card__title`, `.btn--gold`
+- **JS state:** data attributes for hooks: `data-state="open"`, never class-only state
+
+### Dark Mode Strategy
+- Use CSS custom property overrides within `@media (prefers-color-scheme: dark)` and `[data-theme="dark"]` for manual toggle.
+- All color tokens reference semantic names. Swap the token values, not the components.
+
+### Accessibility Checklist
+- All interactive elements: visible focus rings (2px oro outline)
+- Minimum touch target: 44x44px (Apple HIG standard)
+- Color contrast: 4.5:1 AA minimum for all body text
+- All images: descriptive alt attributes
+- Semantic HTML: `<nav>`, `<main>`, `<article>`, landmark roles
+- Form fields: labels linked via `for`/`id`
+- Error messages: `aria-live="polite"` regions
+- Accordion: `aria-expanded`, `aria-controls` pairs
+- Modals: focus trap, `Escape` key dismissal
+
+### Performance & Images
+- Hero images: AVIF → WebP → JPEG fallback chain
+- Lazy load all below-fold images with native `loading="lazy"`
+- Art direction: `<picture>` with mobile-optimized crops
+- LCP target: hero image ≤ 2.5s on 4G mobile
+- Fonts: `font-display: swap`, preload critical weights only
+- Subset fonts to Latin + Latin-Extended for multilingual
+- Motion: respect `prefers-reduced-motion`
+
+### Multilingual Considerations
+- **Text expansion:** German/Finnish expand English by 35%. Use flexible containers. Test all labels with German copy. Buttons must wrap gracefully.
+- **RTL (Arabic):** Use logical CSS properties (`margin-inline-start` not `margin-left`). Set `dir="rtl"` on `<html>`, use `:dir(rtl)` selectors.
+- **Font fallbacks:** Cormorant has no Arabic/CJK glyphs. Arabic → `Noto Sans Arabic`; Japanese → `Noto Serif JP`.
+- **Supported languages:** EN, IT, DE, FR, ES, AR (+ Mandarin/Japanese on request).

@@ -25,7 +25,7 @@ export function AuthNavButton() {
     return (
       <Link
         href="/dashboard"
-        className="rounded-lg border border-zinc-300 px-3 py-1.5 font-medium text-zinc-800 hover:bg-zinc-100"
+        className="inline-flex items-center gap-2 rounded-full bg-obsidian px-5 py-2.5 text-sm font-medium tracking-wide text-[#F0EAE0] transition-all duration-150 hover:bg-[#2E2921] hover:shadow-[var(--shadow-md)]"
       >
         Dashboard
       </Link>
@@ -35,10 +35,9 @@ export function AuthNavButton() {
   return (
     <Link
       href="/login"
-      className="rounded-lg border border-zinc-300 px-3 py-1.5 font-medium text-zinc-800 hover:bg-zinc-100"
+      className="inline-flex items-center gap-2 rounded-full bg-oro px-5 py-2.5 text-sm font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-bronze hover:text-white hover:shadow-[var(--shadow-gold)]"
     >
-      Log in
+      Plan Your Trip
     </Link>
   );
 }
-
