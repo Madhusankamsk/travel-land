@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatedStat } from "@/components/animated-stat";
 import { HeroSearchSection } from "@/components/hero-search-section";
+import { TestimonialsCarousel } from "@/components/testimonials-carousel";
 
 const DESTINATIONS = [
   {
@@ -13,6 +15,7 @@ const DESTINATIONS = [
     badge: "Bestseller",
     stars: 5,
     gradient: "from-[#3A2E1C] to-[#6B3A2A]",
+    image: "/leopard.jpeg",
   },
   {
     city: "Venezia",
@@ -25,6 +28,7 @@ const DESTINATIONS = [
     badgeGold: true,
     stars: 5,
     gradient: "from-[#1A4A70] to-[#2E6B9E]",
+    image: "/travel-1.jpeg",
   },
   {
     city: "Toscana",
@@ -36,6 +40,7 @@ const DESTINATIONS = [
     badge: "Limited Slots",
     stars: 4,
     gradient: "from-[#2D6A4F] to-[#5B8C3B]",
+    image: "/beach.jpeg",
   },
 ];
 
@@ -70,6 +75,78 @@ const REVIEWS = [
     name: "Fatima Al-Rashid",
     location: "Dubai, UAE · Venice & Lake Como",
     initials: "FA",
+  },
+  {
+    stars: 5,
+    quote:
+      "Tuscany in harvest season exceeded every dream. The private vineyard dinner and truffle experience were once-in-a-lifetime moments.",
+    name: "Michael & Sarah Brenner",
+    location: "Munich, Germany · Tuscany",
+    initials: "MB",
+  },
+  {
+    stars: 5,
+    quote:
+      "From the moment we landed in Naples to our last evening in Positano, every detail was flawless. The boat day along the coast was unforgettable.",
+    name: "James & Elena Torres",
+    location: "Madrid, Spain · Amalfi Coast",
+    initials: "JT",
+  },
+  {
+    stars: 5,
+    quote:
+      "Our family of five had the trip of a lifetime. The team arranged kid-friendly Colosseum access and a cooking class we still talk about.",
+    name: "David & Rachel Kim",
+    location: "Seoul, South Korea · Rome & Florence",
+    initials: "DK",
+  },
+  {
+    stars: 5,
+    quote:
+      "Lake Como was pure romance. The villa, the boat, the gardens — we felt like we had Italy to ourselves. Already planning our return.",
+    name: "Thomas & Isabelle Moreau",
+    location: "Paris, France · Lake Como",
+    initials: "TM",
+  },
+  {
+    stars: 5,
+    quote:
+      "The food experiences alone were worth the journey. Michelin dinners, family trattorias, and a secret pasta lesson in Bologna.",
+    name: "Anna & Marco Rossi",
+    location: "Milan, Italy · Bologna & Emilia-Romagna",
+    initials: "AR",
+  },
+  {
+    stars: 5,
+    quote:
+      "Sicily surprised us in the best way. Ancient ruins, stunning coastlines, and hospitality that made us feel like family.",
+    name: "William & Sophie Clarke",
+    location: "Sydney, Australia · Sicily",
+    initials: "WC",
+  },
+  {
+    stars: 5,
+    quote:
+      "Our honeymoon was everything we hoped for. Private Vatican at dawn, a sunset over the Tiber — TRAVEL-LAND.IT made it magical.",
+    name: "Alex & Jordan Taylor",
+    location: "New York, USA · Rome & Amalfi",
+    initials: "AT",
+  },
+  {
+    stars: 5,
+    quote:
+      "The attention to logistics was remarkable. Every transfer, every reservation, every surprise was executed perfectly. Zero stress.",
+    name: "Hans & Ingrid Weber",
+    location: "Zurich, Switzerland · Venice & Dolomites",
+    initials: "HW",
+  },
+  {
+    stars: 5,
+    quote:
+      "We've recommended TRAVEL-LAND.IT to everyone. Our second trip with them — Puglia — was just as exceptional as the first.",
+    name: "Robert & Linda Chen",
+    location: "Toronto, Canada · Puglia",
+    initials: "RC",
   },
 ];
 
@@ -112,13 +189,29 @@ export default function Home() {
                 key={dest.city}
                 className="group cursor-pointer overflow-hidden rounded-[20px] border border-bone bg-white shadow-[var(--shadow-sm)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lg)]"
               >
-                {/* Image placeholder */}
+                {/* Image or gradient placeholder */}
                 <div className="relative h-[220px] overflow-hidden">
-                  <div
-                    className={`flex h-full w-full items-end bg-gradient-to-br ${dest.gradient} p-4 font-[family-name:var(--font-cormorant)] text-5xl font-light italic text-white/40 transition-transform duration-500 group-hover:scale-105`}
-                  >
-                    {dest.city}
-                  </div>
+                  {"image" in dest && dest.image ? (
+                    <>
+                      <Image
+                        src={dest.image}
+                        alt=""
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                      <div
+                        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(26,23,20,0.2)_0%,rgba(107,58,42,0.35)_50%,rgba(26,23,20,0.6)_100%)]"
+                        aria-hidden
+                      />
+                    </>
+                  ) : (
+                    <div
+                      className={`flex h-full w-full items-end bg-gradient-to-br ${dest.gradient} p-4 font-[family-name:var(--font-cormorant)] text-5xl font-light italic text-white/40 transition-transform duration-500 group-hover:scale-105`}
+                    >
+                      {dest.city}
+                    </div>
+                  )}
                   <span
                     className={`absolute top-4 left-4 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider backdrop-blur-sm ${
                       dest.badgeGold
@@ -157,25 +250,47 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ==================== STATS BAR ==================== */}
-      <section className="bg-parchment py-16 lg:py-20">
-        <div className="mx-auto grid max-w-[1440px] grid-cols-2 gap-4 px-6 sm:grid-cols-4 lg:px-20">
-          {STATS.map((stat) => (
-            <div
-              key={stat.label}
-              className="rounded-[20px] border border-bone bg-white p-6 text-center shadow-[var(--shadow-sm)]"
-            >
-              <p className="font-[family-name:var(--font-cormorant)] text-[40px] font-medium leading-none text-obsidian">
-                {stat.value}
-                {stat.suffix && (
-                  <span className="text-[28px] text-oro">{stat.suffix}</span>
-                )}
-              </p>
-              <p className="mt-2 text-xs tracking-wide text-[#7A7060]">
-                {stat.label}
-              </p>
-            </div>
-          ))}
+      {/* ==================== ABOUT US ==================== */}
+      <section className="relative overflow-hidden py-16 lg:py-24" aria-labelledby="about-us-heading">
+        {/* Background image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/background-img-1.jpeg"
+            alt=""
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+            priority={false}
+          />
+        </div>
+        {/* Dark overlay */}
+        <div
+          className="absolute inset-0 bg-[#1A1714]/88"
+          aria-hidden
+        />
+        <div className="relative z-10 mx-auto max-w-[1440px] px-6 text-center lg:px-20">
+          <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-[#E8D5A3]">
+            Who We Are
+          </p>
+          <h2
+            id="about-us-heading"
+            className="mb-4 text-center font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-tight tracking-tight text-[#F0EAE0]"
+          >
+            Crafting Bespoke Italian Journeys
+          </h2>
+          <p className="mx-auto mb-12 max-w-[640px] text-center text-[15px] leading-relaxed text-[#B5A890]">
+            We are a team of in-country travel experts passionate about Italy. From private Vatican access to hidden trattorias and villa stays, we design journeys that blend cultural depth with effortless luxury—exclusively for the discerning traveler.
+          </p>
+          <div className="mx-auto mb-12 grid max-w-[1440px] grid-cols-2 gap-4 sm:grid-cols-4">
+            {STATS.map((stat) => (
+              <AnimatedStat
+                key={stat.label}
+                value={parseInt(stat.value, 10)}
+                suffix={stat.suffix ?? ""}
+                label={stat.label}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -263,45 +378,18 @@ export default function Home() {
       </section>
 
       {/* ==================== TESTIMONIALS ==================== */}
-      <section className="bg-parchment py-16 lg:py-24">
+      <section className="bg-parchment py-16 lg:py-24" aria-labelledby="testimonials-heading">
         <div className="mx-auto max-w-[1440px] px-6 lg:px-20">
           <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
             Guest Stories
           </p>
-          <h2 className="mb-12 font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-tight tracking-tight text-obsidian">
+          <h2
+            id="testimonials-heading"
+            className="mb-12 font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-tight tracking-tight text-obsidian"
+          >
             What Our Travelers Say
           </h2>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {REVIEWS.map((review) => (
-              <div
-                key={review.name}
-                className="rounded-[20px] border border-bone bg-white p-8 shadow-[var(--shadow-sm)]"
-              >
-                <div className="mb-4 flex gap-[3px] text-base text-oro">
-                  {Array.from({ length: review.stars }, (_, i) => (
-                    <span key={i}>★</span>
-                  ))}
-                </div>
-                <p className="mb-6 font-[family-name:var(--font-cormorant)] text-xl font-normal italic leading-relaxed text-obsidian">
-                  &ldquo;{review.quote}&rdquo;
-                </p>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-bone bg-parchment font-[family-name:var(--font-cormorant)] text-lg font-medium text-terracotta">
-                    {review.initials}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-obsidian">
-                      {review.name}
-                    </p>
-                    <p className="text-xs text-[#7A7060]">
-                      {review.location}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <TestimonialsCarousel reviews={REVIEWS} />
         </div>
       </section>
 
