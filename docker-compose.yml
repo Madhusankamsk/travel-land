@@ -18,7 +18,7 @@ services:
       retries: 5
 
   app:
-    image: travel-land-app:0.1.0
+    image: travel-land-app:0.1.1
     build: .
     restart: unless-stopped
     depends_on:
@@ -28,6 +28,9 @@ services:
       NODE_ENV: production
       DATABASE_URL: postgresql://postgres:postgres@db:5432/postgres
       DIRECT_URL: postgresql://postgres:postgres@db:5432/postgres
+      # Reach host's Supabase API (for image/PDF uploads). Run `supabase start` on the host first.
+      SUPABASE_URL: http://host.docker.internal:54321
+      SUPABASE_SERVICE_ROLE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU
     volumes:
       - uploads_data:/app/public/uploads
     ports:
@@ -55,7 +58,8 @@ services:
       PG_META_DB_PASSWORD: postgres
       PG_META_CRYPTO_KEY: "T travel-land-meta-crypto-key 32bytes!!"
 
-  # Supabase Studio (dashboard) – open http://localhost:54323
+  # Supabase Studio (dashboard). Start with: docker compose up -d meta studio
+  # Then open: http://localhost:54323
   studio:
     image: supabase/studio:latest
     restart: unless-stopped

@@ -69,13 +69,21 @@ export async function createTrip(formData: FormData) {
   let heroImageUrl: string | null = null;
   const heroFile = formData.get("heroImage") as File | null;
   if (heroFile?.size && heroFile.size > 0) {
-    heroImageUrl = await saveTourFile(heroFile, "hero");
+    try {
+      heroImageUrl = await saveTourFile(heroFile, "hero");
+    } catch {
+      // Supabase unreachable (e.g. in Docker without reachable SUPABASE_URL) — save trip without image
+    }
   }
 
   let programPdfUrl: string | null = null;
   const pdfFile = formData.get("programPdf") as File | null;
   if (pdfFile?.size && pdfFile.size > 0) {
-    programPdfUrl = await saveTourFile(pdfFile, "program");
+    try {
+      programPdfUrl = await saveTourFile(pdfFile, "program");
+    } catch {
+      // Supabase unreachable — save trip without PDF
+    }
   }
 
   const status = (formData.get("status") as string) === "ARCHIVED" ? "ARCHIVED" : "UPCOMING";
@@ -137,13 +145,23 @@ export async function updateTrip(tourId: string, formData: FormData) {
   let heroImageUrl = existing.heroImageUrl;
   const heroFile = formData.get("heroImage") as File | null;
   if (heroFile?.size && heroFile.size > 0) {
-    heroImageUrl = await saveTourFile(heroFile, "hero");
+    try {
+      const url = await saveTourFile(heroFile, "hero");
+      if (url) heroImageUrl = url;
+    } catch {
+      // Supabase unreachable — keep existing hero image
+    }
   }
 
   let programPdfUrl = existing.programPdfUrl;
   const pdfFile = formData.get("programPdf") as File | null;
   if (pdfFile?.size && pdfFile.size > 0) {
-    programPdfUrl = await saveTourFile(pdfFile, "program");
+    try {
+      const url = await saveTourFile(pdfFile, "program");
+      if (url) programPdfUrl = url;
+    } catch {
+      // Supabase unreachable — keep existing PDF
+    }
   }
 
   const status = (formData.get("status") as string) === "ARCHIVED" ? "ARCHIVED" : "UPCOMING";
