@@ -12,9 +12,9 @@ out
 *.md
 !README.md
 
-# Env (use compose env instead)
+# Env — only .env is copied into build context
 .env*
-!.env.local.example
+!.env
 
 # Misc
 .DS_Store

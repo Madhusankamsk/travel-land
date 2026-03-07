@@ -2,6 +2,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { DeleteTripButton } from "./delete-trip-button";
 
+export const dynamic = "force-dynamic";
+
 export default async function TripsPage() {
   const tours = await prisma.tour.findMany({
     orderBy: { updatedAt: "desc" },

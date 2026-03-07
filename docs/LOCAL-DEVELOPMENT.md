@@ -14,11 +14,7 @@ Run Supabase (Postgres, Studio, API) locally so you don’t need the cloud and a
    npm install
    ```
 
-2. **Create local env** (so Prisma and the app use the local DB):
-   ```bash
-   cp .env.local.example .env.local
-   ```
-   No need to edit `.env.local` unless you want to change the default local DB URL.
+2. **Env:** `.env` is in the repo. For local Supabase, create `.env.local` with `DIRECT_URL=postgresql://postgres:postgres@localhost:54322/postgres` so Prisma uses the local DB (optional; `.env.local` overrides `.env`).
 
 ## Daily workflow
 
