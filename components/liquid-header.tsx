@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AuthNavButton } from "@/components/auth-nav-button";
 
+const EDGE_ZONE = 22; // % from left/right where hover triggers edge reflection
+
 export function LiquidHeader() {
   const [scrollY, setScrollY] = useState(0);
   const [isOverlapping, setIsOverlapping] = useState(false);
+  const [hoverXPercent, setHoverXPercent] = useState<number | null>(null);
   const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,13 +29,39 @@ export function LiquidHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const onMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const el = headerRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      setHoverXPercent(x);
+    },
+    []
+  );
+
+  const onMouseLeave = useCallback(() => {
+    setHoverXPercent(null);
+  }, []);
+
   const progress = Math.min(scrollY / 200, 1);
+
+  const leftEdgeOpacity =
+    hoverXPercent === null ? 0.55 : hoverXPercent < EDGE_ZONE ? 0.55 * (1 - hoverXPercent / EDGE_ZONE) : 0.55;
+  const rightEdgeOpacity =
+    hoverXPercent === null
+      ? 0.55
+      : hoverXPercent > 100 - EDGE_ZONE
+        ? 0.55 * (1 - (hoverXPercent - (100 - EDGE_ZONE)) / EDGE_ZONE)
+        : 0.55;
 
   return (
     <header className="sticky top-0 z-50 px-4 pt-3 lg:px-6">
       <div
         ref={headerRef}
-        className={`liquid-surface mx-auto max-w-[1440px] rounded-2xl transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+        onMouseMove={onMouseMove}
+        onMouseLeave={onMouseLeave}
+        className={`liquid-surface liquid-surface--nav mx-auto max-w-[1440px] rounded-2xl transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
           isOverlapping ? "liquid-surface--overlap" : ""
         }`}
         style={{
@@ -41,9 +70,15 @@ export function LiquidHeader() {
           "--liquid-border-opacity": isOverlapping ? 0.4 : 0.3,
           "--liquid-shadow-intensity": progress * 0.14,
           "--liquid-glow-opacity": progress * 0.5,
+          "--liquid-edge-left": String(leftEdgeOpacity),
+          "--liquid-edge-right": String(rightEdgeOpacity),
         } as React.CSSProperties}
       >
-        <div className="flex h-[64px] items-center justify-between px-5 lg:px-8">
+        <div
+          className="liquid-surface-edge-reflection"
+          aria-hidden
+        />
+        <div className="relative z-10 flex h-[64px] items-center justify-between px-5 lg:px-8">
           <Link href="/" className="flex items-center">
             <Image
               src="/Logo.png"

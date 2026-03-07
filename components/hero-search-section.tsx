@@ -29,22 +29,34 @@ export function HeroSearchSection() {
   return (
     <section
       className={`relative flex min-h-[85vh] flex-col justify-end overflow-hidden pt-[5.5rem] transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
-        searchExpanded ? "-mt-[5.5rem] bg-travertine min-h-[70vh]" : "-mt-[5.5rem] bg-obsidian"
+        searchExpanded ? "-mt-[5.5rem] min-h-[70vh]" : "-mt-[5.5rem] bg-obsidian"
       }`}
     >
-      {/* Hero image — visible only when collapsed */}
-      {!searchExpanded && (
-        <>
-          <Image
-            src="/hero1.jpg"
-            alt="Dramatic sunset through ancient stone arches"
-            fill
-            className="object-cover object-top"
-            priority
-          />
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_100%_60%_at_50%_100%,rgba(26,23,20,0.8)_0%,transparent_60%),radial-gradient(ellipse_80%_80%_at_20%_20%,rgba(46,107,158,0.15)_0%,transparent_50%),radial-gradient(ellipse_60%_60%_at_80%_80%,rgba(184,150,62,0.08)_0%,transparent_50%)]" />
-        </>
-      )}
+      {/* Hero image — always visible; when search expanded: zoom in + blur + reduced opacity */}
+      <div
+        className={`absolute inset-0 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+          searchExpanded ? "scale-110 opacity-50" : "scale-100 opacity-100"
+        }`}
+        style={{ filter: searchExpanded ? "blur(10px)" : "blur(0)" }}
+      >
+        <Image
+          src="/hero1.jpg"
+          alt="Dramatic sunset through ancient stone arches"
+          fill
+          className="object-cover object-top"
+          priority
+        />
+      </div>
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_100%_60%_at_50%_100%,rgba(26,23,20,0.8)_0%,transparent_60%),radial-gradient(ellipse_80%_80%_at_20%_20%,rgba(46,107,158,0.15)_0%,transparent_50%),radial-gradient(ellipse_60%_60%_at_80%_80%,rgba(184,150,62,0.08)_0%,transparent_50%)]"
+        aria-hidden
+      />
+      <div
+        className={`pointer-events-none absolute inset-0 bg-travertine transition-opacity duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+          searchExpanded ? "opacity-60" : "opacity-0"
+        }`}
+        aria-hidden
+      />
 
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-10 pt-24 lg:px-12 lg:pb-14 lg:pt-28">
         <div
