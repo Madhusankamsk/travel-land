@@ -146,7 +146,7 @@ export function BookingDatePicker({ searchExpanded, isSelected, onOpenChange }: 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  const handleSelect = (d: Date) => {
+  const handleSelect = (d: number) => {
     const day = new Date(view.year, view.month, d);
     if (!checkIn || (checkIn && checkOut)) {
       setCheckIn(day);
@@ -247,7 +247,7 @@ export function BookingDatePicker({ searchExpanded, isSelected, onOpenChange }: 
                     key={day}
                     type="button"
                     disabled={isPast}
-                    onClick={() => !isPast && handleSelect(date)}
+                    onClick={() => !isPast && handleSelect(day)}
                     className={`flex h-9 items-center justify-center rounded-md text-[13px] transition-colors ${
                       isPast
                         ? "cursor-not-allowed text-[#B5A890]/40"
