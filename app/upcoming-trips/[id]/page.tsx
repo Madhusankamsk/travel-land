@@ -46,6 +46,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
                 fill
                 className="object-cover"
                 sizes="100vw"
+                unoptimized
               />
             </div>
           )}

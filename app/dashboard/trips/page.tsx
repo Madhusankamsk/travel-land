@@ -4,11 +4,19 @@ import { DeleteTripButton } from "./delete-trip-button";
 
 export const dynamic = "force-dynamic";
 
+const tripsQuery = {
+  orderBy: { updatedAt: "desc" as const },
+  include: { days: { orderBy: { order: "asc" as const } } },
+} as const;
+
 export default async function TripsPage() {
-  const tours = await prisma.tour.findMany({
-    orderBy: { updatedAt: "desc" },
-    include: { days: { orderBy: { order: "asc" } } },
-  });
+  let tours: Awaited<ReturnType<typeof prisma.tour.findMany<typeof tripsQuery>>> =
+    [];
+  try {
+    tours = await prisma.tour.findMany(tripsQuery);
+  } catch {
+    // Table may not exist yet or DB unreachable — show empty state
+  }
 
   return (
     <div className="flex flex-col gap-6">

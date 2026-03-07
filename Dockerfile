@@ -26,25 +26,24 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Non-root user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+# Non-root user + su-exec to drop privileges after entrypoint
+RUN addgroup --system --gid 1001 nodejs \
+  && adduser --system --uid 1001 nextjs \
+  && apk add --no-cache su-exec
 
 COPY --from=builder /app/public ./public
+RUN mkdir -p public/uploads/tours && chown -R nextjs:nodejs public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/prisma.config.ts ./
 COPY --from=builder /app/package.json ./
-# Full node_modules so entrypoint can run prisma migrate deploy
 COPY --from=builder /app/node_modules ./node_modules
 
-# Entrypoint runs migrations as root, then exec as nextjs
 COPY docker-entrypoint.sh ./
 RUN sed -i 's/\r$//' docker-entrypoint.sh && chmod +x docker-entrypoint.sh
 
-USER nextjs
-
+# Run as root so entrypoint can chown volume; entrypoint drops to nextjs for server
 EXPOSE 3000
 
 ENV PORT=3000
