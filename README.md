@@ -17,16 +17,6 @@ On first run, the app container will apply Prisma migrations and then start. To 
 docker compose exec app npx prisma db seed
 ```
 
-### Development with Docker
-
-For local development with hot reload and the same Postgres:
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
-```
-
-This mounts your source into the container and runs `npm run dev`. If you add npm dependencies, rebuild: `docker compose -f docker-compose.yml -f docker-compose.dev.yml build app`.
-
 ### Without Docker
 
 See [docs/LOCAL-DEVELOPMENT.md](docs/LOCAL-DEVELOPMENT.md) for running with Supabase CLI and Node locally.

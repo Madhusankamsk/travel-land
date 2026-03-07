@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { config } from "dotenv";
 import { hash } from "bcryptjs";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 config({ path: ".env.local", override: true });
@@ -12,30 +12,54 @@ if (!connectionString) throw new Error("DATABASE_URL or DIRECT_URL required");
 const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
+async function ensureUserProfileColumns() {
+  await prisma.$executeRawUnsafe(
+    'ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "firstName" TEXT;'
+  );
+  await prisma.$executeRawUnsafe(
+    'ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "lastName" TEXT;'
+  );
+  await prisma.$executeRawUnsafe(
+    'ALTER TABLE "users" ADD COLUMN IF NOT EXISTS "mobile" TEXT;'
+  );
+  try {
+    await prisma.$executeRawUnsafe(
+      'CREATE UNIQUE INDEX IF NOT EXISTS "users_mobile_key" ON "users"("mobile");'
+    );
+  } catch {
+    // Index may already exist
+  }
+}
+
 async function main() {
+  await ensureUserProfileColumns();
+
   const email = "aaa@bbb.com";
-  const plainPassword = "123456";
-  const hashedPassword = await hash(plainPassword, 10);
+  const hashedPassword = await hash("123456", 10);
+
+  const createData: Prisma.UserCreateInput = {
+    email,
+    password: hashedPassword,
+    firstName: "Admin",
+    lastName: "User",
+    mobile: "0000000000",
+    role: "admin",
+    is_active: true,
+  } as Prisma.UserCreateInput;
+
+  const updateData: Prisma.UserUpdateInput = {
+    password: hashedPassword,
+    firstName: "Admin",
+    lastName: "User",
+    mobile: "0000000000",
+    role: "admin",
+    is_active: true,
+  } as Prisma.UserUpdateInput;
 
   await prisma.user.upsert({
     where: { email },
-    update: {
-      password: hashedPassword,
-      firstName: "Admin",
-      lastName: "User",
-      mobile: "0000000000",
-      role: "admin",
-      is_active: true,
-    },
-    create: {
-      email,
-      password: hashedPassword,
-      firstName: "Admin",
-      lastName: "User",
-      mobile: "0000000000",
-      role: "admin",
-      is_active: true,
-    },
+    update: updateData,
+    create: createData,
   });
 
   console.log("Seed done: admin user", email);
