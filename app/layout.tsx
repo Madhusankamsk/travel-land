@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from "next/font/google";
 import { Toaster } from "@/components/toaster";
 import { CookieConsent } from "@/components/cookie-consent";
-import { AuthNavButton } from "@/components/auth-nav-button";
+import { LiquidHeader } from "@/components/liquid-header";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -46,50 +47,7 @@ export default function RootLayout({
         className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable} antialiased`}
       >
         <div className="flex min-h-screen flex-col">
-          <header className="sticky top-0 z-50 border-b border-bone bg-travertine/88 backdrop-blur-[20px] backdrop-saturate-[180%]">
-            <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-6 lg:px-20">
-              <Link href="/" className="flex items-center gap-2">
-                <span className="font-[family-name:var(--font-cormorant)] text-xl font-medium tracking-wide text-obsidian">
-                  TRAVEL-LAND
-                  <span className="text-oro">.IT</span>
-                </span>
-              </Link>
-
-              <nav className="hidden items-center gap-8 md:flex">
-                <Link
-                  href="/upcoming-trips"
-                  className="text-[13px] font-medium tracking-wide text-obsidian/70 transition-opacity duration-150 hover:text-obsidian"
-                >
-                  Destinations
-                </Link>
-                <Link
-                  href="/catalogs"
-                  className="text-[13px] font-medium tracking-wide text-obsidian/70 transition-opacity duration-150 hover:text-obsidian"
-                >
-                  Experiences
-                </Link>
-                <Link
-                  href="/travel-history"
-                  className="text-[13px] font-medium tracking-wide text-obsidian/70 transition-opacity duration-150 hover:text-obsidian"
-                >
-                  Itineraries
-                </Link>
-                <Link
-                  href="/who-we-are"
-                  className="text-[13px] font-medium tracking-wide text-obsidian/70 transition-opacity duration-150 hover:text-obsidian"
-                >
-                  About
-                </Link>
-              </nav>
-
-              <div className="flex items-center gap-4">
-                <button className="hidden items-center gap-1.5 rounded-full border border-bone px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-obsidian transition-colors duration-150 hover:border-obsidian sm:flex">
-                  EN · IT · DE
-                </button>
-                <AuthNavButton />
-              </div>
-            </div>
-          </header>
+          <LiquidHeader />
 
           <main className="flex-1">{children}</main>
 
@@ -97,9 +55,13 @@ export default function RootLayout({
             <div className="mx-auto max-w-[1440px] px-6 py-16 lg:px-20 lg:py-24">
               <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
                 <div>
-                  <p className="mb-4 font-[family-name:var(--font-cormorant)] text-[28px] font-normal">
-                    TRAVEL-LAND<span className="text-oro">.IT</span>
-                  </p>
+                  <Image
+                    src="/Logo.png"
+                    alt="TRAVEL-LAND.IT"
+                    width={180}
+                    height={60}
+                    className="mb-4 h-14 w-auto brightness-0 invert"
+                  />
                   <p className="mb-6 font-[family-name:var(--font-cormorant)] text-base italic text-[#7A7060]">
                     Italy, Curated for You.
                   </p>

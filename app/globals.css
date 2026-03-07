@@ -99,6 +99,263 @@ body {
   outline-offset: 2px;
 }
 
+/* ============================================================
+   LIQUID GLASS SURFACES
+   ============================================================ */
+
+/* Base liquid surface — shared by header and hero */
+.liquid-surface {
+  position: relative;
+  background: rgba(255, 255, 255, var(--liquid-bg-opacity, 0.6));
+  backdrop-filter: blur(var(--liquid-blur, 20px)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--liquid-blur, 20px)) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, var(--liquid-border-opacity, 0.3));
+  box-shadow:
+    0 8px 32px rgba(26, 23, 20, var(--liquid-shadow-intensity, 0.08)),
+    0 1px 2px rgba(26, 23, 20, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Animated specular highlight that moves across the surface */
+.liquid-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.08) 45%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.08) 55%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  animation: liquid-shimmer 8s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Soft glow that intensifies when overlapping */
+.liquid-surface::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 60% 100% at 50% 100%,
+    rgba(255, 255, 255, var(--liquid-glow-opacity, 0)) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  transition: opacity 600ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Header overlap state — glass thickens and glow appears */
+.liquid-surface--overlap {
+  box-shadow:
+    0 12px 48px rgba(26, 23, 20, var(--liquid-shadow-intensity, 0.12)),
+    0 2px 4px rgba(26, 23, 20, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 20px 40px -12px rgba(255, 255, 255, 0.06);
+}
+
+.liquid-surface--overlap::after {
+  opacity: 1;
+}
+
+/* Edge reflection — when hovering near left/right, glass reflects background (more transparent at that edge) */
+.liquid-surface--nav {
+  overflow: hidden;
+  /* Gradient background so edges can become more transparent on hover and show backdrop */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, var(--liquid-edge-left, 0.55)) 0%,
+    rgba(255, 255, 255, var(--liquid-bg-opacity, 0.6)) 18%,
+    rgba(255, 255, 255, var(--liquid-bg-opacity, 0.6)) 82%,
+    rgba(255, 255, 255, var(--liquid-edge-right, 0.55)) 100%
+  ) !important;
+  transition: background 220ms ease-out;
+}
+
+.liquid-surface-edge-reflection {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  /* Subtle inner edge highlight so the reflection reads as glass; main transparency is on parent background */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 18%,
+    transparent 82%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  transition: opacity 180ms ease-out;
+}
+
+/* Dark variant for hero glass container */
+.liquid-surface-dark {
+  position: relative;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 8px 32px rgba(26, 23, 20, 0.12),
+    0 1px 2px rgba(26, 23, 20, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: all 500ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Animated specular for dark surface */
+.liquid-surface-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.04) 40%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.04) 60%,
+    transparent 75%
+  );
+  background-size: 250% 100%;
+  animation: liquid-shimmer 10s ease-in-out infinite;
+  animation-delay: -3s;
+  pointer-events: none;
+}
+
+/* Top glow on hero glass — "reaching up" toward header */
+.liquid-surface-dark::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 80% 30% at 50% 0%,
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  animation: liquid-breathe 6s ease-in-out infinite;
+}
+
+.liquid-surface-dark:hover {
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 12px 48px rgba(26, 23, 20, 0.16),
+    0 2px 4px rgba(26, 23, 20, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transform: translateY(-2px);
+}
+
+/* Nested glass — booking bar inside hero */
+.liquid-surface-inner {
+  position: relative;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 4px 16px rgba(26, 23, 20, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: all 400ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.liquid-surface-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    100deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.1) 48%,
+    rgba(255, 255, 255, 0.18) 52%,
+    rgba(255, 255, 255, 0.1) 55%,
+    transparent 65%
+  );
+  background-size: 300% 100%;
+  animation: liquid-shimmer 7s ease-in-out infinite;
+  animation-delay: -1.5s;
+  pointer-events: none;
+}
+
+.liquid-surface-inner:hover {
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow:
+    0 8px 32px rgba(26, 23, 20, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Nav link hover liquid pill effect */
+.liquid-nav-link {
+  position: relative;
+  padding: 6px 0;
+}
+
+.liquid-nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--color-oro);
+  border-radius: 1px;
+  transition: all 400ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translateX(-50%);
+  opacity: 0;
+}
+
+.liquid-nav-link:hover::after {
+  width: 100%;
+  opacity: 1;
+}
+
+/* Pill button liquid press */
+.liquid-pill {
+  transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.liquid-pill:active {
+  transform: scale(0.94);
+}
+
+/* ============================================================
+   LIQUID KEYFRAMES
+   ============================================================ */
+
+/* Specular highlight sweep */
+@keyframes liquid-shimmer {
+  0%, 100% {
+    background-position: 200% 0;
+  }
+  50% {
+    background-position: -50% 0;
+  }
+}
+
+/* Subtle breathing glow */
+@keyframes liquid-breathe {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.05);
+  }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

@@ -1,0 +1,47 @@
+---
+description: Hero search expand/collapse and header container behavior. Reference when changing the search bar, Check In field, or header.
+alwaysApply: false
+---
+
+# Hero Search & Header Container Mechanism
+
+Rules for the expandable hero search and how the header/section container responds. Keep this behavior consistent when editing `HeroSearchSection`, `BookingDatePicker`, or `LiquidHeader`.
+
+---
+
+## Search bar expansion (hero container)
+
+1. **Trigger** — Clicking anywhere on the **search bar container** must set the hero to “expanded” state. That includes:
+   - The **Destination** cell (label + value)
+   - The **Check In** cell (label + value; also opens the date calendar)
+   - The **Travelers** cell (label + value)
+   - Any empty area inside the search bar grid
+
+2. **Do not stop propagation** on the Check In field. The Check In control opens the date picker and must also let the click bubble to the search bar container so `setSearchExpanded(true)` runs. If the Check In trigger uses `stopPropagation()`, the header/section container will not switch to expanded state when the user clicks Check In.
+
+3. **Expanded state** — When `searchExpanded === true`:
+   - Section background becomes **travertine**; hero image is hidden; headline block is collapsed.
+   - The inner card becomes a **white / parchment** “large search” surface with “Where are you going?” and the search grid.
+   - A **back** control (e.g. back icon button) collapses the search and returns to the hero view.
+
+4. **Collapse** — Clicking the back control or clicking outside the white card (using a ref and `mousedown` on document) sets `searchExpanded` to `false`.
+
+---
+
+## Header (liquid header) and buttons
+
+1. **LiquidHeader** is independent of search expansion. Its overlap / “thickened” state is driven by **scroll** (e.g. `scrollY > 60`), not by `searchExpanded`.
+
+2. **Header buttons** (nav links, language pill, auth) do not control the hero search expansion. They are separate from the hero search bar. Only the hero search bar container and its children (Destination, Check In, Travelers) and the back control drive expand/collapse.
+
+3. When adding new interactive elements inside the **search bar grid**, ensure they either:
+   - Call `setSearchExpanded(true)` on click, or
+   - Do not call `stopPropagation()` so the container’s `onClick` still runs and expands the view.
+
+---
+
+## Files involved
+
+- **Hero search state and container:** `components/hero-search-section.tsx` — `searchExpanded`, `setSearchExpanded`, `containerRef` for outside-click close.
+- **Check In and calendar:** `components/booking-date-picker.tsx` — trigger must not stop propagation so the grid receives the click.
+- **Header styling:** `components/liquid-header.tsx` — scroll-based overlap only.
