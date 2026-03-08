@@ -6,49 +6,48 @@ import { TestimonialsCarousel } from "@/components/testimonials-carousel";
 
 const DESTINATIONS = [
   {
-    city: "Roma",
-    region: "Lazio, Italy",
-    title: "Roma Eterna — 7 Nights",
+    city: "EGITTO",
+    region: "Storico Viaggi",
+    title: "Cairo e Alessandria — 2026",
     description:
-      "Private Colosseum access, Vatican at dawn, hidden rioni and Michelin dining.",
-    price: "€6,400",
-    badge: "Bestseller",
+      "Dal 05 al 09 marzo 2026. Partendo dalla capitale Il Cairo: Necropoli di Giza con le Piramidi e il Grand Egyptian Museum, la mitica Alessandria e il nuovo Museo Egizio. Guida Selim, egittologo con trent'anni di esperienza; programma esclusivo Travelland con visite a nuovi siti archeologici e chiese di storia millenaria. Quota 5 giorni tutto incluso: 1.380 Euro - Sup. singola 120 Euro.",
+    price: "€1,380",
+    badge: "Storico Viaggi",
     stars: 5,
-    gradient: "from-[#3A2E1C] to-[#6B3A2A]",
-    image: "/leopard.jpeg",
+    gradient: "from-[#8B6914] to-[#6B3A2A]",
+    image: "/temp/Egitto.jpg",
   },
   {
-    city: "Venezia",
-    region: "Veneto, Italy",
-    title: "La Serenissima — 5 Nights",
+    city: "ISLANDA",
+    region: "Storico Viaggi · 2026",
+    title: "Aurora Boreale — 6 Giorni",
     description:
-      "Private gondola, Palazzo stay, Murano glass workshop, exclusive Biennale access.",
-    price: "€9,200",
-    badge: "Exclusive",
-    badgeGold: true,
+      "Dal 24 al 29 gennaio 2026. Viaggio on the road invernale: Circolo d'Oro, Parco di Thingvellir, geyser, cascate Gullfoss, ghiacciaio e iceberg a Jökulsárlón, Diamond Beach, grotte di ghiaccio, aurora boreale, avvistamento balene, acque termali. Quota 1.720 Euro — Sup. singola 420 Euro.",
+    price: "€1,720",
+    badge: "Storico Viaggi",
     stars: 5,
     gradient: "from-[#1A4A70] to-[#2E6B9E]",
-    image: "/travel-1.jpeg",
+    image: "/temp/ISLANDA.jpg",
   },
   {
-    city: "Toscana",
-    region: "Tuscany, Italy",
-    title: "Chianti Harvest Week",
+    city: "SRI LANKA",
+    region: "Storico Viaggi · 2026",
+    title: "Sri Lanka, Doha & Maldives — 12 Giorni",
     description:
-      "Participate in the vendemmia, private cellar tastings, villa stay, truffle hunting.",
-    price: "€5,800",
-    badge: "Limited Slots",
-    stars: 4,
+      "Dal 3 al 14 febbraio 2026. La terra della felicità: Colombo in festa per l'Independence Day, Pinnawala, Sigiriya Rock, Polonnaruwa, Anuradhapura, Dambulla, Kandy e il Tempio del Dente, tea plantation, Yala safari, Galle. Opzione estensione 2 giorni a Doha o 6 giorni alle Maldive. Quota su richiesta.",
+    price: "Su richiesta",
+    badge: "Storico Viaggi",
+    stars: 5,
     gradient: "from-[#2D6A4F] to-[#5B8C3B]",
-    image: "/beach.jpeg",
+    image: "/temp/SRI LANKA.avif",
   },
 ];
 
 const STATS = [
-  { value: "500", suffix: "+", label: "Curated Tours" },
-  { value: "98", suffix: "%", label: "Guest Satisfaction" },
-  { value: "12", suffix: "", label: "Italian Regions" },
-  { value: "40", suffix: "+", label: "Countries Served" },
+  { value: "500", suffix: "+", label: "Viaggi curati" },
+  { value: "98", suffix: "%", label: "Soddisfazione clienti" },
+  { value: "12", suffix: "", label: "Regioni d'Italia" },
+  { value: "40", suffix: "+", label: "Paesi nel mondo" },
 ];
 
 const REVIEWS = [
@@ -172,15 +171,15 @@ export default function Home() {
       <section className="py-16 lg:py-24">
         <div className="mx-auto max-w-[1440px] px-6 lg:px-20">
           <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
-            Curated Destinations
+            Prossimi viaggi
           </p>
           <h2 className="mb-4 font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-tight tracking-tight text-obsidian">
-            Where Will Italy Take You?
+            I nostri tour e le mete che amiamo
           </h2>
           <p className="mb-12 max-w-[640px] text-[15px] leading-relaxed text-obsidian/65">
-            Each journey is handcrafted by our in-country specialists, blending
-            cultural depth with effortless luxury logistics across Italy&apos;s
-            most coveted regions.
+            Viaggi su misura e in gruppo, in Italia e nel mondo. Storico Viaggi e
+            proposte esclusive con accompagnatore, per vivere cultura, natura e
+            emozioni in tutta serenità.
           </p>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -235,10 +234,10 @@ export default function Home() {
                   </p>
                   <div className="flex items-center justify-between border-t border-bone pt-4">
                     <div>
-                      <p className="text-[11px] text-[#7A7060]">From</p>
+                      <p className="text-[11px] text-[#7A7060]">Da</p>
                       <p className="font-[family-name:var(--font-cormorant)] text-[22px] font-medium text-obsidian">
                         {dest.price}{" "}
-                        <span className="text-[13px] opacity-60">pp</span>
+                        <span className="text-[13px] opacity-60">a pers.</span>
                       </p>
                     </div>
                     <StarRating count={dest.stars} />
@@ -246,6 +245,15 @@ export default function Home() {
                 </div>
               </article>
             ))}
+          </div>
+
+          <div className="mt-10 flex justify-center">
+            <Link
+              href="/upcoming-trips"
+              className="inline-flex items-center rounded-full bg-parchment px-7 py-3.5 text-sm font-medium tracking-wide text-siena transition-all duration-150 hover:bg-bone/80 active:scale-[0.97] focus:outline-2 focus:outline-oro focus:outline-offset-3"
+            >
+              Vedi tutti
+            </Link>
           </div>
         </div>
       </section>
@@ -270,16 +278,16 @@ export default function Home() {
         />
         <div className="relative z-10 mx-auto max-w-[1440px] px-6 text-center lg:px-20">
           <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-[#E8D5A3]">
-            Who We Are
+            Chi siamo
           </p>
           <h2
             id="about-us-heading"
             className="mb-4 text-center font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-tight tracking-tight text-[#F0EAE0]"
           >
-            Crafting Bespoke Italian Journeys
+            Agenzia di viaggi e tour operator
           </h2>
           <p className="mx-auto mb-12 max-w-[640px] text-center text-[15px] leading-relaxed text-[#B5A890]">
-            We are a team of in-country travel experts passionate about Italy. From private Vatican access to hidden trattorias and villa stays, we design journeys that blend cultural depth with effortless luxury—exclusively for the discerning traveler.
+            Siamo un&apos;agenzia con sede a Sesto San Giovanni (Milano). Progettiamo viaggi su misura e di gruppo in Italia e nel mondo: cultura, natura, esperienze autentiche e la cura dei dettagli che fa la differenza.
           </p>
           <div className="mx-auto mb-12 grid max-w-[1440px] grid-cols-2 gap-4 sm:grid-cols-4">
             {STATS.map((stat) => (
@@ -298,63 +306,72 @@ export default function Home() {
       <section className="py-16 lg:py-24">
         <div className="mx-auto max-w-[1440px] px-6 lg:px-20">
           <article className="overflow-hidden rounded-[20px] border border-bone bg-white shadow-[var(--shadow-sm)] lg:grid lg:grid-cols-[280px_1fr]">
-            {/* Image placeholder */}
-            <div className="relative flex min-h-[240px] items-end bg-gradient-to-br from-[#8B6914] to-[#B8963E] p-6 lg:min-h-full">
-              <span className="font-[family-name:var(--font-cormorant)] text-[56px] font-light italic leading-none text-white/90 drop-shadow-lg">
-                Amalfi
-              </span>
+            {/* Image */}
+            <div className="relative min-h-[240px] overflow-hidden lg:min-h-full">
+              <Image
+                src="/temp/Naples.jpg"
+                alt="Naples and Amalfi Coast"
+                fill
+                className="object-cover object-center"
+                sizes="(max-width: 1024px) 100vw, 280px"
+              />
+              <div
+                className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#1A1714]/70 via-transparent to-transparent"
+                aria-hidden
+              />
             </div>
 
             <div className="flex flex-col justify-between p-6 lg:p-8">
               <div>
                 <div className="mb-4 flex flex-wrap gap-2">
                   <span className="rounded-full border border-oro/30 bg-oro/10 px-2.5 py-1 text-[11px] font-medium tracking-wide text-bronze">
-                    ✦ Luxury
+                    Storico Viaggi
                   </span>
                   <span className="rounded-full border border-azure/25 bg-azure/8 px-2.5 py-1 text-[11px] font-medium tracking-wide text-azure">
-                    Bestseller
+                    New Year&apos;s
                   </span>
                   <span className="rounded-full border border-bone px-2.5 py-1 text-[11px] font-medium tracking-wide text-[#7A7060]">
-                    8 Days
+                    5 Days
                   </span>
                   <span className="rounded-full border border-bone px-2.5 py-1 text-[11px] font-medium tracking-wide text-[#7A7060]">
-                    Coastal
+                    Dec 29 – Jan 2, 2026
                   </span>
                 </div>
                 <h3 className="mb-3 font-[family-name:var(--font-cormorant)] text-[28px] font-medium leading-snug text-obsidian">
-                  The Amalfi Coast in Full
+                  Naples, Salerno & Amalfi Coast — New Year&apos;s 2025
                 </h3>
                 <div className="mb-4 flex flex-wrap gap-6">
                   <span className="text-[13px] text-[#7A7060]">
                     <strong className="font-medium text-obsidian">
-                      8 nights
+                      Naples
                     </strong>{" "}
-                    · 4 villas
+                    · Toledo metro, historic center
                   </span>
                   <span className="text-[13px] text-[#7A7060]">
-                    Private transfers
+                    Phlegraean Fields · Salerno Luci d&apos;Artista
                   </span>
                   <span className="text-[13px] text-[#7A7060]">
-                    Yacht day charter
+                    Positano · Amalfi · Sorrento
                   </span>
                   <span className="text-[13px] text-[#7A7060]">
-                    2 Michelin dinners
+                    New Year&apos;s Eve party with live music
                   </span>
                 </div>
                 <p className="text-sm leading-relaxed text-[#7A7060]">
-                  From Positano to Ravello, this curated itinerary traces the
-                  world&apos;s most photographed coastline in private style —
-                  with exclusive villa access, a full-day yacht charter, and an
-                  intimate cooking class with a local chef.
+                  Christmas markets and nativity scenes in Naples, the magical
+                  Luci d&apos;Artista in Salerno, Cuma and the Phlegraean
+                  Fields, Pozzuoli and the Temple Church. Then Positano, Amalfi
+                  and the Path of the Gods, Sorrento, and a grand New
+                  Year&apos;s Eve celebration. Train from Milan included.
                 </p>
               </div>
 
               <div className="mt-6 flex flex-col items-start justify-between gap-4 border-t border-bone pt-6 sm:flex-row sm:items-center">
                 <div>
-                  <p className="text-[11px] text-[#7A7060]">From</p>
+                  <p className="text-[11px] text-[#7A7060]">Quota</p>
                   <p className="font-[family-name:var(--font-cormorant)] text-[32px] font-medium text-obsidian">
-                    €11,400{" "}
-                    <span className="text-sm opacity-50">per person</span>
+                    Su richiesta{" "}
+                    <span className="text-sm opacity-50">a persona</span>
                   </p>
                 </div>
                 <div className="flex gap-3">
@@ -362,13 +379,13 @@ export default function Home() {
                     href="/upcoming-trips"
                     className="inline-flex items-center rounded-full border border-bone bg-white px-5 py-3 text-sm font-medium tracking-wide text-obsidian transition-all duration-150 hover:border-obsidian hover:bg-travertine"
                   >
-                    View Details
+                    Vedi dettagli
                   </Link>
                   <Link
                     href="/contacts"
                     className="inline-flex items-center rounded-full bg-oro px-5 py-3 text-sm font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-bronze hover:text-white hover:shadow-[var(--shadow-gold)]"
                   >
-                    Inquire Now
+                    Contattaci
                   </Link>
                 </div>
               </div>
@@ -381,45 +398,60 @@ export default function Home() {
       <section className="bg-parchment py-16 lg:py-24" aria-labelledby="testimonials-heading">
         <div className="mx-auto max-w-[1440px] px-6 lg:px-20">
           <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
-            Guest Stories
+            Storie di viaggio
           </p>
           <h2
             id="testimonials-heading"
             className="mb-12 font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-tight tracking-tight text-obsidian"
           >
-            What Our Travelers Say
+            Cosa dicono i nostri viaggiatori
           </h2>
           <TestimonialsCarousel reviews={REVIEWS} />
         </div>
       </section>
 
-      {/* ==================== CTA BANNER ==================== */}
+      {/* ==================== CTA BANNER + Bolaño + Form informazioni ==================== */}
       <section className="relative overflow-hidden bg-obsidian py-20 lg:py-28">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_20%_80%,rgba(184,150,62,0.12)_0%,transparent_60%),radial-gradient(ellipse_60%_80%_at_80%_20%,rgba(46,107,158,0.08)_0%,transparent_60%)]" />
         <div className="relative z-10 mx-auto max-w-[1440px] px-6 text-center lg:px-20">
           <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-oro">
-            Your Journey Begins Here
+            Ogni cento metri il mondo cambia
           </p>
-          <h2 className="mx-auto mb-6 max-w-[700px] font-[family-name:var(--font-cormorant)] text-[clamp(28px,5vw,56px)] font-normal leading-tight tracking-tighter text-[#F0EAE0]">
-            Begin Planning Your{" "}
-            <em className="text-champagne">Italian Journey</em>
+          <h2 className="mx-auto mb-6 max-w-[700px] font-[family-name:var(--font-cormorant)] text-[clamp(28px,5vw,56px)] font-normal italic leading-tight tracking-tighter text-[#F0EAE0]">
+            <em>(Roberto Bolaño)</em>
           </h2>
-          <p className="mx-auto mb-10 max-w-[480px] text-base leading-relaxed text-[#B5A890]">
-            Speak with a dedicated Travel Designer who will craft your perfect
-            Italian experience from the very first conversation.
+          <p className="mx-auto mb-8 max-w-[560px] text-[15px] leading-relaxed text-[#B5A890]">
+            Per informazioni o richieste, compila il{" "}
+            <Link href="/contacts" className="underline decoration-champagne/60 underline-offset-2 hover:text-champagne">
+              Form informazioni
+            </Link>
+            . I dati saranno trattati nel rispetto del{" "}
+            <strong className="text-[#F0EAE0]">GDPR (Reg. UE 2016/679)</strong>.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
-              href="/contacts"
+              href="/upcoming-trips"
               className="inline-flex items-center rounded-full bg-oro px-8 py-4 text-base font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-bronze hover:text-white hover:shadow-[var(--shadow-gold)]"
             >
-              Start Planning
+              Prossimi viaggi
             </Link>
             <Link
-              href="/upcoming-trips"
+              href="/catalogs"
+              className="inline-flex items-center rounded-full border border-white/25 px-8 py-4 text-base font-medium tracking-wide text-[#F0EAE0] transition-colors duration-150 hover:bg-white/10"
+            >
+              Catalogo viaggi
+            </Link>
+            <Link
+              href="/sustainable-tourism"
+              className="inline-flex items-center rounded-full border border-white/25 px-8 py-4 text-base font-medium tracking-wide text-[#F0EAE0] transition-colors duration-150 hover:bg-white/10"
+            >
+              Turismo sostenibile
+            </Link>
+            <Link
+              href="/contacts"
               className="inline-flex items-center rounded-full px-8 py-4 text-base font-medium tracking-wide text-[#F0EAE0] transition-colors duration-150 hover:bg-white/10"
             >
-              Browse Destinations
+              Contatti
             </Link>
           </div>
         </div>

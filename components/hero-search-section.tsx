@@ -34,7 +34,13 @@ export function HeroSearchSection() {
   }, []);
 
   return (
-    <section className="relative flex min-h-[85vh] flex-col justify-end overflow-hidden pt-[5.5rem] -mt-[5.5rem] bg-obsidian">
+    <section
+      className="hero-viewport relative flex flex-col overflow-hidden bg-obsidian"
+      style={{
+        paddingTop: "var(--header-height)",
+        marginTop: "calc(-1 * var(--header-height))",
+      }}
+    >
       {/* Hero carousel — 3 images with crossfade + zoom */}
       <div className="absolute inset-0">
         {HERO_IMAGES.map((img, i) => {
@@ -78,43 +84,49 @@ export function HeroSearchSection() {
         }}
         aria-hidden
       />
-      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 pb-10 pt-24 lg:px-12 lg:pb-14 lg:pt-28">
-        <div className="flex flex-col items-center p-4 sm:p-6 md:p-8 lg:p-12">
-          <div className="w-full max-w-[700px] pb-8 text-center">
-            <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-oro">
-              Featured Journey · Autumn 2025
+      <div className="hero-content-area relative z-10 flex flex-1 flex-col">
+        <div className="hero-nav-spacer" aria-hidden />
+        <div className="flex min-h-0 flex-1 flex-col justify-start md:justify-end">
+          <div className="hero-content-inner mx-auto w-full max-w-[1440px] px-4 pb-10 pt-2 md:pt-0 lg:px-12 lg:pb-14 lg:pt-8">
+            <div className="flex flex-col items-center p-4 sm:p-6 md:p-8 lg:p-12">
+              <div className="mx-auto w-full max-w-[75vw] pb-8 text-center">
+                <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-oro">
+              Agenzia di viaggi, tour operator
             </p>
             <h1 className="mb-4 text-center font-[family-name:var(--font-cormorant)] text-[clamp(36px,6vw,80px)] font-normal leading-[1.1] tracking-tighter text-[#F0EAE0]">
               Travel land SRL
-              <br />
-              Travel agency, tour operator
             </h1>
-            <p className="mx-auto mb-8 max-w-[520px] text-center text-base leading-relaxed text-[#B5A890]">
-              Once you have traveled, the journey never ends,
-              <br />
-              but it repeats itself infinitely in the quietest corners of the mind.
-              <br />
-              <em>The mind cannot separate itself from the journey.</em>
-              <br />
-              (Pat Conroy)
-            </p>
+            <blockquote className="hero-quote mx-auto mb-8 max-w-[80vw]">
+              <p className="hero-quote-text">
+                <span className="hero-quote-mark-open" aria-hidden>“</span>
+                Una volta che hai viaggiato, il viaggio non finisce mai,
+                ma si ripete infinite volte negli angoli più silenziosi della mente.
+                <em className="block mt-3">La mente non sa separarsi dal viaggio.<span className="hero-quote-mark-close" aria-hidden>&rdquo;</span></em>
+              </p>
+              <cite className="hero-quote-cite not-italic">
+                — Pat Conroy
+              </cite>
+            </blockquote>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/upcoming-trips"
                 className="inline-flex items-center rounded-full bg-oro px-7 py-4 text-base font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-bronze hover:text-white hover:shadow-[var(--shadow-gold)]"
               >
-                Begin Planning
+                Prossimi viaggi
               </Link>
               <Link
                 href="/catalogs"
                 className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-7 py-4 text-base font-medium tracking-wide text-[#F0EAE0] backdrop-blur-sm transition-all duration-200 hover:bg-white/20"
               >
-                View Itineraries
+                Cataloghi viaggi
               </Link>
+              </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </section>
   );
 }
+

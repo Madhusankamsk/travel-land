@@ -1,0 +1,83 @@
+---
+description: Business context and source-of-truth for TRAVEL-LAND.IT website revamp. Reference when adding pages, content, contact info, or migrating from the legacy site.
+alwaysApply: false
+---
+
+# TRAVEL-LAND.IT — Business Analysis & Revamp Context
+
+Use this rule when implementing or revising content, pages, navigation, contact details, or legal/cookie copy so the new site accurately reflects the business and replaces [travel-land.it](https://www.travel-land.it/).
+
+---
+
+## 1. Business Identity
+
+| Item | Value |
+|------|--------|
+| **Legal name** | TRAVEL-LAND S.R.L. |
+| **Tagline / positioning** | Agenzia di viaggi, tour operator |
+| **Sede legale** | Viale Edison 666, Sesto San Giovanni (MI) |
+| **P.IVA** | 07403720969 |
+| **Codice Univoco** | M5UXCR1 |
+| **Reception** | "SI RICEVE SU APPUNTAMENTO" — Lunedì–Venerdì 10:00–19:00 |
+
+---
+
+## 2. Contact Information (Source of Truth)
+
+**Email**
+- **eleonora@travel-land.it** (primary; use for "informazioni e prenotazioni" and form submissions)
+
+**Phone / WhatsApp**
+- **+39 328 429 2203** — Eleonora  
+- **+39 338 457 1070** — Eleonora  
+- **+39 324 924 1395** — Sisira (Prenotazioni e Assistenza Travelland 24h, 7/7)  
+- **+39 320 166 8589** — Romeo  
+
+**External**
+- WhatsApp CTA: "Scrivici su WhatsApp" / "🟢 Scrivici su WhatsApp"
+
+---
+
+## 3. Legacy Site Structure (To Migrate / Align)
+
+| Legacy page / area | New site equivalent / action |
+|--------------------|------------------------------|
+| **Home** | `app/page.tsx` — hero, destinations, featured package, testimonials, CTA |
+| **Chi siamo** | `app/who-we-are/page.tsx` |
+| **Turismo sostenibile** | `app/sustainable-tourism` (if present) or add |
+| **Prossimi viaggi** | `app/upcoming-trips` — list of tours |
+| **Storico Viaggi** (sub of Prossimi viaggi) | Filter or section under upcoming-trips (Egypt, Iceland, Sri Lanka, Naples/Amalfi, etc.) |
+| **Cataloghi viaggi** | `app/catalogs` |
+| **Contatti** | `app/contacts` — form + contact details |
+| **Cerca** | Search UX (if implemented) |
+
+---
+
+## 4. Content to Preserve or Reflect
+
+- **Hero quote (Pat Conroy):** Already on new site; keep Italian or offer both.
+- **Secondary quote:** "Ogni cento metri il mondo cambia." (Roberto Bolaño) — use in CTAs or editorial.
+- **Form informazioni:** Contact form with GDPR-compliant fields: Nome e cognome, Email, Telefono WhatsApp, Oggetto, Messaggio, Consenso WhatsApp (GDPR).
+- **Cookie / Privacy:** Legacy uses a cookie alert and GDPR (Reg. UE 2016/679); new site must have cookie consent and privacy policy and link them where appropriate.
+- **Footer credits:** "Sito web realizzato da DGMSUPPORTO" (optional to keep); "Copyright © [year] Travelland SRL - Agenzia di viaggi Milano. Tutti i diritti riservati."
+- **Joomla notice:** Remove (legacy CMS); new site is Next.js.
+
+---
+
+## 5. Revamp Goals (New Site)
+
+- **Tech:** Next.js (App Router), design system (`.cursor/rules/design-system.mdc`), responsive, accessible.
+- **Content:** Same business and legal info; improved UX, clearer hierarchy, modern visuals (hero, destination cards, featured package, testimonials).
+- **Tours:** Prossimi viaggi / Storico Viaggi represented as cards and detail flows (e.g. Egypt, Iceland, Sri Lanka, Naples–Salerno–Amalfi) with clear CTAs (View Details, Inquire, WhatsApp).
+- **Trust:** P.IVA, codice univoco, sede legale, reception hours, and GDPR wording visible where appropriate (footer, contact, form).
+
+---
+
+## 6. Checklist for New Pages or Content
+
+- [ ] Contact details (email, phones, WhatsApp) match section 2.
+- [ ] Legal/fiscal (P.IVA, codice univoco, sede) in footer or contact.
+- [ ] Reception hours and "su appuntamento" stated where relevant.
+- [ ] Forms mention GDPR and link to privacy policy; consent checkboxes where required.
+- [ ] Navigation aligns with legacy structure (section 3) unless product decision says otherwise.
+- [ ] No references to Joomla or old CMS; no outdated "Site description here..." placeholders.
