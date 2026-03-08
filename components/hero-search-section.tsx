@@ -85,14 +85,18 @@ export function HeroSearchSection() {
               Featured Journey · Autumn 2025
             </p>
             <h1 className="mb-4 text-center font-[family-name:var(--font-cormorant)] text-[clamp(36px,6vw,80px)] font-normal leading-[1.1] tracking-tighter text-[#F0EAE0]">
-              Discover <em className="text-champagne">Italia</em>
+              Travel land SRL
               <br />
-              Like Never Before
+              Travel agency, tour operator
             </h1>
             <p className="mx-auto mb-8 max-w-[520px] text-center text-base leading-relaxed text-[#B5A890]">
-              Seven nights of absolute immersion — private Colosseum access,
-              Vatican at dawn, and the finest tables in the Eternal City. Crafted
-              exclusively for the discerning traveler.
+              Once you have traveled, the journey never ends,
+              <br />
+              but it repeats itself infinitely in the quietest corners of the mind.
+              <br />
+              <em>The mind cannot separate itself from the journey.</em>
+              <br />
+              (Pat Conroy)
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
