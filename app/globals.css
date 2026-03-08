@@ -50,6 +50,9 @@
   --dur-normal: 250ms;
   --dur-slow: 400ms;
   --dur-enter: 600ms;
+
+  /* Layout — floating nav height so hero content is laid out below it */
+  --header-height: 7rem; /* nav bar + "Plan Your Trip" + safe clearance */
 }
 
 @theme inline {
@@ -351,6 +354,102 @@ body {
     opacity: 1;
     transform: scaleX(1.05);
   }
+}
+
+/* Hero section — full viewport height, responsive (100dvh with 100vh fallback) */
+/* On mobile allow growth so content below nav is never clipped */
+.hero-viewport {
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
+}
+@supports (height: 100dvh) {
+  @media (max-width: 767px) {
+    .hero-viewport {
+      height: auto;
+      min-height: 100dvh;
+    }
+  }
+}
+@media (max-width: 767px) {
+  .hero-viewport {
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
+/* Hero content area — laid out below the floating nav (uses --header-height) */
+.hero-content-area {
+  min-height: 0;
+}
+
+/* Spacer: reserves top space so content block can never sit under the nav */
+.hero-nav-spacer {
+  flex-shrink: 0;
+  min-height: var(--header-height);
+}
+
+/* Content block: top padding controlled by Tailwind (pt-2 / lg:pt-8) */
+.hero-content-inner {
+  margin-top: 0;
+}
+
+/* Hero blockquote — single yellow/champagne tone, quote marks top-left */
+.hero-quote {
+  position: relative;
+  padding-inline: 1.25rem;
+  padding-top: 0.5rem;
+  opacity: 0.95;
+}
+
+.hero-quote-mark-open {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 5em;
+  font-style: italic;
+  line-height: 1;
+  color: var(--color-champagne);
+  opacity: 0.55;
+  margin-right: 0.08em;
+}
+
+.hero-quote-mark-close {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: 1em;
+  font-style: italic;
+  color: var(--color-champagne);
+  margin-left: 0.06em;
+}
+
+.hero-quote-text {
+  text-align: center;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-size: clamp(1.125rem, 2.5vw, 1.375rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--color-champagne);
+  letter-spacing: 0.01em;
+}
+
+.hero-quote-text em {
+  font-style: italic;
+  color: var(--color-champagne);
+}
+
+.hero-quote-cite {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  text-align: right;
+  padding-inline-start: 0;
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-champagne);
+  opacity: 0.9;
 }
 
 /* Hero carousel slow zoom (Ken Burns style) — applied to all hero images */

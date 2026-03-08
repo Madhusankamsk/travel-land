@@ -56,7 +56,10 @@ export function LiquidHeader() {
         : 0.55;
 
   return (
-    <header className="sticky top-0 z-50 px-4 pt-3 lg:px-6">
+    <header
+      className="sticky top-0 z-50 px-4 pt-3 lg:px-6"
+      style={{ minHeight: "var(--header-height)" }}
+    >
       <div
         ref={headerRef}
         onMouseMove={onMouseMove}
@@ -90,26 +93,58 @@ export function LiquidHeader() {
             />
           </Link>
 
-          <nav className="hidden items-center gap-8 md:flex">
-            {[
-              { href: "/upcoming-trips", label: "Destinations" },
-              { href: "/catalogs", label: "Experiences" },
-              { href: "/travel-history", label: "Itineraries" },
-              { href: "/who-we-are", label: "About" },
-            ].map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
-              >
-                {item.label}
-              </Link>
-            ))}
+          <nav className="hidden items-center gap-6 md:gap-8 lg:flex" aria-label="Menu principale">
+            <Link
+              href="/"
+              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+            >
+              Home
+            </Link>
+            <Link
+              href="/who-we-are"
+              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+            >
+              Chi siamo
+            </Link>
+            <Link
+              href="/sustainable-tourism"
+              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+            >
+              Turismo sostenibile
+            </Link>
+            <Link
+              href="/upcoming-trips"
+              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+            >
+              Prossimi viaggi
+            </Link>
+            <Link
+              href="/catalogs"
+              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+            >
+              Cataloghi viaggi
+            </Link>
+            <Link
+              href="/contacts"
+              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+            >
+              Contatti
+            </Link>
+            <Link
+              href="/catalogs"
+              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+            >
+              Cerca
+            </Link>
           </nav>
 
           <div className="flex items-center gap-3">
-            <button className="liquid-pill hidden items-center gap-1.5 rounded-full border border-obsidian/10 bg-white/50 px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-obsidian/70 transition-all duration-300 hover:border-obsidian/25 hover:bg-white/80 sm:flex">
-              EN · IT · DE
+            <button
+              type="button"
+              className="liquid-pill hidden items-center gap-1.5 rounded-full border border-obsidian/10 bg-white/50 px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-obsidian/70 transition-all duration-300 hover:border-obsidian/25 hover:bg-white/80 sm:flex"
+              aria-label="Lingua"
+            >
+              IT · EN · DE
             </button>
             <AuthNavButton />
           </div>
