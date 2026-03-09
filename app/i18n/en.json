@@ -1,0 +1,48 @@
+{
+  "nav.home": "Home",
+  "nav.whoWeAre": "Who we are",
+  "nav.sustainableTourism": "Sustainable tourism",
+  "nav.upcomingTrips": "Upcoming trips",
+  "nav.catalogs": "Travel catalogs",
+  "nav.contacts": "Contacts",
+
+  "home.upcoming.eyebrow": "Upcoming trips",
+  "home.upcoming.title": "Our tours and the places we love",
+  "home.upcoming.subtitle": "Tailor-made and group journeys in Italy and around the world. Storico Viaggi and exclusive escorted tours to experience culture, nature, and emotions with complete peace of mind.",
+  "home.upcoming.ctaAll": "View all",
+
+  "home.about.eyebrow": "Who we are",
+  "home.about.title": "Travel agency and tour operator",
+  "home.about.body": "We are an agency based in Sesto San Giovanni (Milan). We design tailor-made and group trips in Italy and worldwide: culture, nature, authentic experiences, and an attention to detail that makes the difference.",
+
+  "home.testimonials.eyebrow": "Travel stories",
+  "home.testimonials.title": "What our travelers say",
+
+  "home.cta.eyebrow": "Every hundred meters the world changes",
+  "home.cta.quoteAttribution": "(Roberto Bolaño)",
+  "home.cta.body": "For information or requests, please fill in the Information Form. Data will be processed in compliance with GDPR (EU Reg. 2016/679).",
+  "home.cta.linkForm": "Information form",
+  "home.cta.btnUpcoming": "Upcoming trips",
+  "home.cta.btnCatalog": "Travel catalog",
+  "home.cta.btnSustainable": "Sustainable tourism",
+  "home.cta.btnContacts": "Contacts",
+
+  "footer.section.upcoming": "Upcoming trips",
+  "footer.section.catalog": "Catalog",
+  "footer.section.contacts": "Contacts",
+  "footer.link.tripHistory": "Trip history",
+  "footer.link.allTours": "All tours",
+  "footer.link.catalogs": "Travel catalogs",
+  "footer.link.whoWeAre": "Who we are",
+  "footer.link.sustainableTourism": "Sustainable tourism",
+  "footer.link.contacts": "Contacts",
+  "footer.whatsapp.label": "Message us on WhatsApp",
+  "footer.copyright": "© {year} Travelland SRL · Travel agency in Milan. All rights reserved.",
+
+  "language.it": "Italian",
+  "language.en": "English",
+  "language.short.it": "IT",
+  "language.short.en": "EN",
+  "language.ariaLabel": "Site language"
+}
+

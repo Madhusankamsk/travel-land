@@ -1,8 +1,11 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
 import { AnimatedStat } from "@/components/animated-stat";
 import { HeroSearchSection } from "@/components/hero-search-section";
 import { TestimonialsCarousel } from "@/components/testimonials-carousel";
+import { useI18n } from "@/components/i18n-provider";
+import { LangLink } from "@/components/lang-link";
 
 const DESTINATIONS = [
   {
@@ -162,6 +165,8 @@ function StarRating({ count }: { count: number }) {
 }
 
 export default function Home() {
+  const { t } = useI18n();
+
   return (
     <>
       {/* ==================== HERO + SEARCH (Airbnb-style expand) ==================== */}
@@ -171,15 +176,13 @@ export default function Home() {
       <section className="py-16 lg:py-24">
         <div className="mx-auto max-w-[1440px] px-6 lg:px-20">
           <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
-            Prossimi viaggi
+            {t("home.upcoming.eyebrow")}
           </p>
           <h2 className="mb-4 font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-tight tracking-tight text-obsidian">
-            I nostri tour e le mete che amiamo
+            {t("home.upcoming.title")}
           </h2>
           <p className="mb-12 max-w-[640px] text-[15px] leading-relaxed text-obsidian/65">
-            Viaggi su misura e in gruppo, in Italia e nel mondo. Storico Viaggi e
-            proposte esclusive con accompagnatore, per vivere cultura, natura e
-            emozioni in tutta serenità.
+            {t("home.upcoming.subtitle")}
           </p>
 
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -212,11 +215,7 @@ export default function Home() {
                     </div>
                   )}
                   <span
-                    className={`absolute top-4 left-4 rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider backdrop-blur-sm ${
-                      dest.badgeGold
-                        ? "bg-oro/90 text-obsidian"
-                        : "bg-obsidian/70 text-champagne"
-                    }`}
+                    className="absolute top-4 left-4 rounded-full bg-obsidian/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-champagne backdrop-blur-sm"
                   >
                     {dest.badge}
                   </span>
@@ -248,12 +247,12 @@ export default function Home() {
           </div>
 
           <div className="mt-10 flex justify-center">
-            <Link
+            <LangLink
               href="/upcoming-trips"
               className="inline-flex items-center rounded-full bg-parchment px-7 py-3.5 text-sm font-medium tracking-wide text-siena transition-all duration-150 hover:bg-bone/80 active:scale-[0.97] focus:outline-2 focus:outline-oro focus:outline-offset-3"
             >
-              Vedi tutti
-            </Link>
+              {t("home.upcoming.ctaAll")}
+            </LangLink>
           </div>
         </div>
       </section>
@@ -278,16 +277,16 @@ export default function Home() {
         />
         <div className="relative z-10 mx-auto max-w-[1440px] px-6 text-center lg:px-20">
           <p className="mb-3 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-[#E8D5A3]">
-            Chi siamo
+            {t("home.about.eyebrow")}
           </p>
           <h2
             id="about-us-heading"
             className="mb-4 text-center font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-tight tracking-tight text-[#F0EAE0]"
           >
-            Agenzia di viaggi e tour operator
+            {t("home.about.title")}
           </h2>
           <p className="mx-auto mb-12 max-w-[640px] text-center text-[15px] leading-relaxed text-[#B5A890]">
-            Siamo un&apos;agenzia con sede a Sesto San Giovanni (Milano). Progettiamo viaggi su misura e di gruppo in Italia e nel mondo: cultura, natura, esperienze autentiche e la cura dei dettagli che fa la differenza.
+            {t("home.about.body")}
           </p>
           <div className="mx-auto mb-12 grid max-w-[1440px] grid-cols-2 gap-4 sm:grid-cols-4">
             {STATS.map((stat) => (
@@ -375,18 +374,18 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex gap-3">
-                  <Link
+                  <LangLink
                     href="/upcoming-trips"
                     className="inline-flex items-center rounded-full border border-bone bg-white px-5 py-3 text-sm font-medium tracking-wide text-obsidian transition-all duration-150 hover:border-obsidian hover:bg-travertine"
                   >
                     Vedi dettagli
-                  </Link>
-                  <Link
+                  </LangLink>
+                  <LangLink
                     href="/contacts"
                     className="inline-flex items-center rounded-full bg-oro px-5 py-3 text-sm font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-bronze hover:text-white hover:shadow-[var(--shadow-gold)]"
                   >
                     Contattaci
-                  </Link>
+                  </LangLink>
                 </div>
               </div>
             </div>
@@ -398,13 +397,13 @@ export default function Home() {
       <section className="bg-parchment py-16 lg:py-24" aria-labelledby="testimonials-heading">
         <div className="mx-auto max-w-[1440px] px-6 lg:px-20">
           <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
-            Storie di viaggio
+            {t("home.testimonials.eyebrow")}
           </p>
           <h2
             id="testimonials-heading"
             className="mb-12 font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-tight tracking-tight text-obsidian"
           >
-            Cosa dicono i nostri viaggiatori
+            {t("home.testimonials.title")}
           </h2>
           <TestimonialsCarousel reviews={REVIEWS} />
         </div>
@@ -415,44 +414,48 @@ export default function Home() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_20%_80%,rgba(184,150,62,0.12)_0%,transparent_60%),radial-gradient(ellipse_60%_80%_at_80%_20%,rgba(46,107,158,0.08)_0%,transparent_60%)]" />
         <div className="relative z-10 mx-auto max-w-[1440px] px-6 text-center lg:px-20">
           <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-oro">
-            Ogni cento metri il mondo cambia
+            {t("home.cta.eyebrow")}
           </p>
           <h2 className="mx-auto mb-6 max-w-[700px] font-[family-name:var(--font-cormorant)] text-[clamp(28px,5vw,56px)] font-normal italic leading-tight tracking-tighter text-[#F0EAE0]">
-            <em>(Roberto Bolaño)</em>
+            <em>{t("home.cta.quoteAttribution")}</em>
           </h2>
           <p className="mx-auto mb-8 max-w-[560px] text-[15px] leading-relaxed text-[#B5A890]">
-            Per informazioni o richieste, compila il{" "}
-            <Link href="/contacts" className="underline decoration-champagne/60 underline-offset-2 hover:text-champagne">
-              Form informazioni
-            </Link>
-            . I dati saranno trattati nel rispetto del{" "}
-            <strong className="text-[#F0EAE0]">GDPR (Reg. UE 2016/679)</strong>.
+            {t("home.cta.body").replace(
+              t("home.cta.linkForm"),
+              ""
+            )}
+            <LangLink
+              href="/contacts"
+              className="underline decoration-champagne/60 underline-offset-2 hover:text-champagne"
+            >
+              {t("home.cta.linkForm")}
+            </LangLink>
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link
+            <LangLink
               href="/upcoming-trips"
               className="inline-flex items-center rounded-full bg-oro px-8 py-4 text-base font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-bronze hover:text-white hover:shadow-[var(--shadow-gold)]"
             >
-              Prossimi viaggi
-            </Link>
-            <Link
+              {t("home.cta.btnUpcoming")}
+            </LangLink>
+            <LangLink
               href="/catalogs"
               className="inline-flex items-center rounded-full border border-white/25 px-8 py-4 text-base font-medium tracking-wide text-[#F0EAE0] transition-colors duration-150 hover:bg-white/10"
             >
-              Catalogo viaggi
-            </Link>
-            <Link
+              {t("home.cta.btnCatalog")}
+            </LangLink>
+            <LangLink
               href="/sustainable-tourism"
               className="inline-flex items-center rounded-full border border-white/25 px-8 py-4 text-base font-medium tracking-wide text-[#F0EAE0] transition-colors duration-150 hover:bg-white/10"
             >
-              Turismo sostenibile
-            </Link>
-            <Link
+              {t("home.cta.btnSustainable")}
+            </LangLink>
+            <LangLink
               href="/contacts"
               className="inline-flex items-center rounded-full px-8 py-4 text-base font-medium tracking-wide text-[#F0EAE0] transition-colors duration-150 hover:bg-white/10"
             >
-              Contatti
-            </Link>
+              {t("home.cta.btnContacts")}
+            </LangLink>
           </div>
         </div>
       </section>

@@ -1,0 +1,48 @@
+{
+  "nav.home": "Home",
+  "nav.whoWeAre": "Chi siamo",
+  "nav.sustainableTourism": "Turismo sostenibile",
+  "nav.upcomingTrips": "Prossimi viaggi",
+  "nav.catalogs": "Cataloghi viaggi",
+  "nav.contacts": "Contatti",
+
+  "home.upcoming.eyebrow": "Prossimi viaggi",
+  "home.upcoming.title": "I nostri tour e le mete che amiamo",
+  "home.upcoming.subtitle": "Viaggi su misura e in gruppo, in Italia e nel mondo. Storico Viaggi e proposte esclusive con accompagnatore, per vivere cultura, natura e emozioni in tutta serenità.",
+  "home.upcoming.ctaAll": "Vedi tutti",
+
+  "home.about.eyebrow": "Chi siamo",
+  "home.about.title": "Agenzia di viaggi e tour operator",
+  "home.about.body": "Siamo un'agenzia con sede a Sesto San Giovanni (Milano). Progettiamo viaggi su misura e di gruppo in Italia e nel mondo: cultura, natura, esperienze autentiche e la cura dei dettagli che fa la differenza.",
+
+  "home.testimonials.eyebrow": "Storie di viaggio",
+  "home.testimonials.title": "Cosa dicono i nostri viaggiatori",
+
+  "home.cta.eyebrow": "Ogni cento metri il mondo cambia",
+  "home.cta.quoteAttribution": "(Roberto Bolaño)",
+  "home.cta.body": "Per informazioni o richieste, compila il Form informazioni. I dati saranno trattati nel rispetto del GDPR (Reg. UE 2016/679).",
+  "home.cta.linkForm": "Form informazioni",
+  "home.cta.btnUpcoming": "Prossimi viaggi",
+  "home.cta.btnCatalog": "Catalogo viaggi",
+  "home.cta.btnSustainable": "Turismo sostenibile",
+  "home.cta.btnContacts": "Contatti",
+
+  "footer.section.upcoming": "Prossimi viaggi",
+  "footer.section.catalog": "Catalogo",
+  "footer.section.contacts": "Contatti",
+  "footer.link.tripHistory": "Storico Viaggi",
+  "footer.link.allTours": "Tutti i tour",
+  "footer.link.catalogs": "Cataloghi viaggi",
+  "footer.link.whoWeAre": "Chi siamo",
+  "footer.link.sustainableTourism": "Turismo sostenibile",
+  "footer.link.contacts": "Contatti",
+  "footer.whatsapp.label": "Scrivici su WhatsApp",
+  "footer.copyright": "© {year} Travelland SRL · Agenzia di viaggi Milano. Tutti i diritti riservati.",
+
+  "language.it": "Italiano",
+  "language.en": "Inglese",
+  "language.short.it": "IT",
+  "language.short.en": "EN",
+  "language.ariaLabel": "Lingua del sito"
+}
+

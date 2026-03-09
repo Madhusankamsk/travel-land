@@ -2,12 +2,14 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { AuthNavButton } from "@/components/auth-nav-button";
+import { useI18n } from "@/components/i18n-provider";
+import { LangLink } from "@/components/lang-link";
 
 const EDGE_ZONE = 22; // % from left/right where hover triggers edge reflection
 
 export function LiquidHeader() {
+  const { lang, setLang, t } = useI18n();
   const [scrollY, setScrollY] = useState(0);
   const [isOverlapping, setIsOverlapping] = useState(false);
   const [hoverXPercent, setHoverXPercent] = useState<number | null>(null);
@@ -82,7 +84,7 @@ export function LiquidHeader() {
           aria-hidden
         />
         <div className="relative z-10 flex h-[64px] items-center justify-between px-5 lg:px-8">
-          <Link href="/" className="flex items-center">
+          <LangLink href="/" className="flex items-center">
             <Image
               src="/Logo.png"
               alt="TRAVEL-LAND.IT"
@@ -91,55 +93,62 @@ export function LiquidHeader() {
               className="h-10 w-auto"
               priority
             />
-          </Link>
+          </LangLink>
 
           <nav className="hidden items-center gap-6 md:gap-8 lg:flex" aria-label="Menu principale">
-            <Link
+            <LangLink
               href="/"
               className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
             >
-              Home
-            </Link>
-            <Link
+              {t("nav.home")}
+            </LangLink>
+            <LangLink
               href="/who-we-are"
               className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
             >
-              Chi siamo
-            </Link>
-            <Link
+              {t("nav.whoWeAre")}
+            </LangLink>
+            <LangLink
               href="/sustainable-tourism"
               className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
             >
-              Turismo sostenibile
-            </Link>
-            <Link
+              {t("nav.sustainableTourism")}
+            </LangLink>
+            <LangLink
               href="/upcoming-trips"
               className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
             >
-              Prossimi viaggi
-            </Link>
-            <Link
+              {t("nav.upcomingTrips")}
+            </LangLink>
+            <LangLink
               href="/catalogs"
               className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
             >
-              Cataloghi viaggi
-            </Link>
-            <Link
+              {t("nav.catalogs")}
+            </LangLink>
+            <LangLink
               href="/contacts"
               className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
             >
-              Contatti
-            </Link>
+              {t("nav.contacts")}
+            </LangLink>
           </nav>
 
           <div className="flex items-center gap-3">
-            <button
-              type="button"
-              className="liquid-pill hidden items-center gap-1.5 rounded-full border border-obsidian/10 bg-white/50 px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-obsidian/70 transition-all duration-300 hover:border-obsidian/25 hover:bg-white/80 sm:flex"
-              aria-label="Lingua"
-            >
-              IT · EN · DE
-            </button>
+            <div className="hidden items-center sm:flex">
+              <label className="sr-only" htmlFor="site-language-select">
+                {t("language.ariaLabel")}
+              </label>
+              <select
+                id="site-language-select"
+                value={lang}
+                onChange={(e) => setLang(e.target.value === "en" ? "en" : "it")}
+                className="liquid-pill rounded-full border border-obsidian/10 bg-white/50 px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-obsidian/70 outline-none transition-all duration-300 hover:border-obsidian/25 hover:bg-white/80 focus-visible:outline-2 focus-visible:outline-oro focus-visible:outline-offset-2"
+              >
+                <option value="it">{t("language.short.it")}</option>
+                <option value="en">{t("language.short.en")}</option>
+              </select>
+            </div>
             <AuthNavButton />
           </div>
         </div>
