@@ -34,10 +34,10 @@ export function AuthNavButton() {
 
   return (
     <Link
-      href="/contacts"
+      href="/login"
       className="inline-flex items-center gap-2 rounded-full bg-oro px-5 py-2.5 text-sm font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-bronze hover:text-white hover:shadow-[var(--shadow-gold)]"
     >
-      Contattaci
+      Login
     </Link>
   );
 }

@@ -130,12 +130,6 @@ export function LiquidHeader() {
             >
               Contatti
             </Link>
-            <Link
-              href="/catalogs"
-              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
-            >
-              Cerca
-            </Link>
           </nav>
 
           <div className="flex items-center gap-3">
