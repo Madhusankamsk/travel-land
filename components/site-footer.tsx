@@ -21,10 +21,10 @@ export function SiteFooter() {
               className="mb-4 h-14 w-auto brightness-0 invert"
             />
             <p className="mb-2 font-[family-name:var(--font-cormorant)] text-base italic text-[#7A7060]">
-              Agenzia di viaggi, tour operator
+              {t("footer.brand.tagline")}
             </p>
             <p className="mb-4 max-w-[320px] text-[13px] leading-relaxed text-[#7A7060]">
-              <strong className="text-champagne/90">TRAVEL-LAND S.R.L.</strong>
+              <strong className="text-champagne/90">{t("footer.companyName")}</strong>
               <br />
               <a href="mailto:eleonora@travel-land.it" className="hover:text-[#F0EAE0]">
                 eleonora@travel-land.it
@@ -34,10 +34,15 @@ export function SiteFooter() {
               <br />
               Sede legale: Viale Edison 666, Sesto San Giovanni (MI)
             </p>
-            <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-champagne/80">
-              Si riceve su appuntamento
+            <p className="mb-2 max-w-[360px] text-[13px] italic leading-relaxed text-[#7A7060]">
+              {t("footer.quote.text")}
+              <br />
+              <span className="mt-1 inline-block">{t("footer.quote.author")}</span>
             </p>
-            <p className="text-[13px] text-[#7A7060]">Lun–Ven 10:00–19:00</p>
+            <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-champagne/80">
+              {t("footer.appointmentNote")}
+            </p>
+            <p className="text-[13px] text-[#7A7060]">{t("footer.openingHours")}</p>
           </div>
 
           <div>

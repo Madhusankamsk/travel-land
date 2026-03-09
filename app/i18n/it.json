@@ -27,6 +27,11 @@
   "home.cta.btnSustainable": "Turismo sostenibile",
   "home.cta.btnContacts": "Contatti",
 
+  "footer.brand.tagline": "Agenzia di viaggi, tour operator",
+  "footer.brand.company": "Travel land SRL",
+  "footer.quote.text": "“Una volta che hai viaggiato, il viaggio non finisce mai, ma si ripete infinite volte negli angoli più silenziosi della mente.\nLa mente non sa separarsi dal viaggio.”",
+  "footer.quote.author": "— Pat Conroy",
+
   "footer.section.upcoming": "Prossimi viaggi",
   "footer.section.catalog": "Catalogo",
   "footer.section.contacts": "Contatti",
@@ -37,7 +42,25 @@
   "footer.link.sustainableTourism": "Turismo sostenibile",
   "footer.link.contacts": "Contatti",
   "footer.whatsapp.label": "Scrivici su WhatsApp",
-  "footer.copyright": "© {year} Travelland SRL · Agenzia di viaggi Milano. Tutti i diritti riservati.",
+
+  "footer.appointmentNote": "Si riceve su appuntamento",
+  "footer.openingHours": "Lun–Ven 10:00–19:00",
+
+  "footer.companyName": "TRAVEL-LAND S.R.L.",
+
+  "footer.callout.prossimiViaggi": "Prossimi viaggi",
+  "footer.callout.cataloghiViaggi": "Cataloghi viaggi",
+
+  "footer.summary": "Agenzia di viaggi, tour operator · Travel land SRL · Prossimi viaggi · Cataloghi viaggi",
+
+  "footer.highlight.prossimiViaggi": "Prossimi viaggi",
+  "footer.highlight.cataloghiViaggi": "Cataloghi viaggi",
+
+  "footer.links.prossimiViaggi": "Prossimi viaggi",
+  "footer.links.cataloghiViaggi": "Cataloghi viaggi",
+
+  "footer.display.tagline": "Agenzia di viaggi, tour operator",
+  "footer.display.company": "Travel land SRL",
 
   "language.it": "Italiano",
   "language.en": "Inglese",

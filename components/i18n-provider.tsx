@@ -44,10 +44,22 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const initialLang = resolveLang(searchParams.get("lang"));
   const [lang, setLangState] = useState<Lang>(initialLang);
 
-  // Keep local state in sync if lang query param changes externally (e.g. via navigation)
   useEffect(() => {
-    const fromUrl = resolveLang(searchParams.get("lang"));
-    setLangState(fromUrl);
+    const fromUrlRaw = searchParams.get("lang");
+    if (fromUrlRaw) {
+      const fromUrl = resolveLang(fromUrlRaw);
+      setLangState(fromUrl);
+      return;
+    }
+
+    // Fallback to cookie if no lang param is present
+    if (typeof document !== "undefined") {
+      const match = document.cookie.match(/(?:^|; )tl_lang=([a-zA-Z-]+)/);
+      if (match && match[1]) {
+        const fromCookie = resolveLang(match[1]);
+        setLangState(fromCookie);
+      }
+    }
   }, [searchParams]);
 
   const messages: Messages = useMemo(
@@ -69,6 +81,10 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const setLang = useCallback(
     (next: Lang) => {
       setLangState(next);
+      if (typeof document !== "undefined") {
+        // Persist language preference for ~1 year
+        document.cookie = `tl_lang=${next}; path=/; max-age=${60 * 60 * 24 * 365}`;
+      }
       updateUrl(next);
     },
     [updateUrl]

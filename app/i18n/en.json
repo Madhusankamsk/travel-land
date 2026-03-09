@@ -27,6 +27,11 @@
   "home.cta.btnSustainable": "Sustainable tourism",
   "home.cta.btnContacts": "Contacts",
 
+  "footer.brand.tagline": "Travel agency and tour operator",
+  "footer.brand.company": "Travel land SRL",
+  "footer.quote.text": "“Once you have traveled, the journey never ends, but is played out over and over again in the quietest chambers of the mind.\nThe mind can never break off from the journey.”",
+  "footer.quote.author": "— Pat Conroy",
+
   "footer.section.upcoming": "Upcoming trips",
   "footer.section.catalog": "Catalog",
   "footer.section.contacts": "Contacts",
@@ -37,7 +42,25 @@
   "footer.link.sustainableTourism": "Sustainable tourism",
   "footer.link.contacts": "Contacts",
   "footer.whatsapp.label": "Message us on WhatsApp",
-  "footer.copyright": "© {year} Travelland SRL · Travel agency in Milan. All rights reserved.",
+
+  "footer.appointmentNote": "By appointment only",
+  "footer.openingHours": "Mon–Fri 10:00–19:00",
+
+  "footer.companyName": "TRAVEL-LAND S.R.L.",
+
+  "footer.callout.prossimiViaggi": "Upcoming trips",
+  "footer.callout.cataloghiViaggi": "Travel catalogs",
+
+  "footer.summary": "Travel agency and tour operator · Travel land SRL · Upcoming trips · Travel catalogs",
+
+  "footer.highlight.prossimiViaggi": "Upcoming trips",
+  "footer.highlight.cataloghiViaggi": "Travel catalogs",
+
+  "footer.links.prossimiViaggi": "Upcoming trips",
+  "footer.links.cataloghiViaggi": "Travel catalogs",
+
+  "footer.display.tagline": "Travel agency and tour operator",
+  "footer.display.company": "Travel land SRL",
 
   "language.it": "Italian",
   "language.en": "English",
