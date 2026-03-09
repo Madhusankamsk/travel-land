@@ -139,15 +139,20 @@ export function LiquidHeader() {
               <label className="sr-only" htmlFor="site-language-select">
                 {t("language.ariaLabel")}
               </label>
-              <select
-                id="site-language-select"
-                value={lang}
-                onChange={(e) => setLang(e.target.value === "en" ? "en" : "it")}
-                className="liquid-pill rounded-full border border-obsidian/10 bg-white/50 px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-obsidian/70 outline-none transition-all duration-300 hover:border-obsidian/25 hover:bg-white/80 focus-visible:outline-2 focus-visible:outline-oro focus-visible:outline-offset-2"
-              >
-                <option value="it">{t("language.short.it")}</option>
-                <option value="en">{t("language.short.en")}</option>
-              </select>
+              <div className="relative">
+                <select
+                  id="site-language-select"
+                  value={lang}
+                  onChange={(e) => setLang(e.target.value === "en" ? "en" : "it")}
+                  className="liquid-pill appearance-none rounded-full border border-obsidian/10 bg-white/60 px-3 py-1.5 pr-7 text-xs font-medium uppercase tracking-[0.16em] text-obsidian/80 outline-none backdrop-blur-md transition-all duration-300 hover:border-obsidian/25 hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-oro focus-visible:outline-offset-2"
+                >
+                  <option value="it">{t("language.short.it")}</option>
+                  <option value="en">{t("language.short.en")}</option>
+                </select>
+                <span className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-[9px] text-obsidian/50">
+                  ▼
+                </span>
+              </div>
             </div>
             <AuthNavButton />
           </div>
