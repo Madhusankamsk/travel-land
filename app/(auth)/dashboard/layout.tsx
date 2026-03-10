@@ -1,10 +1,14 @@
 import Link from "next/link";
+import { requireAdmin } from "@/lib/auth";
+import { logoutAction } from "@/lib/auth";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  await requireAdmin();
+
   return (
     <div className="min-h-screen bg-zinc-50">
       <div className="flex min-h-screen">
@@ -28,16 +32,12 @@ export default function DashboardLayout({
               Trips
             </Link>
           </nav>
-          <form
-            action="/api/auth/signout"
-            method="POST"
-            className="border-t border-zinc-200 p-3"
-          >
+          <form action={logoutAction} className="border-t border-zinc-200 p-3">
             <button
               type="submit"
               className="flex w-full items-center justify-center rounded-lg px-3 py-2 text-sm font-medium text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
             >
-              Sign out
+              Log out
             </button>
           </form>
         </aside>

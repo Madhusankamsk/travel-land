@@ -6,6 +6,7 @@ import { cookies, headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 
 const AUTH_COOKIE = "auth_session";
+const AUTH_ROLE_COOKIE = "auth_role";
 
 /** Only use Secure cookie when the request is over HTTPS (or behind a proxy that set x-forwarded-proto). */
 async function useSecureCookie(): Promise<boolean> {
@@ -35,10 +36,6 @@ export async function loginAction(
     return { error: "This account is disabled." };
   }
 
-  if (user.role !== "admin") {
-    return { error: "Only admin users can sign in." };
-  }
-
   const valid = await compare(password, user.password);
   if (!valid) {
     return { error: "Invalid email or password." };
@@ -53,6 +50,15 @@ export async function loginAction(
     secure: await useSecureCookie(),
   });
 
-  const from = (formData.get("from") as string) || "/dashboard";
+  cookieStore.set(AUTH_ROLE_COOKIE, user.role, {
+    path: "/",
+    maxAge: 60 * 60 * 24,
+    httpOnly: false,
+    sameSite: "lax",
+    secure: await useSecureCookie(),
+  });
+
+  const defaultRedirect = user.role === "admin" ? "/dashboard" : "/profile";
+  const from = (formData.get("from") as string) || defaultRedirect;
   redirect(from);
 }
