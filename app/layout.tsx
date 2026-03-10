@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from "next/font/google";
 import { Toaster } from "@/components/toaster";
 import { CookieConsent } from "@/components/cookie-consent";
@@ -46,15 +47,17 @@ export default function RootLayout({
       <body
         className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable} antialiased`}
       >
-        <I18nProvider>
-          <div className="flex min-h-screen flex-col">
-            <LiquidHeader />
+        <Suspense fallback={null}>
+          <I18nProvider>
+            <div className="flex min-h-screen flex-col">
+              <LiquidHeader />
 
-            <main className="flex-1">{children}</main>
+              <main className="flex-1">{children}</main>
 
-            <SiteFooter />
-          </div>
-        </I18nProvider>
+              <SiteFooter />
+            </div>
+          </I18nProvider>
+        </Suspense>
         <CookieConsent />
         <Toaster />
       </body>

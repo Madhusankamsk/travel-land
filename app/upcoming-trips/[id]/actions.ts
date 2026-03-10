@@ -4,7 +4,16 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/auth";
 
-export async function requestToBookAction(tourId: string): Promise<{ error?: string }> {
+// Temporary cast until Prisma client is regenerated with the Booking model
+const bookingClient = prisma as any;
+
+export async function requestToBookAction(formData: FormData): Promise<void> {
+  const tourId = formData.get("tourId");
+
+  if (typeof tourId !== "string" || !tourId) {
+    redirect("/upcoming-trips");
+  }
+
   const userId = await getCurrentUserId();
   if (!userId) {
     redirect("/login");
@@ -14,10 +23,10 @@ export async function requestToBookAction(tourId: string): Promise<{ error?: str
     where: { id: tourId, status: "UPCOMING" },
   });
   if (!tour) {
-    return { error: "Trip not found or no longer available." };
+    redirect("/upcoming-trips");
   }
 
-  const existing = await prisma.booking.findUnique({
+  const existing = await bookingClient.booking.findUnique({
     where: {
       userId_tourId: { userId, tourId },
     },
@@ -27,7 +36,7 @@ export async function requestToBookAction(tourId: string): Promise<{ error?: str
   }
 
   const ref = "TL-" + Date.now().toString(36).toUpperCase().slice(-6);
-  await prisma.booking.create({
+  await bookingClient.booking.create({
     data: {
       userId,
       tourId,

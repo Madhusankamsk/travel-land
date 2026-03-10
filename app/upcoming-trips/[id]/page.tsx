@@ -168,7 +168,8 @@ export default async function TripDetailsPage({ params }: PageProps) {
                 )}
 
                 {userId && !existingBooking && (
-                  <form action={requestToBookAction.bind(null, id)} className="border-t border-zinc-200 pt-4">
+                  <form action={requestToBookAction} className="border-t border-zinc-200 pt-4">
+                    <input type="hidden" name="tourId" value={id} />
                     <button
                       type="submit"
                       className="w-full rounded-lg bg-zinc-900 px-4 py-3 text-sm font-medium text-white hover:bg-zinc-800"
