@@ -491,7 +491,7 @@ export default function WhoWeArePage() {
             <details className="mb-4 break-inside-avoid group rounded-[16px] border border-bone bg-white shadow-[var(--shadow-sm)] transition-[box-shadow,transform] duration-300 ease-out hover:-translate-y-[2px] hover:shadow-[var(--shadow-lg)]">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-[20px] px-6 py-5 text-left">
                 <span className="font-[family-name:var(--font-cormorant)] text-[18px] font-medium leading-snug text-obsidian">
-                  Do you assist with flights and travel insurance?
+                  Do you assist with flights and travel?
                 </span>
                 <span
                   className="flex h-7 w-7 items-center justify-center rounded-full border border-bone text-[13px] text-obsidian transition-transform duration-300 group-open:rotate-45"
