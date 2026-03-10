@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 
 const AUTH_COOKIE = "auth_session";
 const AUTH_ROLE_COOKIE = "auth_role";
+const AUTH_USER_ID_COOKIE = "auth_user_id";
 
 /** Only use Secure cookie when the request is over HTTPS (or behind a proxy that set x-forwarded-proto). */
 async function useSecureCookie(): Promise<boolean> {
@@ -51,6 +52,14 @@ export async function loginAction(
   });
 
   cookieStore.set(AUTH_ROLE_COOKIE, user.role, {
+    path: "/",
+    maxAge: 60 * 60 * 24,
+    httpOnly: false,
+    sameSite: "lax",
+    secure: await useSecureCookie(),
+  });
+
+  cookieStore.set(AUTH_USER_ID_COOKIE, user.id, {
     path: "/",
     maxAge: 60 * 60 * 24,
     httpOnly: false,

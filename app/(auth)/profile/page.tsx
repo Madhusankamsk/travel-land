@@ -1,32 +1,73 @@
-import Link from "next/link";
-import { logoutAction } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { getCurrentUserId } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { ProfileView } from "@/components/profile-view";
+import { cookies } from "next/headers";
 
-export default function ProfilePage() {
+export const dynamic = "force-dynamic";
+
+export default async function ProfilePage() {
+  const userId = await getCurrentUserId();
+  if (!userId) {
+    redirect("/login?from=/profile");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { firstName: true, lastName: true, email: true, mobile: true },
+  });
+
+  if (!user) {
+    const cookieStore = await cookies();
+    cookieStore.delete("auth_user_id");
+    cookieStore.delete("auth_session");
+    cookieStore.delete("auth_role");
+    redirect("/login?from=/profile");
+  }
+
+  const [bookings, upcomingTours] = await Promise.all([
+    prisma.booking.findMany({
+      where: { userId },
+      include: { tour: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.tour.findMany({
+      where: { status: "UPCOMING" },
+      select: { id: true, title: true, durationLabel: true, basePrice: true },
+      take: 10,
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
+
+  const serializedBookings = bookings.map((b) => ({
+    id: b.id,
+    status: b.status,
+    reference: b.reference,
+    tour: {
+      id: b.tour.id,
+      title: b.tour.title,
+      durationLabel: b.tour.durationLabel,
+      basePrice: b.tour.basePrice.toString(),
+    },
+  }));
+
+  const serializedUpcoming = upcomingTours.map((t) => ({
+    id: t.id,
+    title: t.title,
+    durationLabel: t.durationLabel,
+    basePrice: t.basePrice.toString(),
+  }));
+
   return (
-    <div className="mx-auto max-w-[960px] px-6 py-16 lg:px-20 lg:py-24">
-      <h1 className="mb-4 font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,40px)] font-medium leading-tight text-obsidian">
-        User profile
-      </h1>
-      <p className="mb-8 text-[15px] leading-relaxed text-obsidian/70">
-        This is your profile area. Here you&apos;ll soon be able to review your
-        details and upcoming trips.
-      </p>
-      <div className="flex flex-wrap items-center gap-4">
-        <form action={logoutAction}>
-          <button
-            type="submit"
-            className="inline-flex items-center rounded-full border border-bone bg-white px-5 py-3 text-sm font-medium tracking-wide text-obsidian transition-all duration-150 hover:border-obsidian hover:bg-travertine focus:outline-2 focus:outline-oro focus:outline-offset-2"
-          >
-            Log out
-          </button>
-        </form>
-        <Link
-          href="/"
-          className="inline-flex items-center rounded-full bg-parchment px-5 py-3 text-sm font-medium tracking-wide text-siena transition-all duration-150 hover:bg-bone/80"
-        >
-          Home
-        </Link>
-      </div>
-    </div>
+    <ProfileView
+      user={{
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        mobile: user.mobile,
+      }}
+      bookings={serializedBookings}
+      upcomingTours={serializedUpcoming}
+    />
   );
 }

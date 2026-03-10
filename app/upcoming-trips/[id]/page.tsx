@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getCurrentUserId } from "@/lib/auth";
+import { requestToBookAction } from "./actions";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -11,8 +13,9 @@ export const dynamic = "force-dynamic";
 
 export default async function TripDetailsPage({ params }: PageProps) {
   const { id } = await params;
+  const userId = await getCurrentUserId();
 
-  const trip = await (prisma as any).tour.findUnique({
+  const trip = await prisma.tour.findUnique({
     where: { id },
     include: {
       days: {
@@ -23,6 +26,14 @@ export default async function TripDetailsPage({ params }: PageProps) {
 
   if (!trip || trip.status !== "UPCOMING") {
     notFound();
+  }
+
+  let existingBooking: { id: string } | null = null;
+  if (userId) {
+    existingBooking = await prisma.booking.findUnique({
+      where: { userId_tourId: { userId, tourId: id } },
+      select: { id: true },
+    });
   }
 
   const staff = (trip.contactStaff as string | null)?.split(",").map((s) => s.trim()).filter(Boolean) ?? [];
@@ -154,6 +165,40 @@ export default async function TripDetailsPage({ params }: PageProps) {
                   >
                     Download full program (PDF)
                   </a>
+                )}
+
+                {userId && !existingBooking && (
+                  <form action={requestToBookAction.bind(null, id)} className="border-t border-zinc-200 pt-4">
+                    <button
+                      type="submit"
+                      className="w-full rounded-lg bg-zinc-900 px-4 py-3 text-sm font-medium text-white hover:bg-zinc-800"
+                    >
+                      Request to book
+                    </button>
+                  </form>
+                )}
+                {userId && existingBooking && (
+                  <div className="border-t border-zinc-200 pt-4">
+                    <p className="mb-2 text-sm font-medium text-zinc-700">
+                      You&apos;ve requested this trip
+                    </p>
+                    <Link
+                      href="/profile"
+                      className="inline-flex w-full items-center justify-center rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-100"
+                    >
+                      View in profile
+                    </Link>
+                  </div>
+                )}
+                {!userId && (
+                  <div className="border-t border-zinc-200 pt-4">
+                    <Link
+                      href={`/login?from=/upcoming-trips/${id}`}
+                      className="inline-flex w-full items-center justify-center rounded-lg bg-zinc-900 px-4 py-3 text-sm font-medium text-white hover:bg-zinc-800"
+                    >
+                      Log in to request this trip
+                    </Link>
+                  </div>
                 )}
 
                 {staff.length > 0 && (

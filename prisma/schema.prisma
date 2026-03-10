@@ -10,16 +10,17 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(cuid())
-  email      String   @unique
-  password   String   // store bcrypt/hash only
+  id         String    @id @default(cuid())
+  email      String    @unique
+  password   String    // store bcrypt/hash only
   firstName  String?
   lastName   String?
-  mobile     String?  @unique
-  role       String   @default("user") // e.g. "admin", "user"
-  is_active  Boolean  @default(true)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  mobile     String?   @unique
+  role       String    @default("user") // e.g. "admin", "user"
+  is_active  Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  bookings   Booking[]
 
   @@map("users")
 }
@@ -28,6 +29,14 @@ model User {
 enum TourStatus {
   UPCOMING
   ARCHIVED
+}
+
+enum BookingStatus {
+  REQUESTED
+  CONFIRMED
+  DEPOSIT_PAID
+  PAID
+  COMPLETED
 }
 
 model Tour {
@@ -51,6 +60,7 @@ model Tour {
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   days               TourDay[]
+  bookings           Booking[]
 
   @@map("tours")
 }
@@ -66,4 +76,19 @@ model TourDay {
   updatedAt   DateTime @updatedAt
 
   @@map("tour_days")
+}
+
+model Booking {
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tourId    String
+  tour      Tour          @relation(fields: [tourId], references: [id], onDelete: Cascade)
+  status    BookingStatus @default(REQUESTED)
+  reference String?       // e.g. "TL-8847" for display
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  @@unique([userId, tourId])
+  @@map("bookings")
 }

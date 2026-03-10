@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { logoutAction } from "@/lib/auth";
+import { logoutAction } from "@/lib/auth-actions";
 
 export default function DashboardPage() {
   return (

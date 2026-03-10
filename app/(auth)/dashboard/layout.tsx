@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
-import { logoutAction } from "@/lib/auth";
+import { logoutAction } from "@/lib/auth-actions";
 
 export default async function DashboardLayout({
   children,

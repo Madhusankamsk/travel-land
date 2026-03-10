@@ -2,13 +2,20 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { AuthNavButton } from "@/components/auth-nav-button";
 import { useI18n } from "@/components/i18n-provider";
 import { LangLink } from "@/components/lang-link";
 
 const EDGE_ZONE = 22; // % from left/right where hover triggers edge reflection
 
+function isActive(pathname: string, href: string): boolean {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export function LiquidHeader() {
+  const pathname = usePathname();
   const { lang, setLang, t } = useI18n();
   const [scrollY, setScrollY] = useState(0);
   const [isOverlapping, setIsOverlapping] = useState(false);
@@ -98,37 +105,49 @@ export function LiquidHeader() {
           <nav className="hidden items-center gap-6 md:gap-8 lg:flex" aria-label="Menu principale">
             <LangLink
               href="/"
-              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+              className={`liquid-nav-link text-[13px] font-medium tracking-wide transition-all duration-300 hover:text-obsidian ${
+                isActive(pathname, "/") ? "border-b-[1.5px] border-obsidian text-obsidian" : "text-obsidian/60"
+              }`}
             >
               {t("nav.home")}
             </LangLink>
             <LangLink
               href="/who-we-are"
-              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+              className={`liquid-nav-link text-[13px] font-medium tracking-wide transition-all duration-300 hover:text-obsidian ${
+                isActive(pathname, "/who-we-are") ? "border-b-[1.5px] border-obsidian text-obsidian" : "text-obsidian/60"
+              }`}
             >
               {t("nav.whoWeAre")}
             </LangLink>
             <LangLink
               href="/sustainable-tourism"
-              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+              className={`liquid-nav-link text-[13px] font-medium tracking-wide transition-all duration-300 hover:text-obsidian ${
+                isActive(pathname, "/sustainable-tourism") ? "border-b-[1.5px] border-obsidian text-obsidian" : "text-obsidian/60"
+              }`}
             >
               {t("nav.sustainableTourism")}
             </LangLink>
             <LangLink
               href="/upcoming-trips"
-              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+              className={`liquid-nav-link text-[13px] font-medium tracking-wide transition-all duration-300 hover:text-obsidian ${
+                isActive(pathname, "/upcoming-trips") ? "border-b-[1.5px] border-obsidian text-obsidian" : "text-obsidian/60"
+              }`}
             >
               {t("nav.upcomingTrips")}
             </LangLink>
             <LangLink
               href="/catalogs"
-              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+              className={`liquid-nav-link text-[13px] font-medium tracking-wide transition-all duration-300 hover:text-obsidian ${
+                isActive(pathname, "/catalogs") ? "border-b-[1.5px] border-obsidian text-obsidian" : "text-obsidian/60"
+              }`}
             >
               {t("nav.catalogs")}
             </LangLink>
             <LangLink
               href="/contacts"
-              className="liquid-nav-link text-[13px] font-medium tracking-wide text-obsidian/60 transition-all duration-300 hover:text-obsidian"
+              className={`liquid-nav-link text-[13px] font-medium tracking-wide transition-all duration-300 hover:text-obsidian ${
+                isActive(pathname, "/contacts") ? "border-b-[1.5px] border-obsidian text-obsidian" : "text-obsidian/60"
+              }`}
             >
               {t("nav.contacts")}
             </LangLink>

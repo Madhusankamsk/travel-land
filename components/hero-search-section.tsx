@@ -94,7 +94,7 @@ export function HeroSearchSection() {
               Agenzia di viaggi, tour operator
             </p>
             <h1 className="mb-4 text-center font-[family-name:var(--font-cormorant)] text-[clamp(36px,6vw,80px)] font-normal leading-[1.1] tracking-tighter text-[#F0EAE0]">
-              Travel land SRL
+              Travel Land SRL
             </h1>
             <blockquote className="hero-quote mx-auto mb-8 max-w-[80vw]">
               <p className="hero-quote-text">
