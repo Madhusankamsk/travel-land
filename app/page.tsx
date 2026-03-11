@@ -304,6 +304,26 @@ export default function Home() {
       {/* ==================== FEATURED PACKAGE ==================== */}
       <section className="py-16 lg:py-24">
         <div className="mx-auto max-w-[1440px] px-6 lg:px-20">
+          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+            Ultimo tour di gruppo
+          </p>
+          <h2 className="mb-4 font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,40px)] font-medium leading-tight tracking-tight text-obsidian">
+            Capodanno tra Napoli, Salerno e Costiera Amalfitana
+          </h2>
+          <div className="mb-8 flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
+            <p className="max-w-[640px] text-[15px] leading-relaxed text-obsidian/70">
+              L&apos;ultimo viaggio accompagnato firmato TRAVEL-LAND.IT: cinque giorni tra presepi
+              napoletani, luci d&apos;artista a Salerno e panorami mozzafiato sulla Costiera
+              Amalfitana, con treno da Milano incluso.
+            </p>
+            <LangLink
+              href="/travel-history"
+              className="inline-flex items-center rounded-full bg-parchment px-5 py-2.5 text-[13px] font-medium tracking-wide text-siena transition-all duration-150 hover:bg-bone/80 active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-oro focus-visible:ring-offset-2 focus-visible:ring-offset-travertine"
+            >
+              View All Recent Tours
+            </LangLink>
+          </div>
+
           <article className="overflow-hidden rounded-[20px] border border-bone bg-white shadow-[var(--shadow-sm)] lg:grid lg:grid-cols-[280px_1fr]">
             {/* Image */}
             <div className="relative min-h-[240px] overflow-hidden lg:min-h-full">
