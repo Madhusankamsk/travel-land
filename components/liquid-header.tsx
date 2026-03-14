@@ -8,10 +8,27 @@ import { useI18n } from "@/components/i18n-provider";
 import { LangLink } from "@/components/lang-link";
 
 const EDGE_ZONE = 22; // % from left/right where hover triggers edge reflection
+const MOBILE_BREAKPOINT = 1024; // lg
 
 function isActive(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function BurgerIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+      <path d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  );
+}
+
+function CloseIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+      <path d="M18 6L6 18M6 6l12 12" />
+    </svg>
+  );
 }
 
 export function LiquidHeader() {
@@ -20,6 +37,7 @@ export function LiquidHeader() {
   const [scrollY, setScrollY] = useState(0);
   const [isOverlapping, setIsOverlapping] = useState(false);
   const [hoverXPercent, setHoverXPercent] = useState<number | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -37,6 +55,25 @@ export function LiquidHeader() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Close drawer on route change (e.g. after clicking a nav link)
+  useEffect(() => {
+    setDrawerOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll when drawer is open on mobile
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const isMobile = window.innerWidth < MOBILE_BREAKPOINT;
+    if (drawerOpen && isMobile) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [drawerOpen]);
 
   const onMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -153,8 +190,9 @@ export function LiquidHeader() {
             </LangLink>
           </nav>
 
+          {/* Desktop: language + auth. Mobile: only burger (opens drawer) */}
           <div className="flex items-center gap-3">
-            <div className="hidden items-center sm:flex">
+            <div className="hidden items-center lg:flex">
               <label className="sr-only" htmlFor="site-language-select">
                 {t("language.ariaLabel")}
               </label>
@@ -173,9 +211,128 @@ export function LiquidHeader() {
                 </span>
               </div>
             </div>
-            <AuthNavButton />
+            <div className="hidden lg:block">
+              <AuthNavButton />
+            </div>
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(true)}
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-obsidian transition-colors hover:bg-white/20 lg:hidden"
+              aria-label={t("nav.openMenu") ?? "Open menu"}
+              aria-expanded={drawerOpen}
+            >
+              <BurgerIcon className="h-6 w-6" />
+            </button>
           </div>
         </div>
+      </div>
+
+      {/* Mobile drawer: left-side overlay + panel */}
+      <div
+        className="fixed inset-0 z-[100] lg:hidden"
+        aria-hidden={!drawerOpen}
+        inert={!drawerOpen ? true : undefined}
+      >
+        <div
+          className={`absolute inset-0 bg-obsidian/40 backdrop-blur-sm transition-opacity duration-300 ${
+            drawerOpen ? "opacity-100" : "pointer-events-none opacity-0"
+          }`}
+          onClick={() => setDrawerOpen(false)}
+          aria-hidden
+        />
+        <aside
+          className={`absolute left-0 top-0 flex h-full w-[min(85vw,320px)] flex-col border-r border-obsidian/10 bg-[#F0EAE0] shadow-xl transition-transform duration-300 ease-out ${
+            drawerOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+          aria-label={t("nav.menu") ?? "Navigation menu"}
+        >
+          <div className="flex h-16 shrink-0 items-center justify-between border-b border-obsidian/10 px-5">
+            <span className="text-sm font-semibold uppercase tracking-wide text-obsidian/80">
+              {t("nav.menu") ?? "Menu"}
+            </span>
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(false)}
+              className="flex h-10 w-10 items-center justify-center rounded-full text-obsidian transition-colors hover:bg-obsidian/10"
+              aria-label={t("nav.closeMenu") ?? "Close menu"}
+            >
+              <CloseIcon className="h-5 w-5" />
+            </button>
+          </div>
+          <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-4 py-6" aria-label="Menu principale">
+            <LangLink
+              href="/"
+              onClick={() => setDrawerOpen(false)}
+              className={`rounded-lg px-4 py-3 text-[15px] font-medium transition-colors ${
+                isActive(pathname, "/") ? "bg-obsidian/10 text-obsidian" : "text-obsidian/70 hover:bg-obsidian/5"
+              }`}
+            >
+              {t("nav.home")}
+            </LangLink>
+            <LangLink
+              href="/who-we-are"
+              onClick={() => setDrawerOpen(false)}
+              className={`rounded-lg px-4 py-3 text-[15px] font-medium transition-colors ${
+                isActive(pathname, "/who-we-are") ? "bg-obsidian/10 text-obsidian" : "text-obsidian/70 hover:bg-obsidian/5"
+              }`}
+            >
+              {t("nav.whoWeAre")}
+            </LangLink>
+            <LangLink
+              href="/sustainable-tourism"
+              onClick={() => setDrawerOpen(false)}
+              className={`rounded-lg px-4 py-3 text-[15px] font-medium transition-colors ${
+                isActive(pathname, "/sustainable-tourism") ? "bg-obsidian/10 text-obsidian" : "text-obsidian/70 hover:bg-obsidian/5"
+              }`}
+            >
+              {t("nav.sustainableTourism")}
+            </LangLink>
+            <LangLink
+              href="/upcoming-trips"
+              onClick={() => setDrawerOpen(false)}
+              className={`rounded-lg px-4 py-3 text-[15px] font-medium transition-colors ${
+                isActive(pathname, "/upcoming-trips") ? "bg-obsidian/10 text-obsidian" : "text-obsidian/70 hover:bg-obsidian/5"
+              }`}
+            >
+              {t("nav.upcomingTrips")}
+            </LangLink>
+            <LangLink
+              href="/catalogs"
+              onClick={() => setDrawerOpen(false)}
+              className={`rounded-lg px-4 py-3 text-[15px] font-medium transition-colors ${
+                isActive(pathname, "/catalogs") ? "bg-obsidian/10 text-obsidian" : "text-obsidian/70 hover:bg-obsidian/5"
+              }`}
+            >
+              {t("nav.catalogs")}
+            </LangLink>
+            <LangLink
+              href="/contacts"
+              onClick={() => setDrawerOpen(false)}
+              className={`rounded-lg px-4 py-3 text-[15px] font-medium transition-colors ${
+                isActive(pathname, "/contacts") ? "bg-obsidian/10 text-obsidian" : "text-obsidian/70 hover:bg-obsidian/5"
+              }`}
+            >
+              {t("nav.contacts")}
+            </LangLink>
+          </nav>
+          <div className="flex flex-col gap-4 border-t border-obsidian/10 p-4">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-obsidian/70" htmlFor="drawer-language-select">
+                {t("language.ariaLabel")}
+              </label>
+              <select
+                id="drawer-language-select"
+                value={lang}
+                onChange={(e) => setLang(e.target.value === "en" ? "en" : "it")}
+                className="flex-1 rounded-lg border border-obsidian/15 bg-white px-3 py-2 text-sm text-obsidian outline-none focus:ring-2 focus:ring-oro/50"
+              >
+                <option value="it">{t("language.short.it")}</option>
+                <option value="en">{t("language.short.en")}</option>
+              </select>
+            </div>
+            <AuthNavButton />
+          </div>
+        </aside>
       </div>
     </header>
   );
