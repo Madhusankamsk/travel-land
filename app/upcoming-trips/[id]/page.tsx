@@ -174,7 +174,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
                       type="submit"
                       className="w-full rounded-lg bg-zinc-900 px-4 py-3 text-sm font-medium text-white hover:bg-zinc-800"
                     >
-                      Request to book
+                      Book Now
                     </button>
                   </form>
                 )}

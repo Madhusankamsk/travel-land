@@ -141,7 +141,7 @@ export default async function DashboardPage() {
             recentTours.map((tour) => (
               <Link
                 key={tour.id}
-                href={`/dashboard/trips/${tour.id}/edit`}
+                href={`/dashboard/trips/${tour.id}/stats`}
                 className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-zinc-50 sm:px-5 sm:py-3.5"
               >
                 <div className="min-w-0 flex-1">

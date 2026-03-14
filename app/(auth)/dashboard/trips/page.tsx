@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { DeleteTripButton } from "./delete-trip-button";
+import { EditTripButton } from "./edit-trip-button";
 
 export const dynamic = "force-dynamic";
 
@@ -89,11 +90,12 @@ export default async function TripsPage() {
                         </Link>
                       )}
                       <Link
-                        href={`/dashboard/trips/${tour.id}/edit`}
-                        className="text-xs font-medium text-zinc-700 hover:text-zinc-900"
+                        href={`/dashboard/trips/${tour.id}/stats`}
+                        className="text-xs font-medium text-zinc-600 hover:text-zinc-900"
                       >
-                        Edit
+                        Stats
                       </Link>
+                      <EditTripButton href={`/dashboard/trips/${tour.id}/edit`} />
                       <DeleteTripButton
                         tourId={tour.id}
                         tourTitle={tour.title}
