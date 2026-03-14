@@ -42,47 +42,48 @@ services:
       retries: 3
       start_period: 15s
 
-  # Supabase postgres-meta API (required by Studio)
-  meta:
-    image: supabase/postgres-meta:v0.95.2
-    restart: unless-stopped
-    depends_on:
-      db:
-        condition: service_healthy
-    environment:
-      PG_META_PORT: "8080"
-      PG_META_DB_HOST: db
-      PG_META_DB_PORT: "5432"
-      PG_META_DB_NAME: postgres
-      PG_META_DB_USER: postgres
-      PG_META_DB_PASSWORD: postgres
-      PG_META_CRYPTO_KEY: "T travel-land-meta-crypto-key 32bytes!!"
+  # --- Local Supabase (commented out when using Supabase Cloud) ---
+  # # Supabase postgres-meta API (required by Studio)
+  # meta:
+  #   image: supabase/postgres-meta:v0.95.2
+  #   restart: unless-stopped
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   environment:
+  #     PG_META_PORT: "8080"
+  #     PG_META_DB_HOST: db
+  #     PG_META_DB_PORT: "5432"
+  #     PG_META_DB_NAME: postgres
+  #     PG_META_DB_USER: postgres
+  #     PG_META_DB_PASSWORD: postgres
+  #     PG_META_CRYPTO_KEY: "T travel-land-meta-crypto-key 32bytes!!"
 
-  # Supabase Studio (dashboard). Start with: docker compose up -d meta studio
-  # Then open: http://localhost:54323
-  studio:
-    image: supabase/studio:latest
-    restart: unless-stopped
-    depends_on:
-      meta:
-        condition: service_started
-    environment:
-      STUDIO_PG_META_URL: http://meta:8080
-      POSTGRES_HOST: db
-      POSTGRES_PORT: "5432"
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      DEFAULT_ORGANIZATION_NAME: Travel Land
-      DEFAULT_PROJECT_NAME: travel-land
-      # Minimal required for Studio to boot (auth/Kong not used for DB browsing)
-      SUPABASE_URL: http://kong:8000
-      SUPABASE_PUBLIC_URL: http://localhost:54323
-      SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.dummy
-      SUPABASE_SERVICE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.dummy
-      AUTH_JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
-    ports:
-      - "54323:3000"
+  # # Supabase Studio (dashboard). Start with: docker compose up -d meta studio
+  # # Then open: http://localhost:54323
+  # studio:
+  #   image: supabase/studio:latest
+  #   restart: unless-stopped
+  #   depends_on:
+  #     meta:
+  #       condition: service_started
+  #   environment:
+  #     STUDIO_PG_META_URL: http://meta:8080
+  #     POSTGRES_HOST: db
+  #     POSTGRES_PORT: "5432"
+  #     POSTGRES_DB: postgres
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     DEFAULT_ORGANIZATION_NAME: Travel Land
+  #     DEFAULT_PROJECT_NAME: travel-land
+  #     # Minimal required for Studio to boot (auth/Kong not used for DB browsing)
+  #     SUPABASE_URL: http://kong:8000
+  #     SUPABASE_PUBLIC_URL: http://localhost:54323
+  #     SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.dummy
+  #     SUPABASE_SERVICE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.dummy
+  #     AUTH_JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
+  #   ports:
+  #     - "54323:3000"
 
 volumes:
   postgres_data:
