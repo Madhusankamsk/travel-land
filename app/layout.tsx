@@ -3,10 +3,8 @@ import { Suspense } from "react";
 import { Cormorant_Garamond, DM_Sans, DM_Mono } from "next/font/google";
 import { Toaster } from "@/components/toaster";
 import { CookieConsent } from "@/components/cookie-consent";
-import { LiquidHeader } from "@/components/liquid-header";
 import { I18nProvider } from "@/components/i18n-provider";
-import { SiteFooter } from "@/components/site-footer";
-import { WhatsAppFloat } from "@/components/whatsapp-float";
+import { SiteShell } from "@/components/site-shell";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -50,14 +48,7 @@ export default function RootLayout({
       >
         <Suspense fallback={null}>
           <I18nProvider>
-            <div className="flex min-h-screen flex-col">
-              <LiquidHeader />
-
-              <main className="flex-1">{children}</main>
-
-              <SiteFooter />
-              <WhatsAppFloat />
-            </div>
+            <SiteShell>{children}</SiteShell>
           </I18nProvider>
         </Suspense>
         <CookieConsent />
