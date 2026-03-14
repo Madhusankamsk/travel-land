@@ -6,6 +6,7 @@ import { CookieConsent } from "@/components/cookie-consent";
 import { LiquidHeader } from "@/components/liquid-header";
 import { I18nProvider } from "@/components/i18n-provider";
 import { SiteFooter } from "@/components/site-footer";
+import { WhatsAppFloat } from "@/components/whatsapp-float";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -55,6 +56,7 @@ export default function RootLayout({
               <main className="flex-1">{children}</main>
 
               <SiteFooter />
+              <WhatsAppFloat />
             </div>
           </I18nProvider>
         </Suspense>
