@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Class-based dark mode (e.g. dashboard wrapper with .dark) */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   /* Primary Palette */
   --color-travertine: #F5F0E8;

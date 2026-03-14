@@ -8,4 +8,8 @@ declare module "lucide-react" {
   export const Archive: React.ComponentType<SVGProps<SVGSVGElement>>;
   export const FileText: React.ComponentType<SVGProps<SVGSVGElement>>;
   export const PlusCircle: React.ComponentType<SVGProps<SVGSVGElement>>;
+  export const Moon: React.ComponentType<SVGProps<SVGSVGElement>>;
+  export const Sun: React.ComponentType<SVGProps<SVGSVGElement>>;
+  export const Maximize2: React.ComponentType<SVGProps<SVGSVGElement>>;
+  export const Minimize2: React.ComponentType<SVGProps<SVGSVGElement>>;
 }

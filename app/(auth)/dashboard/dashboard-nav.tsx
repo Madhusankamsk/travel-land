@@ -27,8 +27,8 @@ export function DashboardNav() {
             onClick={() => sidebar?.setOpen(false)}
             className={`flex items-center gap-3 rounded-lg px-3 py-2 font-medium transition-colors ${
               isActive
-                ? "bg-zinc-200 text-zinc-900"
-                : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900"
+                ? "bg-zinc-200 text-zinc-900 dark:bg-zinc-700 dark:text-zinc-100"
+                : "text-zinc-700 hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
             }`}
           >
             <Icon className="h-5 w-5 shrink-0" aria-hidden />
