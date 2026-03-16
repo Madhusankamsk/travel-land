@@ -194,10 +194,10 @@ export default async function TripDetailsPage({ params }: PageProps) {
                 {!userId && (
                   <div className="border-t border-zinc-200 pt-4">
                     <Link
-                      href={`/login?from=/upcoming-trips/${id}`}
+                      href={`/membership?tourId=${id}`}
                       className="inline-flex w-full items-center justify-center rounded-lg bg-zinc-900 px-4 py-3 text-sm font-medium text-white hover:bg-zinc-800"
                     >
-                      Log in to request this trip
+                      Book this trip
                     </Link>
                   </div>
                 )}

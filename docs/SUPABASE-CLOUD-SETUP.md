@@ -23,7 +23,16 @@ This project uses **Prisma** for the database (PostgreSQL) and **Supabase JS** f
    - **Project API keys** → **service_role** (secret) → you will use this for `SUPABASE_SERVICE_ROLE_KEY`.  
      ⚠️ Never expose the service role key in the browser or in client-side code.
 
-### 2.2 Database connection strings (for Prisma)
+### 2.2 Membership form auth (Google + Magic Link)
+
+For the **Travel Membership Form** (guest-first, save-after-login), the app uses Supabase Auth in the browser. Add:
+
+- **Project URL** (same as above) → `NEXT_PUBLIC_SUPABASE_URL`.
+- **Project API keys** → **anon** (public) → `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+
+These are safe to expose in the browser. In the Supabase dashboard, enable **Authentication** → **Providers**: Email (magic link) and Google, and add your redirect URL (e.g. `https://your-domain.com/auth/callback`).
+
+### 2.3 Database connection strings (for Prisma)
 
 1. Open **Project Settings** → **Database**.
 2. Scroll to **Connection string**.
@@ -63,6 +72,10 @@ Set:
 SUPABASE_URL="https://YOUR-PROJECT-REF.supabase.co"
 SUPABASE_SERVICE_ROLE_KEY="your-service-role-key-from-dashboard"
 
+# Optional: for membership form auth (Google + Magic Link) in the browser
+NEXT_PUBLIC_SUPABASE_URL="https://YOUR-PROJECT-REF.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="your-anon-key-from-dashboard"
+
 # ——— Database (Supabase Cloud) ———
 # For Prisma migrations (direct connection, port 5432)
 DIRECT_URL="postgresql://postgres.[project-ref]:YOUR-DB-PASSWORD@aws-0-REGION.pooler.supabase.com:5432/postgres?sslmode=require"
@@ -80,7 +93,7 @@ Replace:
 - `YOUR-DB-PASSWORD` with your database password.
 - `[project-ref]`, `REGION`, and host with the exact values from **Settings → Database**.
 
-Your `.env` comment says the app does not use `NEXT_PUBLIC_SUPABASE_*`; that’s correct for this server-only setup.
+If you use the **Travel Membership Form** with Google or Magic Link sign-in, add `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` (see 2.2). Otherwise the app works with server-only Supabase (Storage) without these.
 
 ---
 
