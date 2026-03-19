@@ -120,3 +120,17 @@ model MembershipBooking {
 
   @@map("membership_bookings")
 }
+
+// Magic-link tokens for SMTP-based passwordless login.
+// Store only token hashes (never store the raw token) and enforce single-use.
+model MagicLinkToken {
+  id        String   @id @default(cuid())
+  email     String
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([email, createdAt])
+  @@map("magic_link_tokens")
+}

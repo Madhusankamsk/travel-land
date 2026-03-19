@@ -72,7 +72,7 @@ export async function createTrip(formData: FormData) {
     try {
       heroImageUrl = await saveTourFile(heroFile, "hero");
     } catch {
-      // Supabase unreachable (e.g. in Docker without reachable SUPABASE_URL) — save trip without image
+      // R2 unreachable/misconfigured — save trip without hero image
     }
   }
 
@@ -82,7 +82,7 @@ export async function createTrip(formData: FormData) {
     try {
       programPdfUrl = await saveTourFile(pdfFile, "program");
     } catch {
-      // Supabase unreachable — save trip without PDF
+      // R2 unreachable/misconfigured — save trip without program PDF
     }
   }
 
@@ -149,7 +149,7 @@ export async function updateTrip(tourId: string, formData: FormData) {
       const url = await saveTourFile(heroFile, "hero");
       if (url) heroImageUrl = url;
     } catch {
-      // Supabase unreachable — keep existing hero image
+      // R2 unreachable/misconfigured — keep existing hero image
     }
   }
 
@@ -160,7 +160,7 @@ export async function updateTrip(tourId: string, formData: FormData) {
       const url = await saveTourFile(pdfFile, "program");
       if (url) programPdfUrl = url;
     } catch {
-      // Supabase unreachable — keep existing PDF
+      // R2 unreachable/misconfigured — keep existing PDF
     }
   }
 
