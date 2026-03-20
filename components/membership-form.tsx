@@ -23,6 +23,7 @@ type MembershipFormProps = {
   errors?: Partial<Record<keyof MembershipDraft, string>>;
   onSubmit: (e: React.FormEvent) => void;
   isSubmitting: boolean;
+  compact?: boolean;
 };
 
 export function MembershipForm({
@@ -32,6 +33,7 @@ export function MembershipForm({
   errors = {},
   onSubmit,
   isSubmitting,
+  compact = false,
 }: MembershipFormProps) {
   const set = (key: keyof MembershipDraft, value: string | number | boolean) => {
     onChange({ ...data, [key]: value });
@@ -48,7 +50,7 @@ export function MembershipForm({
         <h2 className="mb-5 font-[var(--font-display)] text-[22px] font-medium text-[var(--color-obsidian)]">
           Personal details
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className={`grid gap-4 ${compact ? "" : "sm:grid-cols-2"}`}>
           <div className="sm:col-span-2">
             <label htmlFor="membership-fullName" className={labelClass}>
               Full name
@@ -175,7 +177,7 @@ export function MembershipForm({
         <h2 className="mb-5 font-[var(--font-display)] text-[22px] font-medium text-[var(--color-obsidian)]">
           Trip details
         </h2>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className={`grid gap-4 ${compact ? "" : "sm:grid-cols-2"}`}>
           <div className="sm:col-span-2">
             <label htmlFor="membership-packageName" className={labelClass}>
               Package
