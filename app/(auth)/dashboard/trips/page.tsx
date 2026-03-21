@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { summarizeCancellationPenalties } from "@/lib/cancellation-penalties";
 import { DeleteTripButton } from "./delete-trip-button";
 import { EditTripButton } from "./edit-trip-button";
 
@@ -32,13 +33,16 @@ export default async function TripsPage() {
       </div>
 
       <div className="overflow-x-auto overflow-y-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-900">
-        <table className="w-full min-w-[640px] text-left text-sm">
+        <table className="w-full min-w-[880px] text-left text-sm">
           <thead>
             <tr className="border-b border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800">
               <th className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">Title</th>
               <th className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">Status</th>
               <th className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">Duration</th>
               <th className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">Price</th>
+              <th className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300 max-w-[200px]">
+                Cancellation
+              </th>
               <th className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">Days</th>
               <th className="px-4 py-3 font-medium text-zinc-700 dark:text-zinc-300">Actions</th>
             </tr>
@@ -46,7 +50,7 @@ export default async function TripsPage() {
           <tbody>
             {tours.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-zinc-500 dark:text-zinc-400">
+                <td colSpan={7} className="px-4 py-8 text-center text-zinc-500 dark:text-zinc-400">
                   No trips yet. Create your first trip.
                 </td>
               </tr>
@@ -81,6 +85,9 @@ export default async function TripsPage() {
                   </td>
                   <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
                     €{Number(tour.basePrice).toLocaleString()}
+                  </td>
+                  <td className="max-w-[220px] px-4 py-3 text-xs leading-snug text-zinc-600 dark:text-zinc-400">
+                    {summarizeCancellationPenalties(tour.cancellationPenalties)}
                   </td>
                   <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">{tour.days.length}</td>
                   <td className="px-4 py-3">

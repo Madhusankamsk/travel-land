@@ -111,6 +111,9 @@ model Tour {
   included           String   @db.Text
   excluded           String   @db.Text
 
+  // Cancellation penalties (structured JSON; see data/cancellation-penalties-default.json)
+  cancellationPenalties Json?
+
   // Contact
   contactStaffName   String?
   contactPhone        String?

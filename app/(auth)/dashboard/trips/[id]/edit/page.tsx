@@ -65,6 +65,7 @@ export default async function EditTripPage({
     contactStaffName: tour.contactStaffName,
     contactPhone: tour.contactPhone,
     contactEmail: tour.contactEmail,
+    cancellationPenalties: tour.cancellationPenalties,
     days: tour.days.map((d) => ({
       dayHeading: d.dayHeading,
       dateLabel: d.dateLabel ?? "",

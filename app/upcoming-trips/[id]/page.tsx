@@ -5,6 +5,8 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/auth";
 import { TripMembershipPanel } from "./trip-membership-panel";
 import { InnerPageHero } from "@/components/inner-page-hero";
+import { CancellationPenaltiesBlock } from "@/components/cancellation-penalties-block";
+import { mergeCancellationPenalties } from "@/lib/cancellation-penalties";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -127,6 +129,8 @@ export default async function TripDetailsPage({ params }: PageProps) {
       minimumFractionDigits: 0,
       maximumFractionDigits: 2,
     });
+
+  const cancellationPolicy = mergeCancellationPenalties(trip.cancellationPenalties);
 
   return (
     <main className="min-h-screen bg-travertine">
@@ -469,6 +473,13 @@ export default async function TripDetailsPage({ params }: PageProps) {
                     {trip.excluded}
                   </p>
                 </div>
+              </section>
+
+              <section
+                className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)]"
+                aria-label="Cancellation penalties"
+              >
+                <CancellationPenaltiesBlock data={cancellationPolicy} />
               </section>
             </div>
 

@@ -2,6 +2,9 @@
 
 import { useActionState, useState, useRef, useEffect } from "react";
 import { toast } from "@/lib/toast";
+import type { CancellationPenalties } from "@/lib/cancellation-penalties";
+import { mergeCancellationPenalties } from "@/lib/cancellation-penalties";
+import { CancellationPenaltiesEditor } from "@/components/cancellation-penalties-editor";
 
 export type TripDay = { dayHeading: string; dateLabel: string; description: string };
 
@@ -50,6 +53,8 @@ type TripFormProps = {
     contactStaffName: string | null;
     contactPhone: string | null;
     contactEmail: string | null;
+    /** Per-trip cancellation policy JSON (merged with default when null) */
+    cancellationPenalties: unknown | null;
     days: TripDay[];
   };
   createAction: (formData: FormData) => Promise<{ error?: string } | void>;
@@ -67,6 +72,9 @@ export function TripForm({
     initial?.days?.length
       ? [...initial.days]
       : [{ dayHeading: "", dateLabel: "", description: "" }]
+  );
+  const [cancellationPenalties, setCancellationPenalties] = useState<CancellationPenalties>(() =>
+    mergeCancellationPenalties(initial?.cancellationPenalties ?? null)
   );
   const [state, formAction, isPending] = useActionState(
     async (_: unknown, formData: FormData) => {
@@ -107,6 +115,7 @@ export function TripForm({
       className="flex flex-col gap-10"
     >
       <input type="hidden" name="days" value={JSON.stringify(days)} />
+      <input type="hidden" name="cancellationPenaltiesJson" value={JSON.stringify(cancellationPenalties)} />
 
       {state?.error && (
         <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
@@ -590,6 +599,9 @@ export function TripForm({
           className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
         />
       </section>
+
+      {/* 8b. Cancellation penalties (JSON + preview) */}
+      <CancellationPenaltiesEditor value={cancellationPenalties} onChange={setCancellationPenalties} />
 
       {/* 9. Insurance */}
       <section className="rounded-xl border border-zinc-200 bg-white p-6">

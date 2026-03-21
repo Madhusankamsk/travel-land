@@ -1,0 +1,15 @@
+{
+  "title": "Cancellation penalties",
+  "intro": "The tourist who withdraws from the contract before departure must pay the organizer, in addition to the individual management cost, a penalty in the amount of:",
+  "rules": [
+    { "daysBefore": 90, "percent": 35 },
+    { "daysBefore": 60, "percent": 50 },
+    { "daysBefore": 30, "percent": 75 },
+    {
+      "daysBefore": 21,
+      "percent": 100,
+      "label": "100% balance including all accessory services"
+    }
+  ],
+  "footnote": "The day count excludes the day of departure and the day of notice of renunciation."
+}

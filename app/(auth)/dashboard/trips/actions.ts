@@ -5,6 +5,11 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { saveTourFile } from "@/lib/upload";
 import { Prisma, type TourStatus } from "@prisma/client";
+import {
+  cancellationPenaltiesToPrismaJson,
+  getDefaultCancellationPenalties,
+  parseCancellationPenaltiesFromForm,
+} from "@/lib/cancellation-penalties";
 
 function parseDecimal(value: string | null): number | null {
   if (value == null || value === "") return null;
@@ -167,6 +172,11 @@ export async function createTrip(formData: FormData) {
     return { error: "Intro text and included/excluded sections are required." };
   }
 
+  const cancellationPenalties =
+    parseCancellationPenaltiesFromForm(
+      formData.get("cancellationPenaltiesJson") as string | null
+    ) ?? getDefaultCancellationPenalties();
+
   const tour = await prisma.tour.create({
     data: {
       title,
@@ -215,6 +225,8 @@ export async function createTrip(formData: FormData) {
       included,
       excluded,
 
+      cancellationPenalties: cancellationPenaltiesToPrismaJson(cancellationPenalties),
+
       contactStaffName,
       contactPhone,
       contactEmail,
@@ -232,6 +244,7 @@ export async function createTrip(formData: FormData) {
   });
 
   revalidatePath("/dashboard/trips");
+  revalidatePath("/upcoming-trips");
   redirect(`/dashboard/trips/${tour.id}/edit`);
 }
 
@@ -347,6 +360,11 @@ export async function updateTrip(tourId: string, formData: FormData) {
     return { error: "Intro text and included/excluded sections are required." };
   }
 
+  const cancellationPenalties =
+    parseCancellationPenaltiesFromForm(
+      formData.get("cancellationPenaltiesJson") as string | null
+    ) ?? getDefaultCancellationPenalties();
+
   await prisma.tour.update({
     where: { id: tourId },
     data: {
@@ -396,6 +414,8 @@ export async function updateTrip(tourId: string, formData: FormData) {
       included,
       excluded,
 
+      cancellationPenalties: cancellationPenaltiesToPrismaJson(cancellationPenalties),
+
       contactStaffName,
       contactPhone,
       contactEmail,
@@ -416,6 +436,8 @@ export async function updateTrip(tourId: string, formData: FormData) {
 
   revalidatePath("/dashboard/trips");
   revalidatePath(`/dashboard/trips/${tourId}/edit`);
+  revalidatePath("/upcoming-trips");
+  revalidatePath(`/upcoming-trips/${tourId}`);
   return { success: true };
 }
 

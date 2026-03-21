@@ -6,9 +6,18 @@ import { InnerPageHero } from "@/components/inner-page-hero";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Prossimi viaggi — TRAVEL-LAND.IT",
-  description: "Scopri i prossimi tour in arrivo su TRAVEL-LAND.IT.",
+  title: "Upcoming trips — TRAVEL-LAND.IT",
+  description: "Discover upcoming tours on TRAVEL-LAND.IT.",
 };
+
+function formatTripPrice(amount: number, currency: string) {
+  return amount.toLocaleString("en-GB", {
+    style: "currency",
+    currency: currency || "EUR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  });
+}
 
 export default async function UpcomingTripsPage() {
   const trips = await prisma.tour.findMany({
@@ -19,10 +28,10 @@ export default async function UpcomingTripsPage() {
   return (
     <main className="min-h-screen bg-travertine">
       <InnerPageHero
-        title="Prossimi viaggi"
+        title="Upcoming trips"
         breadcrumb={[
           { label: "Home", href: "/" },
-          { label: "Prossimi viaggi" },
+          { label: "Upcoming trips" },
         ]}
       />
 
@@ -30,28 +39,28 @@ export default async function UpcomingTripsPage() {
         <div className="mx-auto max-w-[1200px] px-6 lg:px-20">
           <header className="mb-10">
             <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
-              Prossimi viaggi
+              Upcoming trips
             </p>
             <h2
               id="upcoming-trips-heading"
               className="font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-tight tracking-tight text-obsidian"
             >
-              I prossimi tour di TRAVEL-LAND.IT
+              Upcoming tours from TRAVEL-LAND.IT
             </h2>
           </header>
 
           {trips.length === 0 ? (
             <div className="rounded-[20px] border border-bone bg-white p-12 text-center shadow-[var(--shadow-sm)]">
               <p className="text-[15px] font-medium text-[#7A7060]">
-                Al momento non ci sono viaggi in programma.
+                There are no trips scheduled at the moment.
               </p>
               <p className="mt-2 text-[13px] text-[#B5A890]">
-                Torna più tardi oppure esplora i nostri viaggi passati.
+                Check back soon or explore our past trips.
               </p>
             </div>
           ) : (
             <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {trips.map((trip: any) => (
+              {trips.map((trip) => (
                 <li key={trip.id}>
                   <article className="group overflow-hidden rounded-[20px] border border-bone bg-white shadow-[var(--shadow-sm)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lg)]">
                     <div className="relative h-[220px] overflow-hidden">
@@ -93,11 +102,11 @@ export default async function UpcomingTripsPage() {
 
                       <div className="flex flex-wrap items-end justify-between gap-4 border-t border-bone pt-4">
                         <div>
-                          <p className="text-[11px] text-[#7A7060]">Da</p>
+                          <p className="text-[11px] text-[#7A7060]">From</p>
                           <p className="font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-tight text-obsidian">
-                            €{Number(trip.basePrice).toLocaleString()}
+                            {formatTripPrice(Number(trip.basePrice), trip.currency)}
                             <span className="ml-1 text-[13px] font-normal opacity-60">
-                              a persona
+                              per person
                             </span>
                           </p>
                         </div>
@@ -107,7 +116,7 @@ export default async function UpcomingTripsPage() {
                             href={`/upcoming-trips/${trip.id}`}
                             className="inline-flex items-center justify-center rounded-full border border-bone bg-white px-4 py-2.5 text-[13px] font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-travertine"
                           >
-                            Vedi dettagli
+                            View details
                           </Link>
                         </div>
                       </div>
@@ -120,7 +129,7 @@ export default async function UpcomingTripsPage() {
                             rel="noopener noreferrer"
                             className="inline-flex w-full items-center justify-center rounded-full border border-bone bg-parchment/60 px-5 py-2.5 text-[13px] font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-parchment"
                           >
-                            Programma (PDF)
+                            Itinerary (PDF)
                           </a>
                         </div>
                       )}
