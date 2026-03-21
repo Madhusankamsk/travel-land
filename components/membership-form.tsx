@@ -7,9 +7,10 @@ export type PackageOption = {
   title: string;
   basePrice: number;
   singleSupplement?: number | null;
+  programPdfUrl?: string | null;
 };
 
-const ROOM_TYPES = ["Single", "Double", "Triple"] as const;
+const ROOM_TYPES = ["Double", "Double Shared", "Single", "Triple", "Triple Shared"] as const;
 
 const inputClass =
   "w-full rounded-lg border border-[var(--color-bone)] bg-[var(--color-travertine)] px-4 py-3 text-[15px] text-[var(--color-obsidian)] placeholder-[#B5A890] focus:border-[var(--color-obsidian)] focus:outline-none focus:ring-2 focus:ring-[var(--color-obsidian)]/10";
@@ -38,10 +39,27 @@ export function MembershipForm({
   const set = (key: keyof MembershipDraft, value: string | number | boolean) => {
     onChange({ ...data, [key]: value });
   };
+  /** Merge fields and recompute total from the merged snapshot (avoids stale `data` in totals). */
+  const patch = (updates: Partial<MembershipDraft>) => {
+    const next = { ...data, ...updates };
+    const sum =
+      next.baseQuota +
+      next.supplementsVarious +
+      next.mandatoryMedicalBaggageInsuranceAmount +
+      next.travelCancellationInsuranceAmount +
+      next.registrationFee;
+    onChange({ ...next, totalQuota: sum });
+  };
 
   const total =
-    data.baseRate + data.insuranceAmount + data.registrationFees;
-  const totalMatches = Math.abs(total - data.total) < 0.02;
+    data.baseQuota +
+    data.supplementsVarious +
+    data.mandatoryMedicalBaggageInsuranceAmount +
+    data.travelCancellationInsuranceAmount +
+    data.registrationFee;
+  const totalMatches = Math.abs(total - data.totalQuota) < 0.02;
+  const activePackage = packages.find((p) => p.title === data.packageName);
+  const programPdfUrl = activePackage?.programPdfUrl ?? null;
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col">
@@ -61,32 +79,52 @@ export function MembershipForm({
           }
         >
           <h2 className="mb-5 font-[var(--font-display)] text-[22px] font-medium text-[var(--color-obsidian)]">
-            Personal details
+            Personal Information
           </h2>
           <div className={`grid gap-4 ${compact ? "" : "sm:grid-cols-2"}`}>
-            <div className="sm:col-span-2">
-              <label htmlFor="membership-fullName" className={labelClass}>
-                Full name
+            <div>
+              <label htmlFor="membership-lastName" className={labelClass}>
+                Last Name
               </label>
               <input
-                id="membership-fullName"
+                id="membership-lastName"
                 type="text"
-                value={data.fullName}
-                onChange={(e) => set("fullName", e.target.value)}
+                value={data.lastName}
+                onChange={(e) => set("lastName", e.target.value)}
                 required
-                autoComplete="name"
+                autoComplete="family-name"
                 className={inputClass}
-                placeholder="Maria Rossi"
+                placeholder="Rossi"
               />
-              {errors.fullName && (
+              {errors.lastName && (
                 <p className="mt-1 text-xs text-[var(--color-error)]" role="alert">
-                  {errors.fullName}
+                  {errors.lastName}
+                </p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="membership-firstName" className={labelClass}>
+                First Name
+              </label>
+              <input
+                id="membership-firstName"
+                type="text"
+                value={data.firstName}
+                onChange={(e) => set("firstName", e.target.value)}
+                required
+                autoComplete="given-name"
+                className={inputClass}
+                placeholder="Maria"
+              />
+              {errors.firstName && (
+                <p className="mt-1 text-xs text-[var(--color-error)]" role="alert">
+                  {errors.firstName}
                 </p>
               )}
             </div>
             <div>
               <label htmlFor="membership-dateOfBirth" className={labelClass}>
-                Date of birth
+                Date of Birth (dob)
               </label>
               <input
                 id="membership-dateOfBirth"
@@ -105,14 +143,15 @@ export function MembershipForm({
             <div />
             <div className="sm:col-span-2">
               <label htmlFor="membership-address" className={labelClass}>
-                Address
+                Full Address
               </label>
-              <textarea
+              <input
                 id="membership-address"
+                type="text"
                 value={data.address}
                 onChange={(e) => set("address", e.target.value)}
                 required
-                rows={2}
+                autoComplete="street-address"
                 className={inputClass}
                 placeholder="Street, city, postal code, country"
               />
@@ -122,9 +161,9 @@ export function MembershipForm({
                 </p>
               )}
             </div>
-            <div>
+            <div className="sm:col-span-2">
               <label htmlFor="membership-taxCode" className={labelClass}>
-                Tax code
+                Tax Code
               </label>
               <input
                 id="membership-taxCode"
@@ -142,7 +181,7 @@ export function MembershipForm({
                 </p>
               )}
             </div>
-            <div>
+            <div className="sm:col-span-2">
               <label htmlFor="membership-email" className={labelClass}>
                 Email
               </label>
@@ -162,30 +201,30 @@ export function MembershipForm({
                 </p>
               )}
             </div>
-            <div>
-              <label htmlFor="membership-phone" className={labelClass}>
-                Phone
+            <div className="sm:col-span-2 sm:max-w-md">
+              <label htmlFor="membership-telephone" className={labelClass}>
+                Telephone
               </label>
               <input
-                id="membership-phone"
+                id="membership-telephone"
                 type="tel"
-                value={data.phone}
-                onChange={(e) => set("phone", e.target.value)}
+                value={data.telephone}
+                onChange={(e) => set("telephone", e.target.value)}
                 required
                 autoComplete="tel"
                 className={inputClass}
                 placeholder="+39 123 456 7890"
               />
-              {errors.phone && (
+              {errors.telephone && (
                 <p className="mt-1 text-xs text-[var(--color-error)]" role="alert">
-                  {errors.phone}
+                  {errors.telephone}
                 </p>
               )}
             </div>
           </div>
         </section>
 
-        {/* 2. Trip details */}
+        {/* 2. Travel details */}
         <section
           className={
             compact
@@ -194,42 +233,52 @@ export function MembershipForm({
           }
         >
           <h2 className="mb-5 font-[var(--font-display)] text-[22px] font-medium text-[var(--color-obsidian)]">
-            Trip details
+            Travel Details
           </h2>
           <div className={`grid gap-4 ${compact ? "" : "sm:grid-cols-2"}`}>
             <div className="sm:col-span-2">
               <label htmlFor="membership-packageName" className={labelClass}>
-                Package
+                Travel Package Name For (Travel Program Attached)
               </label>
-              <select
-                id="membership-packageName"
-                value={data.packageName}
-                onChange={(e) => {
-                  const pkg = packages.find((p) => p.title === e.target.value);
-                  if (pkg) {
-                    const addSingle =
-                      data.roomType === "Single"
-                        ? Number(pkg.singleSupplement ?? 0)
-                        : 0;
-                    const newBase = pkg.basePrice + addSingle;
-                    set("packageName", pkg.title);
-                    set("tourId", pkg.id);
-                    set("baseRate", newBase);
-                    set("total", newBase + data.insuranceAmount + data.registrationFees);
-                  } else {
-                    set("packageName", e.target.value);
-                  }
-                }}
-                required
-                className={inputClass}
-              >
-                <option value="">Select a package</option>
-                {packages.map((p) => (
-                  <option key={p.id} value={p.title}>
-                    {p.title} — €{p.basePrice.toLocaleString()}
-                  </option>
-                ))}
-              </select>
+              {compact ? (
+                <input
+                  id="membership-packageName"
+                  type="text"
+                  readOnly
+                  value={data.packageName}
+                  required
+                  className={inputClass}
+                />
+              ) : (
+                <select
+                  id="membership-packageName"
+                  value={data.packageName}
+                  onChange={(e) => {
+                    const pkg = packages.find((p) => p.title === e.target.value);
+                    if (pkg) {
+                      const addSingle =
+                        data.roomType === "Single" ? Number(pkg.singleSupplement ?? 0) : 0;
+                      patch({
+                        packageName: pkg.title,
+                        tourId: pkg.id,
+                        baseQuota: pkg.basePrice,
+                        supplementsVarious: addSingle,
+                      });
+                    } else {
+                      set("packageName", e.target.value);
+                    }
+                  }}
+                  required
+                  className={inputClass}
+                >
+                  <option value="">Select a package</option>
+                  {packages.map((p) => (
+                    <option key={p.id} value={p.title}>
+                      {p.title} — €{p.basePrice.toLocaleString()}
+                    </option>
+                  ))}
+                </select>
+              )}
               {errors.packageName && (
                 <p className="mt-1 text-xs text-[var(--color-error)]" role="alert">
                   {errors.packageName}
@@ -237,38 +286,39 @@ export function MembershipForm({
               )}
             </div>
             <div>
-              <span className={labelClass}>Room type</span>
-              <div className="mt-2 flex flex-wrap gap-4">
+              <label htmlFor="membership-roomType" className={labelClass}>
+                Room Type (Select One)
+              </label>
+              <select
+                id="membership-roomType"
+                value={data.roomType}
+                onChange={(e) => {
+                  const room = e.target.value;
+                  const pkg = packages.find((p) => p.title === data.packageName);
+                  const addSingle = pkg && room === "Single" ? Number(pkg.singleSupplement ?? 0) : 0;
+                  patch({
+                    roomType: room,
+                    supplementsVarious: addSingle,
+                  });
+                }}
+                required
+                className={inputClass}
+              >
+                <option value="">Select room type</option>
                 {ROOM_TYPES.map((room) => (
-                  <label key={room} className="flex cursor-pointer items-center gap-2">
-                    <input
-                      type="radio"
-                      name="roomType"
-                      value={room}
-                      checked={data.roomType === room}
-                      onChange={() => {
-                        set("roomType", room);
-                        const pkg = packages.find((p) => p.title === data.packageName);
-                        if (pkg && room === "Single" && pkg.singleSupplement != null) {
-                          const add = Number(pkg.singleSupplement);
-                          set("baseRate", pkg.basePrice + add);
-                          set("total", pkg.basePrice + add + data.insuranceAmount + data.registrationFees);
-                        } else if (pkg) {
-                          set("baseRate", pkg.basePrice);
-                          set("total", pkg.basePrice + data.insuranceAmount + data.registrationFees);
-                        }
-                      }}
-                      className="rounded-full border-[var(--color-bone)] text-[var(--color-obsidian)] focus:ring-[var(--color-oro)]"
-                    />
-                    <span className="text-sm text-[var(--color-obsidian)]">{room}</span>
-                  </label>
+                  <option key={room} value={room}>
+                    {room}
+                  </option>
                 ))}
-              </div>
+              </select>
               {errors.roomType && (
                 <p className="mt-1 text-xs text-[var(--color-error)]" role="alert">
                   {errors.roomType}
                 </p>
               )}
+              <p className="mt-2 text-xs leading-relaxed text-[#7A7060]">
+                Note: The program may undergo changes for logistical/operational reasons without canceling excursions or visits.
+              </p>
             </div>
           </div>
         </section>
@@ -282,55 +332,108 @@ export function MembershipForm({
           }
         >
           <h2 className="mb-5 font-[var(--font-display)] text-[22px] font-medium text-[var(--color-obsidian)]">
-            Price breakdown
+            Cost Breakdown
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[280px] text-left text-sm">
               <tbody>
                 <tr className="border-b border-[var(--color-bone)]">
-                  <td className="py-3 text-[#7A7060]">Base rate</td>
+                  <td className="py-3 text-[#7A7060]">Base Quota</td>
                   <td className="py-3 text-right font-medium text-[var(--color-obsidian)]">
-                    €{data.baseRate.toFixed(2)}
-                  </td>
-                </tr>
-                <tr className="border-b border-[var(--color-bone)]">
-                  <td className="py-3 text-[#7A7060]">Insurance</td>
-                  <td className="py-3 text-right">
                     <input
                       type="number"
                       min="0"
                       step="0.01"
-                      value={data.insuranceAmount || ""}
+                      readOnly
+                      value={data.baseQuota ?? ""}
+                      className="w-28 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none"
+                    />
+                  </td>
+                </tr>
+                <tr className="border-b border-[var(--color-bone)]">
+                  <td className="py-3 text-[#7A7060]">
+                    SUPPLEMENTS &amp; VARIOUS (Single, Triple reduction, Discounts)
+                  </td>
+                  <td className="py-3 text-right">
+                    <input
+                      type="number"
+                      min="-999999"
+                      step="any"
+                      placeholder="0"
+                      value={moneyInputValue(data.supplementsVarious)}
                       onChange={(e) => {
-                        const v = parseNum(e.target.value);
-                        set("insuranceAmount", v);
-                        set("total", data.baseRate + v + data.registrationFees);
+                        const raw = e.target.value;
+                        const v = raw === "" ? 0 : Number(raw);
+                        if (Number.isNaN(v)) return;
+                        patch({ supplementsVarious: v });
                       }}
                       className="w-24 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none"
                     />
                   </td>
                 </tr>
                 <tr className="border-b border-[var(--color-bone)]">
-                  <td className="py-3 text-[#7A7060]">Registration fees</td>
+                  <td className="py-3 text-[#7A7060]">MANDATORY MEDICAL / BAGGAGE INSURANCE</td>
                   <td className="py-3 text-right">
                     <input
                       type="number"
                       min="0"
-                      step="0.01"
-                      value={data.registrationFees || ""}
+                      step="any"
+                      placeholder="0"
+                      value={moneyInputValue(data.mandatoryMedicalBaggageInsuranceAmount)}
                       onChange={(e) => {
-                        const v = parseNum(e.target.value);
-                        set("registrationFees", v);
-                        set("total", data.baseRate + data.insuranceAmount + v);
+                        const raw = e.target.value;
+                        const v = raw === "" ? 0 : Number(raw);
+                        if (Number.isNaN(v)) return;
+                        patch({ mandatoryMedicalBaggageInsuranceAmount: v });
+                      }}
+                      className="w-24 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none"
+                    />
+                  </td>
+                </tr>
+                <tr className="border-b border-[var(--color-bone)]">
+                  <td className="py-3 text-[#7A7060]">TRAVEL CANCELLATION INSURANCE</td>
+                  <td className="py-3 text-right">
+                    <input
+                      type="number"
+                      min="0"
+                      step="any"
+                      placeholder="0"
+                      value={moneyInputValue(data.travelCancellationInsuranceAmount)}
+                      onChange={(e) => {
+                        const raw = e.target.value;
+                        const v = raw === "" ? 0 : Number(raw);
+                        if (Number.isNaN(v)) return;
+                        patch({ travelCancellationInsuranceAmount: v });
+                      }}
+                      className="w-24 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none"
+                    />
+                  </td>
+                </tr>
+                <tr className="border-b border-[var(--color-bone)]">
+                  <td className="py-3 text-[#7A7060]">REGISTRATION FEE</td>
+                  <td className="py-3 text-right">
+                    <input
+                      type="number"
+                      min="0"
+                      step="any"
+                      placeholder="0"
+                      value={moneyInputValue(data.registrationFee)}
+                      onChange={(e) => {
+                        const raw = e.target.value;
+                        const v = raw === "" ? 0 : Number(raw);
+                        if (Number.isNaN(v)) return;
+                        patch({ registrationFee: v });
                       }}
                       className="w-24 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none"
                     />
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3 font-medium text-[var(--color-obsidian)]">Total</td>
+                  <td className="py-3 font-medium text-[var(--color-obsidian)]">
+                    TOTAL QUOTA per person including taxes and supplements (€):
+                  </td>
                   <td className="py-3 text-right font-[var(--font-display)] text-lg font-medium text-[var(--color-obsidian)]">
-                    €{(totalMatches ? total : data.total).toFixed(2)}
+                    €{(totalMatches ? total : data.totalQuota).toFixed(2)}
                   </td>
                 </tr>
               </tbody>
@@ -352,50 +455,63 @@ export function MembershipForm({
           }
         >
           <h2 className="mb-5 font-[var(--font-display)] text-[22px] font-medium text-[var(--color-obsidian)]">
-            Legal
+            Declaration and Data Consent
           </h2>
           <div className="space-y-4">
             <label className="flex cursor-pointer items-start gap-3">
               <input
                 type="checkbox"
-                checked={data.gdprAccepted}
-                onChange={(e) => set("gdprAccepted", e.target.checked)}
+                checked={data.declarationAccepted}
+                onChange={(e) => set("declarationAccepted", e.target.checked)}
                 required
                 className="mt-1 rounded border-[var(--color-bone)] text-[var(--color-obsidian)] focus:ring-[var(--color-oro)]"
               />
               <span className="text-sm text-[var(--color-obsidian)]">
-                I have read and accept the{" "}
+                I declare that I have read and accepted the{" "}
+                {programPdfUrl ? (
+                  <a
+                    href={programPdfUrl}
+                    className="font-medium text-[var(--color-azure)] underline hover:text-[var(--color-adriatic)]"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    travel program
+                  </a>
+                ) : (
+                  <span>travel program</span>
+                )}{" "}
+                of T.O. Travel Land srl and any cancellation penalties based on the{" "}
                 <a
                   href="/who-we-are"
                   className="font-medium text-[var(--color-azure)] underline hover:text-[var(--color-adriatic)]"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  privacy policy (GDPR)
+                  &quot;General conditions of the travel package sales contract&quot;
                 </a>
                 .
               </span>
             </label>
-            {errors.gdprAccepted && (
+            {errors.declarationAccepted && (
               <p className="text-xs text-[var(--color-error)]" role="alert">
-                {errors.gdprAccepted}
+                {errors.declarationAccepted}
               </p>
             )}
             <label className="flex cursor-pointer items-start gap-3">
               <input
                 type="checkbox"
-                checked={data.cancellationAccepted}
-                onChange={(e) => set("cancellationAccepted", e.target.checked)}
+                checked={data.dataProcessingAccepted}
+                onChange={(e) => set("dataProcessingAccepted", e.target.checked)}
                 required
                 className="mt-1 rounded border-[var(--color-bone)] text-[var(--color-obsidian)] focus:ring-[var(--color-oro)]"
               />
               <span className="text-sm text-[var(--color-obsidian)]">
-                I have read and accept the cancellation policy applicable to this package.
+                I authorize the processing of my personal data (in accordance with Regulation (EU) 679/2016).
               </span>
             </label>
-            {errors.cancellationAccepted && (
+            {errors.dataProcessingAccepted && (
               <p className="text-xs text-[var(--color-error)]" role="alert">
-                {errors.cancellationAccepted}
+                {errors.dataProcessingAccepted}
               </p>
             )}
           </div>
@@ -416,7 +532,8 @@ export function MembershipForm({
   );
 }
 
-function parseNum(v: string): number {
-  const n = parseFloat(v.replace(/,/g, "."));
-  return Number.isNaN(n) ? 0 : n;
+/** Empty string when amount is 0 so the field can be cleared and re-typed (controlled `value={0}` blocks editing). */
+function moneyInputValue(n: number): string | number {
+  if (n === 0) return "";
+  return n;
 }

@@ -22,6 +22,7 @@ export default async function MembershipPage({ searchParams }: PageProps) {
         title: true,
         basePrice: true,
         singleSupplement: true,
+        programPdfUrl: true,
       },
     }),
     userId ? prisma.user.findUnique({
@@ -35,12 +36,14 @@ export default async function MembershipPage({ searchParams }: PageProps) {
     title: t.title,
     basePrice: Number(t.basePrice),
     singleSupplement: t.singleSupplement != null ? Number(t.singleSupplement) : null,
+    programPdfUrl: t.programPdfUrl ?? null,
   }));
 
   const userProfile =
     user?.email != null
       ? {
-          fullName: [user.firstName, user.lastName].filter(Boolean).join(" ").trim() || "",
+          firstName: user.firstName ?? "",
+          lastName: user.lastName ?? "",
           email: user.email,
         }
       : null;

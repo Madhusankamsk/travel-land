@@ -25,10 +25,15 @@ export default async function ProfilePage() {
     redirect("/login?from=/profile");
   }
 
-  const [bookings, upcomingTours] = await Promise.all([
+  const [bookings, membershipBookings, upcomingTours] = await Promise.all([
     prisma.booking.findMany({
       where: { userId },
       include: { tour: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.membershipBooking.findMany({
+      where: { userId },
+      select: { id: true, reference: true, tourId: true, createdAt: true },
       orderBy: { createdAt: "desc" },
     }),
     prisma.tour.findMany({
@@ -39,10 +44,24 @@ export default async function ProfilePage() {
     }),
   ]);
 
-  const serializedBookings = bookings.map((b) => ({
+  const membershipTourIds = membershipBookings
+    .map((b) => b.tourId)
+    .filter((id): id is string => Boolean(id));
+
+  const membershipTours = membershipTourIds.length
+    ? await prisma.tour.findMany({
+        where: { id: { in: membershipTourIds } },
+        select: { id: true, title: true, durationLabel: true, basePrice: true },
+      })
+    : [];
+
+  const toursById = new Map(membershipTours.map((t) => [t.id, t]));
+
+  const serializedBookingsLegacy = bookings.map((b) => ({
     id: b.id,
     status: b.status,
     reference: b.reference,
+    createdAt: b.createdAt,
     tour: {
       id: b.tour.id,
       title: b.tour.title,
@@ -50,6 +69,32 @@ export default async function ProfilePage() {
       basePrice: b.tour.basePrice.toString(),
     },
   }));
+
+  const serializedMembershipBookings = membershipBookings
+    .map((mb) => {
+      if (!mb.tourId) return null;
+      const tour = toursById.get(mb.tourId);
+      if (!tour) return null;
+      return {
+        id: mb.id,
+        status: "REQUESTED",
+        reference: mb.reference,
+        createdAt: mb.createdAt,
+        tour: {
+          id: tour.id,
+          title: tour.title,
+          durationLabel: tour.durationLabel,
+          basePrice: tour.basePrice.toString(),
+        },
+      };
+    })
+    .filter((x): x is NonNullable<typeof x> => x != null);
+
+  const combinedBookings = [...serializedBookingsLegacy, ...serializedMembershipBookings].sort(
+    (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+  );
+
+  const serializedBookings = combinedBookings.map(({ createdAt, ...rest }) => rest);
 
   const serializedUpcoming = upcomingTours.map((t) => ({
     id: t.id,

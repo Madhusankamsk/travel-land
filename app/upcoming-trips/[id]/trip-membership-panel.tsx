@@ -13,31 +13,34 @@ const DRAFT_KEY_PREFIX = "travel_land_membership_draft_trip_";
 
 function getDefaultDraft(
   selectedPackage: PackageOption,
-  profile?: { fullName: string; email: string }
+  profile?: { firstName: string; lastName: string; email: string }
 ): MembershipDraft {
   return {
-    fullName: profile?.fullName ?? "",
+    firstName: profile?.firstName ?? "",
+    lastName: profile?.lastName ?? "",
     dateOfBirth: "",
     address: "",
     taxCode: "",
     email: profile?.email ?? "",
-    phone: "",
+    telephone: "",
     packageName: selectedPackage.title,
     tourId: selectedPackage.id,
     roomType: "",
-    baseRate: selectedPackage.basePrice,
-    insuranceAmount: 0,
-    registrationFees: 0,
-    total: selectedPackage.basePrice,
-    gdprAccepted: false,
-    cancellationAccepted: false,
+    baseQuota: selectedPackage.basePrice,
+    supplementsVarious: 0,
+    mandatoryMedicalBaggageInsuranceAmount: 0,
+    travelCancellationInsuranceAmount: 0,
+    registrationFee: 0,
+    totalQuota: selectedPackage.basePrice,
+    declarationAccepted: false,
+    dataProcessingAccepted: false,
   };
 }
 
 type TripMembershipPanelProps = {
   selectedPackage: PackageOption;
   isAuthenticated: boolean;
-  userProfile: { fullName: string; email: string } | null;
+  userProfile: { firstName: string; lastName: string; email: string } | null;
 };
 
 export function TripMembershipPanel({
@@ -82,21 +85,35 @@ export function TripMembershipPanel({
       if (!raw) return null;
       const parsed = JSON.parse(raw) as Partial<MembershipDraft>;
       const base = getDefaultDraft(selectedPackage, userProfile ?? undefined);
+      const baseQuota =
+        typeof parsed.baseQuota === "number" && parsed.baseQuota >= 0
+          ? parsed.baseQuota
+          : selectedPackage.basePrice;
+
+      const supplementsVarious = typeof parsed.supplementsVarious === "number" ? parsed.supplementsVarious : 0;
+      const mandatoryMedicalBaggageInsuranceAmount =
+        typeof parsed.mandatoryMedicalBaggageInsuranceAmount === "number"
+          ? parsed.mandatoryMedicalBaggageInsuranceAmount
+          : 0;
+      const travelCancellationInsuranceAmount =
+        typeof parsed.travelCancellationInsuranceAmount === "number"
+          ? parsed.travelCancellationInsuranceAmount
+          : 0;
+      const registrationFee =
+        typeof parsed.registrationFee === "number" ? parsed.registrationFee : 0;
+
       return {
         ...base,
         ...parsed,
         packageName: selectedPackage.title,
         tourId: selectedPackage.id,
-        baseRate:
-          typeof parsed.baseRate === "number" && parsed.baseRate > 0
-            ? parsed.baseRate
-            : selectedPackage.basePrice,
-        total:
-          typeof parsed.total === "number" && parsed.total > 0
-            ? parsed.total
-            : selectedPackage.basePrice +
-              (typeof parsed.insuranceAmount === "number" ? parsed.insuranceAmount : 0) +
-              (typeof parsed.registrationFees === "number" ? parsed.registrationFees : 0),
+        baseQuota,
+        supplementsVarious,
+        mandatoryMedicalBaggageInsuranceAmount,
+        travelCancellationInsuranceAmount,
+        registrationFee,
+        totalQuota:
+          baseQuota + supplementsVarious + mandatoryMedicalBaggageInsuranceAmount + travelCancellationInsuranceAmount + registrationFee,
       };
     } catch {
       return null;
@@ -175,7 +192,7 @@ export function TripMembershipPanel({
           setMagicLinkError("Please submit again to receive a magic link.");
           return;
         }
-        setErrors({ fullName: result.error });
+        setErrors({ firstName: result.error });
         return;
       }
 

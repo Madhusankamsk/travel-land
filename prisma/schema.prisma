@@ -96,27 +96,43 @@ model Booking {
 
 // Travel Membership Form submissions (guest-first, save-after-login)
 model MembershipBooking {
-  id                  String   @id @default(cuid())
-  userId              String
-  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  fullName            String
-  dateOfBirth         DateTime // stored as date; time part ignored
-  address             String   @db.Text
-  taxCode             String
-  email               String
-  phone               String
-  packageName         String   // tour title or package name
-  tourId              String?  // optional link to Tour
-  roomType            String   // Single | Double | Triple
-  baseRate            Decimal  @db.Decimal(10, 2)
-  insuranceAmount     Decimal  @db.Decimal(10, 2)
-  registrationFees    Decimal  @db.Decimal(10, 2)
-  total               Decimal  @db.Decimal(10, 2)
-  gdprAccepted        Boolean
-  cancellationAccepted Boolean
-  reference           String?
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id        String @id @default(cuid())
+  userId    String
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Stored for backward compatibility with the legacy form.
+  fullName String
+
+  firstName String
+  lastName  String
+
+  dateOfBirth DateTime // stored as date; time part ignored
+  address     String   @db.Text
+  taxCode     String
+  email       String
+
+  telephone String @map("phone")
+
+  packageName String // tour title or package name
+  tourId      String? // optional link to Tour
+
+  // Double | Double Shared | Single | Triple | Triple Shared
+  roomType String
+
+  baseQuota                               Decimal @db.Decimal(10, 2) @map("baseRate") // mapped from legacy "baseRate"
+  mandatoryMedicalBaggageInsuranceAmount Decimal @db.Decimal(10, 2) @map("insuranceAmount") // mapped from legacy "insuranceAmount"
+  supplementsVarious                      Decimal @db.Decimal(10, 2)
+  travelCancellationInsuranceAmount      Decimal @db.Decimal(10, 2)
+  registrationFee                         Decimal @db.Decimal(10, 2) @map("registrationFees") // mapped from legacy "registrationFees"
+  totalQuota                              Decimal @db.Decimal(10, 2) @map("total") // mapped from legacy "total"
+
+  // mapped from legacy flags used by the cancellation/privacy parts of the old form.
+  declarationAccepted   Boolean @map("cancellationAccepted")
+  dataProcessingAccepted Boolean @map("gdprAccepted")
+
+  reference String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("membership_bookings")
 }

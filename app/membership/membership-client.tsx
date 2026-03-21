@@ -13,23 +13,26 @@ import type { PackageOption } from "@/components/membership-form";
 const DRAFT_KEY = "travel_land_membership_draft";
 const MEMBERSHIP_NEXT = "/membership?callback=1";
 
-function getDefaultDraft(profile?: { fullName: string; email: string }): MembershipDraft {
+function getDefaultDraft(profile?: { firstName: string; lastName: string; email: string }): MembershipDraft {
   return {
-    fullName: profile?.fullName ?? "",
+    firstName: profile?.firstName ?? "",
+    lastName: profile?.lastName ?? "",
     dateOfBirth: "",
     address: "",
     taxCode: "",
     email: profile?.email ?? "",
-    phone: "",
+    telephone: "",
     packageName: "",
     tourId: undefined,
     roomType: "",
-    baseRate: 0,
-    insuranceAmount: 0,
-    registrationFees: 0,
-    total: 0,
-    gdprAccepted: false,
-    cancellationAccepted: false,
+    baseQuota: 0,
+    supplementsVarious: 0,
+    mandatoryMedicalBaggageInsuranceAmount: 0,
+    travelCancellationInsuranceAmount: 0,
+    registrationFee: 0,
+    totalQuota: 0,
+    declarationAccepted: false,
+    dataProcessingAccepted: false,
   };
 }
 
@@ -41,21 +44,31 @@ function loadDraft(): MembershipDraft | null {
     const parsed = JSON.parse(raw) as Partial<MembershipDraft>;
     const def = getDefaultDraft();
     return {
-      fullName: parsed.fullName ?? def.fullName,
+      firstName: parsed.firstName ?? def.firstName,
+      lastName: parsed.lastName ?? def.lastName,
       dateOfBirth: parsed.dateOfBirth ?? def.dateOfBirth,
       address: parsed.address ?? def.address,
       taxCode: parsed.taxCode ?? def.taxCode,
       email: parsed.email ?? def.email,
-      phone: parsed.phone ?? def.phone,
+      telephone: parsed.telephone ?? def.telephone,
       packageName: parsed.packageName ?? def.packageName,
       tourId: parsed.tourId ?? def.tourId,
       roomType: parsed.roomType ?? def.roomType,
-      baseRate: typeof parsed.baseRate === "number" ? parsed.baseRate : def.baseRate,
-      insuranceAmount: typeof parsed.insuranceAmount === "number" ? parsed.insuranceAmount : def.insuranceAmount,
-      registrationFees: typeof parsed.registrationFees === "number" ? parsed.registrationFees : def.registrationFees,
-      total: typeof parsed.total === "number" ? parsed.total : def.total,
-      gdprAccepted: Boolean(parsed.gdprAccepted),
-      cancellationAccepted: Boolean(parsed.cancellationAccepted),
+      baseQuota: typeof parsed.baseQuota === "number" ? parsed.baseQuota : def.baseQuota,
+      supplementsVarious: typeof parsed.supplementsVarious === "number" ? parsed.supplementsVarious : def.supplementsVarious,
+      mandatoryMedicalBaggageInsuranceAmount:
+        typeof parsed.mandatoryMedicalBaggageInsuranceAmount === "number"
+          ? parsed.mandatoryMedicalBaggageInsuranceAmount
+          : def.mandatoryMedicalBaggageInsuranceAmount,
+      travelCancellationInsuranceAmount:
+        typeof parsed.travelCancellationInsuranceAmount === "number"
+          ? parsed.travelCancellationInsuranceAmount
+          : def.travelCancellationInsuranceAmount,
+      registrationFee:
+        typeof parsed.registrationFee === "number" ? parsed.registrationFee : def.registrationFee,
+      totalQuota: typeof parsed.totalQuota === "number" ? parsed.totalQuota : def.totalQuota,
+      declarationAccepted: Boolean(parsed.declarationAccepted),
+      dataProcessingAccepted: Boolean(parsed.dataProcessingAccepted),
     };
   } catch {
     return null;
@@ -74,7 +87,7 @@ function saveDraft(data: MembershipDraft) {
 type MembershipPageClientProps = {
   packages: PackageOption[];
   isAuthenticated: boolean;
-  userProfile: { fullName: string; email: string } | null;
+  userProfile: { firstName: string; lastName: string; email: string } | null;
   callbackParam: string | null;
   errorParam: string | null;
   tourIdParam: string | null;
@@ -137,7 +150,8 @@ export function MembershipPageClient({
         ? { ...getDefaultDraft(userProfile ?? undefined), ...saved }
         : getDefaultDraft(userProfile ?? undefined);
       if (userProfile && !saved) {
-        base.fullName = userProfile.fullName || base.fullName;
+        base.firstName = userProfile.firstName || base.firstName;
+        base.lastName = userProfile.lastName || base.lastName;
         base.email = userProfile.email || base.email;
       }
       if (tourIdParam && packages.length > 0) {
@@ -145,8 +159,15 @@ export function MembershipPageClient({
         if (pkg) {
           base.packageName = pkg.title;
           base.tourId = pkg.id;
-          base.baseRate = pkg.basePrice;
-          base.total = pkg.basePrice + (base.insuranceAmount || 0) + (base.registrationFees || 0);
+          const addSingle = base.roomType === "Single" ? Number(pkg.singleSupplement ?? 0) : 0;
+          base.baseQuota = pkg.basePrice;
+          base.supplementsVarious = addSingle;
+          base.totalQuota =
+            pkg.basePrice +
+            addSingle +
+            (base.mandatoryMedicalBaggageInsuranceAmount || 0) +
+            (base.travelCancellationInsuranceAmount || 0) +
+            (base.registrationFee || 0);
         }
       }
       setData(base);
@@ -191,7 +212,7 @@ export function MembershipPageClient({
           setMagicLinkError("Please submit again to receive a magic link.");
           return;
         }
-        setErrors({ fullName: result.error });
+        setErrors({ firstName: result.error });
         return;
       }
       try {

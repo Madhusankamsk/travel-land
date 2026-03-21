@@ -29,11 +29,11 @@ export default async function TripDetailsPage({ params }: PageProps) {
   }
 
   let existingBooking: { id: string } | null = null;
-  let userProfile: { fullName: string; email: string } | null = null;
+  let userProfile: { firstName: string; lastName: string; email: string } | null = null;
   if (userId) {
     const [booking, user] = await Promise.all([
-      prisma.booking.findUnique({
-        where: { userId_tourId: { userId, tourId: id } },
+      prisma.membershipBooking.findFirst({
+        where: { userId, tourId: id },
         select: { id: true },
       }),
       prisma.user.findUnique({
@@ -44,7 +44,8 @@ export default async function TripDetailsPage({ params }: PageProps) {
     existingBooking = booking;
     if (user?.email) {
       userProfile = {
-        fullName: [user.firstName, user.lastName].filter(Boolean).join(" ").trim() || "",
+        firstName: user.firstName ?? "",
+        lastName: user.lastName ?? "",
         email: user.email,
       };
     }
@@ -266,6 +267,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
                       basePrice: Number(trip.basePrice),
                       singleSupplement:
                         trip.singleSupplement != null ? Number(trip.singleSupplement) : null,
+                      programPdfUrl: trip.programPdfUrl ?? null,
                     }}
                     isAuthenticated={Boolean(userId)}
                     userProfile={userProfile}
