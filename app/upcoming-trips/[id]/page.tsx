@@ -60,7 +60,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
         image={trip.heroImageUrl ?? undefined}
         breadcrumb={[
           { label: "Home", href: "/" },
-          { label: "Prossimi viaggi", href: "/upcoming-trips" },
+          { label: "Upcoming trips", href: "/upcoming-trips" },
           { label: trip.title },
         ]}
       />
@@ -72,7 +72,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
               href="/upcoming-trips"
               className="inline-flex items-center rounded-full border border-bone bg-white px-4 py-2.5 text-[13px] font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-travertine"
             >
-              ← Prossimi viaggi
+              ← Upcoming trips
             </Link>
           </div>
 
@@ -101,13 +101,13 @@ export default async function TripDetailsPage({ params }: PageProps) {
                   id="trip-itinerary-heading"
                   className="mb-6 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug text-obsidian"
                 >
-                  Programma giornaliero
+                  Daily program
                 </h2>
 
                 {trip.days.length === 0 ? (
                   <div className="rounded-[20px] border border-bone bg-parchment/60 p-6">
                     <p className="text-[14px] font-medium text-[#7A7060]">
-                      Il programma verrà pubblicato a breve.
+                      The program will be published soon.
                     </p>
                   </div>
                 ) : (
@@ -145,7 +145,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
                     id="trip-inclusions-heading"
                     className="mb-2 font-[family-name:var(--font-cormorant)] text-[20px] font-medium leading-snug text-obsidian"
                   >
-                    Incluso nel prezzo
+                    Included in the price
                   </h2>
                   <p className="whitespace-pre-line text-[14px] leading-[1.65] text-[#7A7060]">
                     {trip.included}
@@ -153,7 +153,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
                 </div>
                 <div className="rounded-[20px] border border-bone bg-parchment/60 p-6">
                   <h2 className="mb-2 font-[family-name:var(--font-cormorant)] text-[20px] font-medium leading-snug text-obsidian">
-                    Non incluso nel prezzo
+                    Not included in the price
                   </h2>
                   <p className="whitespace-pre-line text-[14px] leading-[1.65] text-[#7A7060]">
                     {trip.excluded}
@@ -167,7 +167,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
                     id="trip-cancellation-heading"
                     className="mb-2 font-[family-name:var(--font-cormorant)] text-[20px] font-medium leading-snug text-obsidian"
                   >
-                    Politica di cancellazione
+                    Cancellation policy
                   </h2>
                   <p className="whitespace-pre-line text-[14px] leading-[1.65] text-[#7A7060]">
                     {trip.cancellationPolicy}
@@ -181,17 +181,17 @@ export default async function TripDetailsPage({ params }: PageProps) {
               <div className="rounded-[20px] border border-bone bg-parchment/60 p-6 shadow-[var(--shadow-sm)]">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#7A7060]">
-                    Quota da
+                    Price from
                   </p>
                   <p className="mt-1 font-[family-name:var(--font-cormorant)] text-[32px] font-medium leading-tight text-obsidian">
                     €{Number(trip.basePrice).toLocaleString()}
                     <span className="ml-1 text-[13px] font-normal opacity-60">
-                      a persona
+                      per person
                     </span>
                   </p>
                   {trip.singleSupplement && (
                     <p className="mt-2 text-[14px] leading-relaxed text-[#7A7060]">
-                      Supplemento singola: €{Number(trip.singleSupplement).toLocaleString()}
+                      Single supplement: €{Number(trip.singleSupplement).toLocaleString()}
                     </p>
                   )}
                 </div>
@@ -200,13 +200,13 @@ export default async function TripDetailsPage({ params }: PageProps) {
                   <div className="mt-5 space-y-1 border-t border-bone/70 pt-5">
                     {trip.depositLabel && (
                       <p className="text-[14px] leading-relaxed text-[#7A7060]">
-                        <span className="font-medium text-obsidian">Acconto:</span>{" "}
+                        <span className="font-medium text-obsidian">Deposit:</span>{" "}
                         {trip.depositLabel}
                       </p>
                     )}
                     {trip.balanceDeadline && (
                       <p className="text-[14px] leading-relaxed text-[#7A7060]">
-                        <span className="font-medium text-obsidian">Saldo:</span>{" "}
+                        <span className="font-medium text-obsidian">Balance:</span>{" "}
                         {trip.balanceDeadline}
                       </p>
                     )}
@@ -217,13 +217,13 @@ export default async function TripDetailsPage({ params }: PageProps) {
                   <div className="mt-5 space-y-1 border-t border-bone/70 pt-5">
                     {trip.mandatoryInsurance && (
                       <p className="text-[14px] leading-relaxed text-[#7A7060]">
-                        <span className="font-medium text-obsidian">Assicurazione obbligatoria:</span>{" "}
+                        <span className="font-medium text-obsidian">Mandatory insurance:</span>{" "}
                         {trip.mandatoryInsurance}
                       </p>
                     )}
                     {trip.optionalInsurance && (
                       <p className="text-[14px] leading-relaxed text-[#7A7060]">
-                        <span className="font-medium text-obsidian">Assicurazione opzionale:</span>{" "}
+                        <span className="font-medium text-obsidian">Optional insurance:</span>{" "}
                         {trip.optionalInsurance}
                       </p>
                     )}
@@ -237,26 +237,26 @@ export default async function TripDetailsPage({ params }: PageProps) {
                     rel="noopener noreferrer"
                     className="mt-5 inline-flex w-full items-center justify-center rounded-full border border-bone bg-white px-5 py-2.5 text-[13px] font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-travertine"
                   >
-                    Scarica il programma (PDF)
+                    Download program (PDF)
                   </a>
                 )}
               </div>
 
               <div className="rounded-[20px] border border-bone bg-parchment/60 p-6 shadow-[var(--shadow-sm)]">
                 <h2 className="mb-4 font-[family-name:var(--font-cormorant)] text-[20px] font-medium leading-snug text-obsidian">
-                  Richiesta di partecipazione
+                  Participation request
                 </h2>
 
                 {userId && existingBooking ? (
                   <div className="space-y-2 rounded-[20px] border border-bone bg-white p-4">
                     <p className="text-[14px] font-medium text-[#7A7060]">
-                      Hai già inviato una richiesta per questo viaggio.
+                      You already submitted a request for this trip.
                     </p>
                     <Link
                       href="/profile"
                       className="inline-flex w-full items-center justify-center rounded-full border border-bone bg-white px-5 py-2.5 text-[13px] font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-travertine"
                     >
-                      Vedi nel profilo
+                      View in profile
                     </Link>
                   </div>
                 ) : (
@@ -278,7 +278,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
               {staff.length > 0 && (
                 <div className="rounded-[20px] border border-bone bg-parchment/60 p-6">
                   <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-terracotta">
-                    Contatti per questo tour
+                    Contacts for this tour
                   </p>
                   <p className="text-[14px] leading-relaxed text-[#7A7060]">
                     {staff.join(", ")}
