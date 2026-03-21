@@ -37,7 +37,7 @@ export default async function ProfilePage() {
       orderBy: { createdAt: "desc" },
     }),
     prisma.tour.findMany({
-      where: { status: "UPCOMING" },
+      where: { status: { in: ["UPCOMING", "OPEN"] } },
       select: { id: true, title: true, durationLabel: true, basePrice: true },
       take: 10,
       orderBy: { createdAt: "desc" },

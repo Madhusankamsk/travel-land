@@ -20,7 +20,7 @@ export async function requestToBookAction(formData: FormData): Promise<void> {
   }
 
   const tour = await prisma.tour.findUnique({
-    where: { id: tourId, status: "UPCOMING" },
+    where: { id: tourId, status: "OPEN" },
   });
   if (!tour) {
     redirect("/upcoming-trips");

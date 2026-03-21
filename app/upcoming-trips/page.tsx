@@ -11,8 +11,8 @@ export const metadata = {
 };
 
 export default async function UpcomingTripsPage() {
-  const trips = await (prisma as any).tour.findMany({
-    where: { status: "UPCOMING" },
+  const trips = await prisma.tour.findMany({
+    where: { status: { in: ["UPCOMING", "OPEN"] } },
     orderBy: { updatedAt: "desc" },
   });
 

@@ -69,7 +69,13 @@ export default async function TripStatsPage({
             <div>
               <dt className="text-zinc-500 dark:text-zinc-400">Status</dt>
               <dd className="font-medium text-zinc-900 dark:text-zinc-100">
-                {tour.status === "UPCOMING" ? "Upcoming" : "Past"}
+                {tour.status === "UPCOMING"
+                  ? "Upcoming"
+                  : tour.status === "OPEN"
+                    ? "Open"
+                    : tour.status === "SOLD_OUT"
+                      ? "Sold out"
+                      : "Completed"}
               </dd>
             </div>
             <div>

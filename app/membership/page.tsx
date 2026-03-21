@@ -15,7 +15,7 @@ export default async function MembershipPage({ searchParams }: PageProps) {
 
   const [tours, user] = await Promise.all([
     prisma.tour.findMany({
-      where: { status: "UPCOMING" },
+      where: { status: { in: ["UPCOMING", "OPEN"] } },
       orderBy: { createdAt: "desc" },
       select: {
         id: true,

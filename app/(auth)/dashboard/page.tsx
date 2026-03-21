@@ -50,8 +50,8 @@ export default async function DashboardPage() {
   try {
     const [totalTripsRes, upcomingRes, archivedRes, totalBookingsRes, recentRes] = await Promise.all([
       prisma.tour.count(),
-      prisma.tour.count({ where: { status: "UPCOMING" } }),
-      prisma.tour.count({ where: { status: "ARCHIVED" } }),
+      prisma.tour.count({ where: { status: { in: ["UPCOMING", "OPEN", "SOLD_OUT"] } } }),
+      prisma.tour.count({ where: { status: "COMPLETED" } }),
       prisma.booking.count(),
       prisma.tour.findMany({
         orderBy: { updatedAt: "desc" },
@@ -106,7 +106,7 @@ export default async function DashboardPage() {
           href="/dashboard/trips"
         />
         <StatCard
-          label="Archived trips"
+          label="Completed trips"
           value={archivedTrips}
           icon={Archive}
           href="/dashboard/trips"
@@ -151,12 +151,18 @@ export default async function DashboardPage() {
                 <div className="flex items-center gap-3">
                   <span
                     className={
-                      tour.status === "UPCOMING"
+                      tour.status === "UPCOMING" || tour.status === "OPEN"
                         ? "rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"
                         : "rounded-full bg-zinc-200 px-2 py-0.5 text-xs font-medium text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300"
                     }
                   >
-                    {tour.status === "UPCOMING" ? "Upcoming" : "Archived"}
+                    {tour.status === "UPCOMING"
+                      ? "Upcoming"
+                      : tour.status === "OPEN"
+                        ? "Open"
+                        : tour.status === "SOLD_OUT"
+                          ? "Sold out"
+                          : "Completed"}
                   </span>
                   <span className="text-sm text-zinc-600 dark:text-zinc-400">
                     €{Number(tour.basePrice).toLocaleString()}

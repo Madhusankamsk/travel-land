@@ -26,10 +26,16 @@ model User {
   @@map("users")
 }
 
-// TourStatus: UPCOMING = upcoming trips, ARCHIVED = past trips
+// TourStatus:
+// - UPCOMING: published but not yet bookable
+// - OPEN: accepting booking requests
+// - SOLD_OUT: no availability
+// - COMPLETED: trip is finished
 enum TourStatus {
   UPCOMING
-  ARCHIVED
+  OPEN
+  SOLD_OUT
+  COMPLETED
 }
 
 enum BookingStatus {
@@ -44,20 +50,71 @@ model Tour {
   id                 String    @id @default(cuid())
   title              String
   status             TourStatus @default(UPCOMING)
-  durationLabel       String    // e.g. "23–30 April 2026"
-  heroImageUrl       String?
-  introText          String    @db.Text
-  basePrice          Decimal   @db.Decimal(10, 2) // Euro
-  singleSupplement   Decimal?  @db.Decimal(10, 2)
-  mandatoryInsurance String?   @db.Text
-  optionalInsurance  String?   @db.Text
-  depositLabel       String?   // Deposit
-  balanceDeadline    String?   // Balance due
-  included           String    @db.Text // Included in the price
-  excluded           String    @db.Text // Not included in the price
-  cancellationPolicy String?   @db.Text
-  programPdfUrl      String?
-  contactStaff       String?   // comma-separated: Eleonora,Sisira,Romeo
+  // e.g. "23–30 April 2026"
+  durationLabel       String
+  // e.g. "7 days / 6 nights"
+  durationDaysNights  String?
+
+  // Optional marketing fields
+  tripSubtitle        String?
+  tripCode            String?  @unique
+
+  // Destination fields
+  destinationCountry  String?
+  destinationCities   String? // comma-separated
+  tripCategory        String?
+
+  // Short summary / intro
+  introText           String    @db.Text
+
+  // Media
+  heroImageUrl        String?
+  galleryImageUrls    Json?
+  tripVideoUrl        String?
+  programPdfUrl       String?
+
+  // Logistics
+  startLocation       String?
+  endLocation         String?
+  meetingPoint        String?
+  transportUsed       String?
+  accommodationType   String?
+  hotelCategory       String?
+  roomType            String?
+
+  // Group info
+  minParticipants     Int?
+  maxGroupSize        Int?
+  ageRestrictions     String?
+  difficultyLevel     String?
+  requiresWalkingKmPerDay String?
+
+  // Pricing
+  basePrice          Decimal  @db.Decimal(10, 2)
+  currency           String   @default("EUR")
+  singleSupplement   Decimal? @db.Decimal(10, 2)
+
+  // Deposit & deadline info
+  depositLabel       String?
+  balanceDeadline    String?
+  bookingDeadline    String?
+  availableSeats     Int?
+
+  // Child pricing rules (free-text or structured string)
+  childPolicy        String?  @db.Text
+
+  // Insurance
+  mandatoryInsurance String?  @db.Text
+  optionalInsurance  String?  @db.Text
+
+  // Included / excluded
+  included           String   @db.Text
+  excluded           String   @db.Text
+
+  // Contact
+  contactStaffName   String?
+  contactPhone        String?
+  contactEmail        String?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   days               TourDay[]
@@ -71,8 +128,10 @@ model TourDay {
   tourId      String
   tour        Tour   @relation(fields: [tourId], references: [id], onDelete: Cascade)
   order       Int    // 1-based day order
-  dayHeading  String // e.g. "23 APRILE: Amman - Jerash"
+  dayHeading  String // day title
+  dateLabel   String?
   description String @db.Text // HTML rich text
+  dayImageUrls Json?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

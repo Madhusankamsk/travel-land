@@ -129,12 +129,18 @@ export default async function BookingDetailPage({
                 <dd>
                   <span
                     className={
-                      booking.tour.status === "UPCOMING"
+                      booking.tour.status === "UPCOMING" || booking.tour.status === "OPEN"
                         ? "rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"
                         : "rounded-full bg-zinc-200 px-2 py-0.5 text-xs font-medium text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300"
                     }
                   >
-                    {booking.tour.status === "UPCOMING" ? "Upcoming" : "Archived"}
+                    {booking.tour.status === "UPCOMING"
+                      ? "Upcoming"
+                      : booking.tour.status === "OPEN"
+                        ? "Open"
+                        : booking.tour.status === "SOLD_OUT"
+                          ? "Sold out"
+                          : "Completed"}
                   </span>
                 </dd>
               </div>

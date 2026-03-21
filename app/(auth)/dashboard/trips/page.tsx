@@ -62,12 +62,18 @@ export default async function TripsPage() {
                   <td className="px-4 py-3">
                     <span
                       className={
-                        tour.status === "UPCOMING"
+                        tour.status === "UPCOMING" || tour.status === "OPEN"
                           ? "rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300"
                           : "rounded-full bg-zinc-200 px-2 py-0.5 text-xs font-medium text-zinc-700 dark:bg-zinc-700 dark:text-zinc-300"
                       }
                     >
-                      {tour.status === "UPCOMING" ? "Upcoming" : "Past"}
+                      {tour.status === "UPCOMING"
+                        ? "Upcoming"
+                        : tour.status === "OPEN"
+                          ? "Open"
+                          : tour.status === "SOLD_OUT"
+                            ? "Sold out"
+                            : "Completed"}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">
@@ -79,7 +85,7 @@ export default async function TripsPage() {
                   <td className="px-4 py-3 text-zinc-600 dark:text-zinc-400">{tour.days.length}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      {tour.status === "UPCOMING" && (
+                      {(tour.status === "UPCOMING" || tour.status === "OPEN" || tour.status === "SOLD_OUT") && (
                         <Link
                           href={`/upcoming-trips/${tour.id}`}
                           target="_blank"
