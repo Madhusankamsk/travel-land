@@ -1,13 +1,13 @@
 import fs from "fs";
 import path from "path";
-import { getSupabaseServer, isSupabaseStorageConfigured } from "./supabase-server";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { getR2Client, getR2PublicUrlBase, isR2Configured } from "./r2";
 
-const STORAGE_BUCKET = "tours";
 const LOCAL_UPLOADS_DIR = "public/uploads";
 
 /**
- * Save a tour file (hero image or program PDF). Tries Supabase Storage first when
- * configured and reachable; falls back to local public/uploads (e.g. in Docker without Supabase).
+ * Save a tour file (hero image or program PDF). Tries Cloudflare R2 first when
+ * configured; falls back to local public/uploads.
  * Returns the public URL, or null only if no file was provided.
  */
 export async function saveTourFile(
@@ -20,35 +20,29 @@ export async function saveTourFile(
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  // Try Supabase first when configured
-  if (isSupabaseStorageConfigured()) {
+  // Try Cloudflare R2 first when configured
+  if (isR2Configured()) {
     try {
       const contentType = file.type || (ext === ".pdf" ? "application/pdf" : "image/jpeg");
-      const supabase = getSupabaseServer();
+      const r2 = getR2Client();
+      const bucket = process.env.R2_BUCKET as string;
+      await r2.send(
+        new PutObjectCommand({
+          Bucket: bucket,
+          Key: objectPath,
+          Body: buffer,
+          ContentType: contentType,
+        })
+      );
 
-      const doUpload = () =>
-        supabase.storage.from(STORAGE_BUCKET).upload(objectPath, buffer, {
-          contentType,
-          upsert: false,
-        });
-
-      let result = await doUpload();
-      if (result.error?.message?.toLowerCase().includes("bucket not found")) {
-        await supabase.storage.createBucket(STORAGE_BUCKET, { public: true });
-        result = await doUpload();
-      }
-      if (!result.error) {
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(objectPath);
-        return publicUrl;
-      }
+      const baseUrl = getR2PublicUrlBase();
+      return `${baseUrl}/${objectPath}`;
     } catch {
-      // Supabase unreachable (e.g. Docker without supabase start) — fall through to local
+      // R2 unreachable or misconfigured — fall through to local
     }
   }
 
-  // Fallback: save to local public/uploads (works in Docker with uploads_data volume)
+  // Fallback: save to local public/uploads (useful for local dev).
   const dir = path.join(process.cwd(), LOCAL_UPLOADS_DIR);
   fs.mkdirSync(dir, { recursive: true });
   const filePath = path.join(dir, objectPath);

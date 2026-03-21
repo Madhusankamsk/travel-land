@@ -29,6 +29,10 @@ export default async function TripStatsPage({
 
   if (!tour) notFound();
 
+  const membershipRequestsCount = await prisma.membershipBooking.count({
+    where: { tourId: id },
+  });
+
   const bookingsByStatus = tour.bookings.reduce(
     (acc, b) => {
       acc[b.status] = (acc[b.status] ?? 0) + 1;
@@ -98,6 +102,12 @@ export default async function TripStatsPage({
               <dt className="text-zinc-500 dark:text-zinc-400">Total bookings</dt>
               <dd className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
                 {tour.bookings.length}
+              </dd>
+            </div>
+            <div className="mt-3">
+              <dt className="text-zinc-500 dark:text-zinc-400">Membership requests</dt>
+              <dd className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+                {membershipRequestsCount}
               </dd>
             </div>
             <div className="mt-3 border-t border-zinc-100 pt-3 dark:border-zinc-800">

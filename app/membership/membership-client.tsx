@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MembershipForm } from "@/components/membership-form";
-import { AuthModal } from "@/components/auth-modal";
 import {
   submitMembershipBookingAction,
   type MembershipDraft,
@@ -12,24 +11,28 @@ import {
 import type { PackageOption } from "@/components/membership-form";
 
 const DRAFT_KEY = "travel_land_membership_draft";
+const MEMBERSHIP_NEXT = "/membership?callback=1";
 
-function getDefaultDraft(profile?: { fullName: string; email: string }): MembershipDraft {
+function getDefaultDraft(profile?: { firstName: string; lastName: string; email: string }): MembershipDraft {
   return {
-    fullName: profile?.fullName ?? "",
+    firstName: profile?.firstName ?? "",
+    lastName: profile?.lastName ?? "",
     dateOfBirth: "",
     address: "",
     taxCode: "",
     email: profile?.email ?? "",
-    phone: "",
+    telephone: "",
     packageName: "",
     tourId: undefined,
     roomType: "",
-    baseRate: 0,
-    insuranceAmount: 0,
-    registrationFees: 0,
-    total: 0,
-    gdprAccepted: false,
-    cancellationAccepted: false,
+    baseQuota: 0,
+    supplementsVarious: 0,
+    mandatoryMedicalBaggageInsuranceAmount: 0,
+    travelCancellationInsuranceAmount: 0,
+    registrationFee: 0,
+    totalQuota: 0,
+    declarationAccepted: false,
+    dataProcessingAccepted: false,
   };
 }
 
@@ -41,21 +44,31 @@ function loadDraft(): MembershipDraft | null {
     const parsed = JSON.parse(raw) as Partial<MembershipDraft>;
     const def = getDefaultDraft();
     return {
-      fullName: parsed.fullName ?? def.fullName,
+      firstName: parsed.firstName ?? def.firstName,
+      lastName: parsed.lastName ?? def.lastName,
       dateOfBirth: parsed.dateOfBirth ?? def.dateOfBirth,
       address: parsed.address ?? def.address,
       taxCode: parsed.taxCode ?? def.taxCode,
       email: parsed.email ?? def.email,
-      phone: parsed.phone ?? def.phone,
+      telephone: parsed.telephone ?? def.telephone,
       packageName: parsed.packageName ?? def.packageName,
       tourId: parsed.tourId ?? def.tourId,
       roomType: parsed.roomType ?? def.roomType,
-      baseRate: typeof parsed.baseRate === "number" ? parsed.baseRate : def.baseRate,
-      insuranceAmount: typeof parsed.insuranceAmount === "number" ? parsed.insuranceAmount : def.insuranceAmount,
-      registrationFees: typeof parsed.registrationFees === "number" ? parsed.registrationFees : def.registrationFees,
-      total: typeof parsed.total === "number" ? parsed.total : def.total,
-      gdprAccepted: Boolean(parsed.gdprAccepted),
-      cancellationAccepted: Boolean(parsed.cancellationAccepted),
+      baseQuota: typeof parsed.baseQuota === "number" ? parsed.baseQuota : def.baseQuota,
+      supplementsVarious: typeof parsed.supplementsVarious === "number" ? parsed.supplementsVarious : def.supplementsVarious,
+      mandatoryMedicalBaggageInsuranceAmount:
+        typeof parsed.mandatoryMedicalBaggageInsuranceAmount === "number"
+          ? parsed.mandatoryMedicalBaggageInsuranceAmount
+          : def.mandatoryMedicalBaggageInsuranceAmount,
+      travelCancellationInsuranceAmount:
+        typeof parsed.travelCancellationInsuranceAmount === "number"
+          ? parsed.travelCancellationInsuranceAmount
+          : def.travelCancellationInsuranceAmount,
+      registrationFee:
+        typeof parsed.registrationFee === "number" ? parsed.registrationFee : def.registrationFee,
+      totalQuota: typeof parsed.totalQuota === "number" ? parsed.totalQuota : def.totalQuota,
+      declarationAccepted: Boolean(parsed.declarationAccepted),
+      dataProcessingAccepted: Boolean(parsed.dataProcessingAccepted),
     };
   } catch {
     return null;
@@ -74,7 +87,7 @@ function saveDraft(data: MembershipDraft) {
 type MembershipPageClientProps = {
   packages: PackageOption[];
   isAuthenticated: boolean;
-  userProfile: { fullName: string; email: string } | null;
+  userProfile: { firstName: string; lastName: string; email: string } | null;
   callbackParam: string | null;
   errorParam: string | null;
   tourIdParam: string | null;
@@ -94,13 +107,40 @@ export function MembershipPageClient({
   );
   const [errors, setErrors] = useState<Partial<Record<keyof MembershipDraft, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [magicLinkSent, setMagicLinkSent] = useState(false);
+  const [magicLinkError, setMagicLinkError] = useState<string | null>(null);
   const mounted = useRef(false);
 
   const persistDraft = useCallback((d: MembershipDraft) => {
     setData(d);
     saveDraft(d);
   }, []);
+
+  async function sendMagicLink(email: string) {
+    setMagicLinkError(null);
+    const trimmed = email.trim();
+    if (!trimmed) {
+      setMagicLinkError("Please enter your email.");
+      return;
+    }
+    try {
+      const res = await fetch("/api/auth/magic/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: trimmed, next: MEMBERSHIP_NEXT }),
+      });
+
+      if (!res.ok) {
+        const data = (await res.json().catch(() => null)) as { error?: string } | null;
+        setMagicLinkError(data?.error ?? "Failed to send magic link");
+        return;
+      }
+
+      setMagicLinkSent(true);
+    } catch (e) {
+      setMagicLinkError(e instanceof Error ? e.message : "Failed to send link");
+    }
+  }
 
   useEffect(() => {
     if (!mounted.current && packages.length >= 0) {
@@ -110,7 +150,8 @@ export function MembershipPageClient({
         ? { ...getDefaultDraft(userProfile ?? undefined), ...saved }
         : getDefaultDraft(userProfile ?? undefined);
       if (userProfile && !saved) {
-        base.fullName = userProfile.fullName || base.fullName;
+        base.firstName = userProfile.firstName || base.firstName;
+        base.lastName = userProfile.lastName || base.lastName;
         base.email = userProfile.email || base.email;
       }
       if (tourIdParam && packages.length > 0) {
@@ -118,8 +159,15 @@ export function MembershipPageClient({
         if (pkg) {
           base.packageName = pkg.title;
           base.tourId = pkg.id;
-          base.baseRate = pkg.basePrice;
-          base.total = pkg.basePrice + (base.insuranceAmount || 0) + (base.registrationFees || 0);
+          const addSingle = base.roomType === "Single" ? Number(pkg.singleSupplement ?? 0) : 0;
+          base.baseQuota = pkg.basePrice;
+          base.supplementsVarious = addSingle;
+          base.totalQuota =
+            pkg.basePrice +
+            addSingle +
+            (base.mandatoryMedicalBaggageInsuranceAmount || 0) +
+            (base.travelCancellationInsuranceAmount || 0) +
+            (base.registrationFee || 0);
         }
       }
       setData(base);
@@ -138,10 +186,20 @@ export function MembershipPageClient({
       setErrors({});
 
       if (!isAuthenticated) {
-        saveDraft(data);
-        setAuthModalOpen(true);
+        setIsSubmitting(true);
+        try {
+          saveDraft(data);
+          setMagicLinkSent(false);
+          await sendMagicLink(data.email);
+        } finally {
+          setIsSubmitting(false);
+        }
         return;
       }
+
+      // If authenticated, clear any prior auth UI state.
+      setMagicLinkError(null);
+      setMagicLinkSent(false);
 
       setIsSubmitting(true);
       const result: SubmitResult = await submitMembershipBookingAction(null, data);
@@ -150,10 +208,11 @@ export function MembershipPageClient({
       if (result.error) {
         if (result.error === "Please sign in to continue.") {
           saveDraft(data);
-          setAuthModalOpen(true);
+          setMagicLinkSent(false);
+          setMagicLinkError("Please submit again to receive a magic link.");
           return;
         }
-        setErrors({ fullName: result.error });
+        setErrors({ firstName: result.error });
         return;
       }
       try {
@@ -177,7 +236,8 @@ export function MembershipPageClient({
       const result = await submitMembershipBookingAction(null, draft);
       setIsSubmitting(false);
       if (result.error === "Please sign in to continue.") {
-        setAuthModalOpen(true);
+        setMagicLinkSent(false);
+        setMagicLinkError("Sign-in required. Please submit again to receive a magic link.");
         return;
       }
       if (result.error) return;
@@ -193,6 +253,19 @@ export function MembershipPageClient({
   return (
     <div className="min-h-screen bg-[var(--color-travertine)] py-10">
       <div className="mx-auto max-w-[720px] px-4">
+        {magicLinkError && !isAuthenticated && (
+          <div
+            className="mb-6 rounded-xl border border-[var(--color-error)] bg-[var(--color-error-bg)] px-4 py-3 text-sm text-[var(--color-error)]"
+            role="alert"
+          >
+            {magicLinkError}
+          </div>
+        )}
+        {magicLinkSent && !isAuthenticated && (
+          <div className="mb-6 rounded-xl bg-[var(--color-success-bg)] px-4 py-3 text-sm text-[var(--color-success)]" role="status">
+            Check your email for a sign-in link. After you click it, we will continue your booking automatically.
+          </div>
+        )}
         {errorParam && (
           <div
             className="mb-6 rounded-xl border border-[var(--color-error)] bg-[var(--color-error-bg)] px-4 py-3 text-sm text-[var(--color-error)]"
@@ -200,7 +273,7 @@ export function MembershipPageClient({
           >
             {errorParam === "auth_failed" && "Sign-in failed. Please try again."}
             {errorParam === "no_email" && "No email from sign-in. Please use another method."}
-            {errorParam === "callback_config" && "Auth is not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to .env, then restart the dev server (npm run dev)."}
+            {errorParam === "callback_config" && "Magic-link auth is not configured. Check your SMTP_* env vars and restart the dev server (npm run dev)."}
             {!["auth_failed", "no_email", "callback_config"].includes(errorParam) && "Something went wrong."}
           </div>
         )}
@@ -218,14 +291,9 @@ export function MembershipPageClient({
           packages={packages}
           errors={errors}
           onSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
+          isSubmitting={isSubmitting || (magicLinkSent && !isAuthenticated)}
         />
       </div>
-      <AuthModal
-        open={authModalOpen}
-        onClose={() => setAuthModalOpen(false)}
-        defaultEmail={data.email}
-      />
     </div>
   );
 }
