@@ -60,83 +60,94 @@ export default async function UpcomingTripsPage() {
             </div>
           ) : (
             <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {trips.map((trip) => (
-                <li key={trip.id}>
-                  <article className="group overflow-hidden rounded-[20px] border border-bone bg-white shadow-[var(--shadow-sm)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--shadow-lg)]">
-                    <div className="relative h-[220px] overflow-hidden">
-                      {trip.heroImageUrl ? (
-                        <Image
-                          src={trip.heroImageUrl}
-                          alt=""
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          unoptimized
-                        />
-                      ) : (
-                        <div className="h-full w-full bg-parchment" aria-hidden />
-                      )}
+              {trips.map((trip) => {
+                const eyebrow =
+                  trip.tripSubtitle?.trim() ||
+                  [trip.destinationCountry, trip.destinationCities]
+                    .filter(Boolean)
+                    .join(" · ") ||
+                  trip.tripCategory?.trim() ||
+                  "Prossimi viaggi";
 
-                      <div
-                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#1A1714]/60 via-transparent to-transparent"
-                        aria-hidden
+                return (
+                  <li key={trip.id}>
+                    <article className="group relative overflow-hidden rounded-[20px] border border-bone bg-white shadow-[var(--shadow-sm)] transition-[box-shadow,transform] duration-[var(--dur-normal)] ease-[var(--ease-out-quart)] hover:-translate-y-1 hover:shadow-[var(--shadow-lg)] motion-reduce:transform-none motion-reduce:transition-none">
+                      {/* Full-card hit target (design system: destination card) */}
+                      <Link
+                        href={`/upcoming-trips/${trip.id}`}
+                        className="absolute inset-0 z-[1] rounded-[20px] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-oro focus-visible:outline-offset-[3px]"
+                        aria-label={`Vedi dettagli: ${trip.title}`}
                       />
 
-                      {trip.durationLabel && (
-                        <span className="absolute left-4 top-4 rounded-full border border-oro/30 bg-oro/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-bronze backdrop-blur-sm">
-                          {trip.durationLabel}
-                        </span>
-                      )}
-                    </div>
+                      <div className="pointer-events-none relative z-0">
+                        <div className="relative h-[220px] overflow-hidden">
+                          {trip.heroImageUrl ? (
+                            <Image
+                              src={trip.heroImageUrl}
+                              alt=""
+                              fill
+                              className="object-cover transition-transform duration-500 ease-[var(--ease-out-quart)] group-hover:scale-105 motion-reduce:transition-none"
+                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                              unoptimized
+                            />
+                          ) : (
+                            <div className="h-full w-full bg-parchment" aria-hidden />
+                          )}
 
-                    <div className="p-6">
-                      <h3 className="mb-2 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug text-obsidian">
-                        {trip.title}
-                      </h3>
+                          <div
+                            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(26,23,20,0.2)_0%,rgba(107,58,42,0.35)_50%,rgba(26,23,20,0.6)_100%)]"
+                            aria-hidden
+                          />
 
-                      {trip.introText && (
-                        <p className="mb-5 line-clamp-3 text-[13px] leading-relaxed text-[#7A7060]">
-                          {trip.introText}
-                        </p>
-                      )}
-
-                      <div className="flex flex-wrap items-end justify-between gap-4 border-t border-bone pt-4">
-                        <div>
-                          <p className="text-[11px] text-[#7A7060]">From</p>
-                          <p className="font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-tight text-obsidian">
-                            {formatTripPrice(Number(trip.basePrice), trip.currency)}
-                            <span className="ml-1 text-[13px] font-normal opacity-60">
-                              per person
+                          {trip.durationLabel && (
+                            <span className="absolute top-4 left-4 rounded-full bg-obsidian/70 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-champagne backdrop-blur-sm">
+                              {trip.durationLabel}
                             </span>
-                          </p>
+                          )}
                         </div>
 
-                        <div className="flex items-center gap-3">
-                          <Link
-                            href={`/upcoming-trips/${trip.id}`}
-                            className="inline-flex items-center justify-center rounded-full border border-bone bg-white px-4 py-2.5 text-[13px] font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-travertine"
-                          >
-                            View details
-                          </Link>
+                        <div className="p-6">
+                          <p className="mb-2 line-clamp-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+                            {eyebrow}
+                          </p>
+                          <h3 className="mb-2 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian">
+                            {trip.title}
+                          </h3>
+
+                          {trip.introText && (
+                            <p className="mb-4 line-clamp-3 text-[13px] leading-relaxed text-[#7A7060]">
+                              {trip.introText}
+                            </p>
+                          )}
+
+                          <div className="border-t border-bone pt-4">
+                            <p className="text-[11px] text-[#7A7060]">Da</p>
+                            <p className="font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-tight text-obsidian">
+                              {formatTripPrice(Number(trip.basePrice), trip.currency)}
+                              <span className="ml-1 text-[13px] font-normal opacity-60">
+                                a pers.
+                              </span>
+                            </p>
+                          </div>
                         </div>
                       </div>
 
                       {trip.programPdfUrl && (
-                        <div className="mt-4">
+                        <div className="relative z-10 mt-4 px-6 pb-6">
                           <a
                             href={trip.programPdfUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex w-full items-center justify-center rounded-full border border-bone bg-parchment/60 px-5 py-2.5 text-[13px] font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-parchment"
+                            className="pointer-events-auto inline-flex w-full min-h-[44px] items-center justify-center rounded-full border-[1.5px] border-bone bg-parchment px-5 py-2.5 text-[13px] font-medium tracking-[0.04em] text-obsidian transition-colors duration-[var(--dur-fast)] hover:bg-bone/80 focus-visible:outline-2 focus-visible:outline-oro focus-visible:outline-offset-2 active:scale-[0.97]"
                           >
-                            Itinerary (PDF)
+                            Programma (PDF)
                           </a>
                         </div>
                       )}
-                    </div>
-                  </article>
-                </li>
-              ))}
+                    </article>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </div>
