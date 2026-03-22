@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { BookingList } from "./booking-list";
+import { MembershipApplicationsList } from "@/components/dashboard-membership-applications-list";
 
 export const dynamic = "force-dynamic";
 
@@ -29,9 +30,12 @@ export default async function TripStatsPage({
 
   if (!tour) notFound();
 
-  const membershipRequestsCount = await prisma.membershipBooking.count({
+  const membershipApplications = await prisma.membershipBooking.findMany({
     where: { tourId: id },
+    orderBy: { createdAt: "desc" },
   });
+
+  const membershipRequestsCount = membershipApplications.length;
 
   const bookingsByStatus = tour.bookings.reduce(
     (acc, b) => {
@@ -187,6 +191,37 @@ export default async function TripStatsPage({
           />
         </section>
       )}
+
+      <section className="rounded-xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+            Trip applications (membership form)
+          </h2>
+          <Link
+            href="/dashboard/applications"
+            className="text-xs font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+          >
+            All applications →
+          </Link>
+        </div>
+        <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+          Submissions from the public trip participation form for this tour.
+        </p>
+        <MembershipApplicationsList
+          variant="trip"
+          applications={membershipApplications.map((m) => ({
+            id: m.id,
+            reference: m.reference,
+            firstName: m.firstName,
+            lastName: m.lastName,
+            email: m.email,
+            roomType: m.roomType,
+            totalQuota: Number(m.totalQuota),
+            createdAt: m.createdAt.toISOString(),
+            packageName: m.packageName,
+          }))}
+        />
+      </section>
     </div>
   );
 }

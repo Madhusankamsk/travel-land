@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { MapPin, Calendar, Archive, FileText, PlusCircle } from "lucide-react";
+import { MapPin, Calendar, Archive, FileText, PlusCircle, ClipboardList } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +38,7 @@ export default async function DashboardPage() {
   let upcomingTrips = 0;
   let archivedTrips = 0;
   let totalBookings = 0;
+  let tripApplications = 0;
   let recentTours: Array<{
     id: string;
     title: string;
@@ -48,11 +49,13 @@ export default async function DashboardPage() {
   }> = [];
 
   try {
-    const [totalTripsRes, upcomingRes, archivedRes, totalBookingsRes, recentRes] = await Promise.all([
+    const [totalTripsRes, upcomingRes, archivedRes, totalBookingsRes, tripApplicationsRes, recentRes] =
+      await Promise.all([
       prisma.tour.count(),
       prisma.tour.count({ where: { status: { in: ["UPCOMING", "OPEN", "SOLD_OUT"] } } }),
       prisma.tour.count({ where: { status: "COMPLETED" } }),
       prisma.booking.count(),
+      prisma.membershipBooking.count(),
       prisma.tour.findMany({
         orderBy: { updatedAt: "desc" },
         take: 5,
@@ -70,6 +73,7 @@ export default async function DashboardPage() {
     upcomingTrips = upcomingRes;
     archivedTrips = archivedRes;
     totalBookings = totalBookingsRes;
+    tripApplications = tripApplicationsRes;
     recentTours = recentRes as typeof recentTours;
   } catch {
     // Tables may not exist or DB unreachable
@@ -92,7 +96,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Stats grid */}
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         <StatCard
           label="Total trips"
           value={totalTrips}
@@ -112,9 +116,15 @@ export default async function DashboardPage() {
           href="/dashboard/trips"
         />
         <StatCard
-          label="Total bookings"
+          label="Legacy bookings"
           value={totalBookings}
           icon={FileText}
+        />
+        <StatCard
+          label="Trip applications"
+          value={tripApplications}
+          icon={ClipboardList}
+          href="/dashboard/applications"
         />
       </section>
 
