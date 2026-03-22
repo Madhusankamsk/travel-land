@@ -14,13 +14,13 @@ function normalizeEmail(email: string) {
 
 function getAllowedNext(next: unknown): string {
   const s = typeof next === "string" ? next : "";
-  if (!s.startsWith("/")) return "/membership?callback=1";
+  if (!s.startsWith("/")) return "/profile";
   if (s.startsWith("/membership")) return s;
   if (s.startsWith("/dashboard")) return s;
   if (s.startsWith("/profile")) return s;
   if (s.startsWith("/login")) return s;
   if (s.startsWith("/signup")) return s;
-  return "/membership?callback=1";
+  return "/profile";
 }
 
 async function getSecureCookieFlag(): Promise<boolean> {
@@ -104,7 +104,7 @@ export async function GET(request: Request) {
     secure,
   });
 
-  const redirectTo = next.startsWith("/") ? next : "/membership?callback=1";
+  const redirectTo = next.startsWith("/") ? next : "/profile";
   return NextResponse.redirect(new URL(redirectTo, requestUrl.origin));
 }
 

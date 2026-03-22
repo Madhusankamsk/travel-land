@@ -9,9 +9,12 @@ import {
   type SubmitResult,
 } from "@/app/membership/actions";
 import type { PackageOption } from "@/components/membership-form";
-
-const DRAFT_KEY = "travel_land_membership_draft";
-const MEMBERSHIP_NEXT = "/membership?callback=1";
+import {
+  loadStoredMembershipDraft,
+  MEMBERSHIP_DRAFT_STORAGE_KEY,
+  saveStoredMembershipDraft,
+} from "@/lib/membership-draft-storage";
+import { MAGIC_LINK_MEMBERSHIP_NEXT } from "@/lib/membership-magic";
 
 function getDefaultDraft(profile?: { firstName: string; lastName: string; email: string }): MembershipDraft {
   return {
@@ -36,59 +39,10 @@ function getDefaultDraft(profile?: { firstName: string; lastName: string; email:
   };
 }
 
-function loadDraft(): MembershipDraft | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = localStorage.getItem(DRAFT_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as Partial<MembershipDraft>;
-    const def = getDefaultDraft();
-    return {
-      firstName: parsed.firstName ?? def.firstName,
-      lastName: parsed.lastName ?? def.lastName,
-      dateOfBirth: parsed.dateOfBirth ?? def.dateOfBirth,
-      address: parsed.address ?? def.address,
-      taxCode: parsed.taxCode ?? def.taxCode,
-      email: parsed.email ?? def.email,
-      telephone: parsed.telephone ?? def.telephone,
-      packageName: parsed.packageName ?? def.packageName,
-      tourId: parsed.tourId ?? def.tourId,
-      roomType: parsed.roomType ?? def.roomType,
-      baseQuota: typeof parsed.baseQuota === "number" ? parsed.baseQuota : def.baseQuota,
-      supplementsVarious: typeof parsed.supplementsVarious === "number" ? parsed.supplementsVarious : def.supplementsVarious,
-      mandatoryMedicalBaggageInsuranceAmount:
-        typeof parsed.mandatoryMedicalBaggageInsuranceAmount === "number"
-          ? parsed.mandatoryMedicalBaggageInsuranceAmount
-          : def.mandatoryMedicalBaggageInsuranceAmount,
-      travelCancellationInsuranceAmount:
-        typeof parsed.travelCancellationInsuranceAmount === "number"
-          ? parsed.travelCancellationInsuranceAmount
-          : def.travelCancellationInsuranceAmount,
-      registrationFee:
-        typeof parsed.registrationFee === "number" ? parsed.registrationFee : def.registrationFee,
-      totalQuota: typeof parsed.totalQuota === "number" ? parsed.totalQuota : def.totalQuota,
-      declarationAccepted: Boolean(parsed.declarationAccepted),
-      dataProcessingAccepted: Boolean(parsed.dataProcessingAccepted),
-    };
-  } catch {
-    return null;
-  }
-}
-
-function saveDraft(data: MembershipDraft) {
-  if (typeof window === "undefined") return;
-  try {
-    localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
-  } catch {
-    // ignore
-  }
-}
-
 type MembershipPageClientProps = {
   packages: PackageOption[];
   isAuthenticated: boolean;
   userProfile: { firstName: string; lastName: string; email: string } | null;
-  callbackParam: string | null;
   errorParam: string | null;
   tourIdParam: string | null;
 };
@@ -97,7 +51,6 @@ export function MembershipPageClient({
   packages,
   isAuthenticated,
   userProfile,
-  callbackParam,
   errorParam,
   tourIdParam,
 }: MembershipPageClientProps) {
@@ -112,7 +65,7 @@ export function MembershipPageClient({
 
   const persistDraft = useCallback((d: MembershipDraft) => {
     setData(d);
-    saveDraft(d);
+    saveStoredMembershipDraft(d);
   }, []);
 
   const sendMagicLink = useCallback(async (email: string): Promise<boolean> => {
@@ -126,7 +79,7 @@ export function MembershipPageClient({
       const res = await fetch("/api/auth/magic/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed, next: MEMBERSHIP_NEXT }),
+        body: JSON.stringify({ email: trimmed, next: MAGIC_LINK_MEMBERSHIP_NEXT }),
       });
 
       if (!res.ok) {
@@ -145,7 +98,7 @@ export function MembershipPageClient({
   useEffect(() => {
     if (!mounted.current && packages.length >= 0) {
       mounted.current = true;
-      const saved = loadDraft();
+      const saved = loadStoredMembershipDraft();
       const base = saved
         ? { ...getDefaultDraft(userProfile ?? undefined), ...saved }
         : getDefaultDraft(userProfile ?? undefined);
@@ -176,7 +129,7 @@ export function MembershipPageClient({
 
   useEffect(() => {
     if (!mounted.current) return;
-    const t = setTimeout(() => saveDraft(data), 500);
+    const t = setTimeout(() => saveStoredMembershipDraft(data), 500);
     return () => clearTimeout(t);
   }, [data]);
 
@@ -188,11 +141,11 @@ export function MembershipPageClient({
       if (!isAuthenticated) {
         setIsSubmitting(true);
         try {
-          saveDraft(data);
+          saveStoredMembershipDraft(data);
           const ok = await sendMagicLink(data.email);
           if (ok) {
             router.push(
-              `/membership/check-email?next=${encodeURIComponent(MEMBERSHIP_NEXT)}`
+              `/membership/check-email?next=${encodeURIComponent(MAGIC_LINK_MEMBERSHIP_NEXT)}`
             );
           }
         } finally {
@@ -210,7 +163,7 @@ export function MembershipPageClient({
 
       if (result.error) {
         if (result.error === "Please sign in to continue.") {
-          saveDraft(data);
+          saveStoredMembershipDraft(data);
           setMagicLinkError("Please submit again to receive a magic link.");
           return;
         }
@@ -218,7 +171,7 @@ export function MembershipPageClient({
         return;
       }
       try {
-        localStorage.removeItem(DRAFT_KEY);
+        localStorage.removeItem(MEMBERSHIP_DRAFT_STORAGE_KEY);
       } catch {
         // ignore
       }
@@ -226,31 +179,6 @@ export function MembershipPageClient({
     },
     [data, isAuthenticated, router, sendMagicLink]
   );
-
-  const autoSubmitted = useRef(false);
-  useEffect(() => {
-    if (!isAuthenticated || !callbackParam || autoSubmitted.current) return;
-    const draft = loadDraft();
-    if (!draft) return;
-    autoSubmitted.current = true;
-    (async () => {
-      setIsSubmitting(true);
-      const result = await submitMembershipBookingAction(null, draft);
-      setIsSubmitting(false);
-      if (result.error === "Please sign in to continue.") {
-        setMagicLinkSent(false);
-        setMagicLinkError("Sign-in required. Please submit again to receive a magic link.");
-        return;
-      }
-      if (result.error) return;
-      try {
-        localStorage.removeItem(DRAFT_KEY);
-      } catch {
-        // ignore
-      }
-      router.replace(`/membership/success?ref=${encodeURIComponent(result.reference ?? "")}`);
-    })();
-  }, [isAuthenticated, callbackParam, router]);
 
   return (
     <div className="min-h-screen bg-[var(--color-travertine)] py-10">

@@ -77,8 +77,8 @@ export default async function MembershipCheckEmailPage({ searchParams }: PagePro
                 →
               </span>
               <p>
-                Dopo aver effettuato l&apos;accesso, la tua richiesta di iscrizione continuerà
-                automaticamente sulla pagina da cui stavi compilando il modulo.
+                Dopo aver effettuato l&apos;accesso, la tua richiesta di iscrizione verrà inviata
+                automaticamente e verrai portato al tuo profilo.
               </p>
             </div>
 

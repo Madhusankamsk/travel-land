@@ -1,13 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MembershipForm, type PackageOption } from "@/components/membership-form";
 import {
   submitMembershipBookingAction,
   type MembershipDraft,
   type SubmitResult,
 } from "@/app/membership/actions";
+import { saveStoredMembershipDraft } from "@/lib/membership-draft-storage";
+import { MAGIC_LINK_MEMBERSHIP_NEXT } from "@/lib/membership-magic";
 
 const DRAFT_KEY_PREFIX = "travel_land_membership_draft_trip_";
 
@@ -50,7 +52,6 @@ export function TripMembershipPanel({
 }: TripMembershipPanelProps) {
   const draftKey = `${DRAFT_KEY_PREFIX}${selectedPackage.id}`;
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const router = useRouter();
 
   const [data, setData] = useState<MembershipDraft>(() =>
@@ -60,10 +61,9 @@ export function TripMembershipPanel({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [magicLinkError, setMagicLinkError] = useState<string | null>(null);
   const mounted = useRef(false);
-  const autoSubmitted = useRef(false);
-
   const callbackParam = searchParams.get("callback");
   const errorParam = searchParams.get("error");
+  const legacyTripCallbackRedirected = useRef(false);
 
   const saveDraft = useCallback(
     (draft: MembershipDraft) => {
@@ -142,11 +142,10 @@ export function TripMembershipPanel({
       }
 
       try {
-        const next = `${pathname}?callback=1`;
         const res = await fetch("/api/auth/magic/send", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: trimmed, next }),
+          body: JSON.stringify({ email: trimmed, next: MAGIC_LINK_MEMBERSHIP_NEXT }),
         });
 
         if (!res.ok) {
@@ -160,7 +159,7 @@ export function TripMembershipPanel({
         return false;
       }
     },
-    [pathname]
+    []
   );
 
   const handleSubmit = useCallback(
@@ -172,11 +171,11 @@ export function TripMembershipPanel({
         setIsSubmitting(true);
         try {
           saveDraft(data);
+          saveStoredMembershipDraft(data);
           const ok = await sendMagicLink(data.email);
           if (ok) {
-            const afterLogin = `${pathname}?callback=1`;
             router.push(
-              `/membership/check-email?next=${encodeURIComponent(afterLogin)}`
+              `/membership/check-email?next=${encodeURIComponent(MAGIC_LINK_MEMBERSHIP_NEXT)}`
             );
           }
         } finally {
@@ -194,6 +193,7 @@ export function TripMembershipPanel({
       if (result.error) {
         if (result.error === "Please sign in to continue.") {
           saveDraft(data);
+          saveStoredMembershipDraft(data);
           setMagicLinkError("Please submit again to receive a magic link.");
           return;
         }
@@ -210,36 +210,19 @@ export function TripMembershipPanel({
         router.push(`/membership/success?ref=${encodeURIComponent(result.reference)}`);
       }
     },
-    [data, draftKey, isAuthenticated, router, saveDraft, pathname, sendMagicLink]
+    [data, draftKey, isAuthenticated, router, saveDraft, sendMagicLink]
   );
 
+  /** Legacy links used ?callback=1 on this page; continue on profile with the same draft. */
   useEffect(() => {
-    if (!isAuthenticated || !callbackParam || autoSubmitted.current) return;
+    if (!isAuthenticated || callbackParam !== "1" || legacyTripCallbackRedirected.current) return;
+    legacyTripCallbackRedirected.current = true;
     const draft = loadDraft();
-    if (!draft) return;
-    autoSubmitted.current = true;
-
-    (async () => {
-      setIsSubmitting(true);
-      const result = await submitMembershipBookingAction(null, draft);
-      setIsSubmitting(false);
-
-      if (result.error === "Please sign in to continue.") {
-        setMagicLinkError("Sign-in required. Please submit again to receive a magic link.");
-        return;
-      }
-      if (result.error) return;
-
-      try {
-        localStorage.removeItem(draftKey);
-      } catch {
-        // ignore
-      }
-      if (result.reference) {
-        router.replace(`/membership/success?ref=${encodeURIComponent(result.reference)}`);
-      }
-    })();
-  }, [callbackParam, draftKey, isAuthenticated, loadDraft, router]);
+    if (draft) {
+      saveStoredMembershipDraft(draft);
+    }
+    router.replace(MAGIC_LINK_MEMBERSHIP_NEXT);
+  }, [callbackParam, isAuthenticated, loadDraft, router]);
 
   return (
     <div className="space-y-4">

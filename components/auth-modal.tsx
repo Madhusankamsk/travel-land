@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const MEMBERSHIP_NEXT = "/membership?callback=1";
+const MAGIC_LINK_DEFAULT_NEXT = "/profile";
 
 type AuthModalProps = {
   open: boolean;
@@ -32,7 +32,7 @@ export function AuthModal({ open, onClose, defaultEmail = "" }: AuthModalProps) 
       const res = await fetch("/api/auth/magic/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed, next: MEMBERSHIP_NEXT }),
+        body: JSON.stringify({ email: trimmed, next: MAGIC_LINK_DEFAULT_NEXT }),
       });
 
       if (!res.ok) {

@@ -66,6 +66,7 @@
   "footer.display.company": "Travel land SRL",
 
   "profile.title": "Il tuo profilo",
+  "profile.detailsEyebrow": "I tuoi dati",
   "profile.subtitle": "I tuoi dati e le prenotazioni.",
   "profile.myBookings": "Le mie prenotazioni",
   "profile.noBookings": "Non hai ancora richiesto nessun viaggio.",
@@ -73,6 +74,7 @@
   "profile.upcomingTrips": "Prossimi viaggi",
   "profile.logOut": "Esci",
   "profile.home": "Home",
+  "profile.fromPrice": "Da {price}",
   "profile.step.requested": "Richiesta",
   "profile.step.confirmed": "Confermato",
   "profile.step.depositPaid": "Acconto",
