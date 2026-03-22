@@ -1,7 +1,9 @@
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/auth";
 import { MembershipPageClient } from "./membership-client";
 import type { PackageOption } from "@/components/membership-form";
+import { MAGIC_LINK_MEMBERSHIP_NEXT } from "@/lib/membership-magic";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +13,10 @@ type PageProps = {
 
 export default async function MembershipPage({ searchParams }: PageProps) {
   const resolved = await searchParams;
+  /** Legacy magic links pointed here; continue flow on profile with auto-submit. */
+  if (resolved.callback === "1") {
+    redirect(MAGIC_LINK_MEMBERSHIP_NEXT);
+  }
   const userId = await getCurrentUserId();
 
   const [tours, user] = await Promise.all([
@@ -53,7 +59,6 @@ export default async function MembershipPage({ searchParams }: PageProps) {
       packages={packages}
       isAuthenticated={!!userId}
       userProfile={userProfile}
-      callbackParam={resolved.callback ?? null}
       errorParam={resolved.error ?? null}
       tourIdParam={resolved.tourId ?? null}
     />

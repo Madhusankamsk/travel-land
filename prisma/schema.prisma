@@ -12,7 +12,10 @@ datasource db {
 model User {
   id                  String              @id @default(cuid())
   email               String              @unique
-  password            String              // store bcrypt/hash only
+  /// Bcrypt hash; null when the account only uses Google OAuth (or legacy magic-link placeholder may still exist).
+  password            String?
+  /// Google OIDC "sub" — set when the user has signed in with Google at least once.
+  googleSub           String?             @unique
   firstName           String?
   lastName            String?
   mobile              String?             @unique

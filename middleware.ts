@@ -8,7 +8,8 @@ export function middleware(request: NextRequest) {
   const hasAuth = request.cookies.get(AUTH_COOKIE)?.value === "true";
 
   if (isDashboard && !hasAuth) {
-    const loginUrl = new URL("/login", request.url);
+    const loginUrl = new URL("/", request.url);
+    loginUrl.searchParams.set("auth", "login");
     loginUrl.searchParams.set("from", request.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
   }

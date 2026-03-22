@@ -4,6 +4,7 @@ import { Cormorant_Garamond, DM_Sans, DM_Mono } from "next/font/google";
 import { Toaster } from "@/components/toaster";
 import { CookieConsent } from "@/components/cookie-consent";
 import { I18nProvider } from "@/components/i18n-provider";
+import { AuthModalProvider } from "@/components/auth-modal-provider";
 import { SiteShell } from "@/components/site-shell";
 import "./globals.css";
 
@@ -48,7 +49,9 @@ export default function RootLayout({
       >
         <Suspense fallback={null}>
           <I18nProvider>
-            <SiteShell>{children}</SiteShell>
+            <AuthModalProvider>
+              <SiteShell>{children}</SiteShell>
+            </AuthModalProvider>
           </I18nProvider>
         </Suspense>
         <CookieConsent />

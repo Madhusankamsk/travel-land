@@ -58,7 +58,7 @@ export function InnerPageHero({
         <div className="absolute inset-0 bg-obsidian/70" aria-hidden />
 
         {/* Centered title and breadcrumb */}
-        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-4 text-center sm:px-6 lg:px-20">
+        <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-4 text-center sm:px-5 lg:px-8">
           <div>
             <h1
               id="inner-page-hero-heading"

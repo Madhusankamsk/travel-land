@@ -46,14 +46,19 @@ function youtubeEmbedUrl(url: string): string | null {
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  UPCOMING: "Upcoming",
-  OPEN: "Bookings open",
-  SOLD_OUT: "Sold out",
-  COMPLETED: "Completed",
+  UPCOMING: "In programma",
+  OPEN: "Iscrizioni aperte",
+  SOLD_OUT: "Esaurito",
+  COMPLETED: "Concluso",
 };
 
 export default async function TripDetailsPage({ params }: PageProps) {
-  const { id } = await params;
+  const resolved = await params;
+  const id = typeof resolved.id === "string" ? resolved.id.trim() : "";
+  if (!id) {
+    notFound();
+  }
+
   const userId = await getCurrentUserId();
 
   const trip = await prisma.tour.findUnique({
@@ -139,36 +144,36 @@ export default async function TripDetailsPage({ params }: PageProps) {
         image={trip.heroImageUrl ?? undefined}
         breadcrumb={[
           { label: "Home", href: "/" },
-          { label: "Upcoming trips", href: "/upcoming-trips" },
+          { label: "Prossimi viaggi", href: "/upcoming-trips" },
           { label: trip.title },
         ]}
       />
 
-      <section className="bg-travertine py-16 lg:py-24" aria-labelledby="trip-details-heading">
-        <div className="mx-auto max-w-[1200px] px-6 lg:px-20">
-          <div className="mb-10 flex flex-wrap items-center gap-3">
+      <section className="bg-travertine py-12 lg:py-16" aria-labelledby="trip-details-heading">
+        <div className="mx-auto max-w-[1200px] px-4 sm:px-5 lg:px-8">
+          <div className="mb-8 flex flex-wrap items-center gap-3 lg:mb-10">
             <Link
               href="/upcoming-trips"
-              className="inline-flex items-center rounded-full border border-bone bg-white px-4 py-2.5 text-[13px] font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-travertine"
+              className="inline-flex min-h-[44px] items-center rounded-full border-[1.5px] border-bone bg-white px-5 py-2.5 text-[13px] font-medium tracking-[0.04em] text-obsidian transition-colors duration-[var(--dur-fast)] hover:bg-travertine focus-visible:outline focus-visible:outline-2 focus-visible:outline-oro focus-visible:outline-offset-[3px] active:scale-[0.97]"
             >
-              ← Upcoming trips
+              ← Prossimi viaggi
             </Link>
             <span
-              className="rounded-full border border-bone bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-[#7A7060]"
-              title="Trip status"
+              className="rounded-full border border-bone bg-white px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7A7060]"
+              title="Stato viaggio"
             >
               {STATUS_LABELS[trip.status] ?? trip.status}
             </span>
             {trip.tripCode && (
               <span className="text-[12px] font-medium tracking-wide text-[#7A7060]">
-                Code: <span className="text-obsidian">{trip.tripCode}</span>
+                Codice: <span className="text-obsidian">{trip.tripCode}</span>
               </span>
             )}
           </div>
 
-          <div className="grid gap-12 md:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)] md:items-start">
+          <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,380px)] md:items-start lg:gap-12">
             {/* Main column */}
-            <div className="space-y-8">
+            <div className="space-y-10 lg:space-y-12">
               <header className="space-y-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
                   {trip.durationLabel}
@@ -181,12 +186,12 @@ export default async function TripDetailsPage({ params }: PageProps) {
                 </p>
                 <h2
                   id="trip-details-heading"
-                  className="font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-tight tracking-tight text-obsidian"
+                  className="font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,48px)] font-medium leading-[1.15] tracking-tight text-obsidian"
                 >
                   {trip.title}
                 </h2>
                 {trip.tripSubtitle && (
-                  <p className="text-[17px] font-medium leading-snug text-obsidian/90">
+                  <p className="text-[17px] font-medium leading-relaxed text-obsidian/90">
                     {trip.tripSubtitle}
                   </p>
                 )}
@@ -194,7 +199,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
                 {hasDestinations && (
                   <div className="flex flex-wrap gap-2 pt-1">
                     {trip.tripCategory && (
-                      <span className="rounded-full border border-oro/30 bg-oro/10 px-3 py-1 text-[12px] font-medium text-bronze">
+                      <span className="rounded-full border border-oro/30 bg-oro/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-bronze">
                         {trip.tripCategory}
                       </span>
                     )}
@@ -220,17 +225,20 @@ export default async function TripDetailsPage({ params }: PageProps) {
 
               {galleryUrls.length > 0 && (
                 <section aria-labelledby="trip-gallery-heading">
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+                    Immagini
+                  </p>
                   <h2
                     id="trip-gallery-heading"
-                    className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug text-obsidian"
+                    className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian"
                   >
-                    Gallery
+                    Galleria
                   </h2>
                   <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                     {galleryUrls.map((src, i) => (
                       <li
                         key={`${src}-${i}`}
-                        className="relative aspect-[4/3] overflow-hidden rounded-[16px] border border-bone bg-parchment"
+                        className="relative aspect-[4/3] overflow-hidden rounded-xl border border-bone bg-white shadow-[var(--shadow-sm)]"
                       >
                         <Image
                           src={src}
@@ -248,14 +256,17 @@ export default async function TripDetailsPage({ params }: PageProps) {
 
               {trip.tripVideoUrl && (
                 <section aria-labelledby="trip-video-heading">
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+                    Media
+                  </p>
                   <h2
                     id="trip-video-heading"
-                    className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug text-obsidian"
+                    className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian"
                   >
                     Video
                   </h2>
                   {videoEmbed && isYouTubeUrl(trip.tripVideoUrl) ? (
-                    <div className="relative aspect-video w-full overflow-hidden rounded-[20px] border border-bone bg-obsidian shadow-[var(--shadow-sm)]">
+                    <div className="relative aspect-video w-full overflow-hidden rounded-[20px] border border-bone bg-obsidian shadow-[var(--shadow-md)]">
                       <iframe
                         title="Trip video"
                         src={videoEmbed}
@@ -269,9 +280,9 @@ export default async function TripDetailsPage({ params }: PageProps) {
                       href={trip.tripVideoUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center rounded-full border border-bone bg-white px-5 py-2.5 text-[13px] font-medium text-obsidian transition-all duration-150 hover:bg-travertine"
+                      className="inline-flex min-h-[44px] items-center rounded-full border-[1.5px] border-bone bg-white px-6 py-2.5 text-[13px] font-medium tracking-[0.04em] text-obsidian transition-colors duration-[var(--dur-fast)] hover:bg-travertine focus-visible:outline focus-visible:outline-2 focus-visible:outline-oro focus-visible:outline-offset-[3px]"
                     >
-                      Watch video
+                      Guarda il video
                     </a>
                   )}
                 </section>
@@ -279,55 +290,72 @@ export default async function TripDetailsPage({ params }: PageProps) {
 
               {hasLogistics && (
                 <section
-                  className="rounded-[20px] border border-bone bg-parchment/60 p-6"
+                  className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)]"
                   aria-labelledby="trip-logistics-heading"
                 >
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+                    Organizzazione
+                  </p>
                   <h2
                     id="trip-logistics-heading"
-                    className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug text-obsidian"
+                    className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian"
                   >
-                    Logistics & accommodation
+                    Logistica e alloggio
                   </h2>
                   <dl className="grid gap-3 text-[14px] leading-relaxed text-[#7A7060] sm:grid-cols-2">
                     {trip.startLocation && (
                       <div>
-                        <dt className="font-medium text-obsidian">Start</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Partenza
+                        </dt>
                         <dd>{trip.startLocation}</dd>
                       </div>
                     )}
                     {trip.endLocation && (
                       <div>
-                        <dt className="font-medium text-obsidian">End of tour</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Fine tour
+                        </dt>
                         <dd>{trip.endLocation}</dd>
                       </div>
                     )}
                     {trip.meetingPoint && (
                       <div className="sm:col-span-2">
-                        <dt className="font-medium text-obsidian">Meeting point</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Punto d&apos;incontro
+                        </dt>
                         <dd>{trip.meetingPoint}</dd>
                       </div>
                     )}
                     {trip.transportUsed && (
                       <div>
-                        <dt className="font-medium text-obsidian">Transport</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Trasporti
+                        </dt>
                         <dd>{trip.transportUsed}</dd>
                       </div>
                     )}
                     {trip.accommodationType && (
                       <div>
-                        <dt className="font-medium text-obsidian">Accommodation type</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Tipo di alloggio
+                        </dt>
                         <dd>{trip.accommodationType}</dd>
                       </div>
                     )}
                     {trip.hotelCategory && (
                       <div>
-                        <dt className="font-medium text-obsidian">Hotel category</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Categoria hotel
+                        </dt>
                         <dd>{trip.hotelCategory}</dd>
                       </div>
                     )}
                     {trip.roomType && (
                       <div>
-                        <dt className="font-medium text-obsidian">Room (reference)</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Camera (riferimento)
+                        </dt>
                         <dd>{trip.roomType}</dd>
                       </div>
                     )}
@@ -340,40 +368,53 @@ export default async function TripDetailsPage({ params }: PageProps) {
                   className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)]"
                   aria-labelledby="trip-group-heading"
                 >
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+                    Gruppo
+                  </p>
                   <h2
                     id="trip-group-heading"
-                    className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug text-obsidian"
+                    className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian"
                   >
-                    Group & level
+                    Partecipanti e livello
                   </h2>
                   <dl className="grid gap-3 text-[14px] leading-relaxed text-[#7A7060] sm:grid-cols-2">
                     {trip.minParticipants != null && (
                       <div>
-                        <dt className="font-medium text-obsidian">Min. participants</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Partecipanti min.
+                        </dt>
                         <dd>{trip.minParticipants}</dd>
                       </div>
                     )}
                     {trip.maxGroupSize != null && (
                       <div>
-                        <dt className="font-medium text-obsidian">Max. group size</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Partecipanti max.
+                        </dt>
                         <dd>{trip.maxGroupSize}</dd>
                       </div>
                     )}
                     {trip.ageRestrictions && (
                       <div className="sm:col-span-2">
-                        <dt className="font-medium text-obsidian">Age / restrictions</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Età / limitazioni
+                        </dt>
                         <dd>{trip.ageRestrictions}</dd>
                       </div>
                     )}
                     {trip.difficultyLevel && (
                       <div>
-                        <dt className="font-medium text-obsidian">Difficulty</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Difficoltà
+                        </dt>
                         <dd>{trip.difficultyLevel}</dd>
                       </div>
                     )}
                     {trip.requiresWalkingKmPerDay && (
                       <div className="sm:col-span-2">
-                        <dt className="font-medium text-obsidian">Daily walking (approx.)</dt>
+                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          Camminata giornaliera (circa)
+                        </dt>
                         <dd>{trip.requiresWalkingKmPerDay}</dd>
                       </div>
                     )}
@@ -382,49 +423,54 @@ export default async function TripDetailsPage({ params }: PageProps) {
               )}
 
               <section aria-labelledby="trip-itinerary-heading">
+                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+                  Programma
+                </p>
                 <h2
                   id="trip-itinerary-heading"
-                  className="mb-6 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug text-obsidian"
+                  className="mb-6 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian"
                 >
-                  Daily itinerary
+                  Itinerario giorno per giorno
                 </h2>
 
                 {trip.days.length === 0 ? (
-                  <div className="rounded-[20px] border border-bone bg-parchment/60 p-6">
-                    <p className="text-[14px] font-medium text-[#7A7060]">
-                      The full itinerary will be published soon.
+                  <div className="rounded-[20px] border border-bone bg-parchment/80 p-6 shadow-[var(--shadow-sm)]">
+                    <p className="text-[14px] font-medium leading-relaxed text-[#7A7060]">
+                      L&apos;itinerario completo sarà pubblicato a breve.
                     </p>
                   </div>
                 ) : (
-                  <div className="space-y-5">
+                  <div className="flex flex-col">
                     {trip.days.map((day, idx) => {
                       const dayImgs = parseImageUrlList(day.dayImageUrls);
                       return (
-                        <article
-                          key={day.id}
-                          className="relative overflow-hidden rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)]"
-                        >
-                          <div className="flex items-start gap-4">
-                            <div className="mt-1 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-obsidian text-[13px] font-semibold text-[#F0EAE0]">
+                        <div key={day.id} className="flex gap-5 md:gap-6">
+                          <div className="flex w-11 flex-shrink-0 flex-col items-center">
+                            <div className="z-10 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-obsidian text-[13px] font-semibold tracking-wide text-[#F0EAE0]">
                               {idx + 1}
                             </div>
-                            <div className="min-w-0 flex-1">
-                              <div className="flex flex-wrap items-baseline gap-2">
-                                <h3 className="font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug text-obsidian">
+                            {idx < trip.days.length - 1 ? (
+                              <div className="w-px flex-1 min-h-[32px] bg-bone" aria-hidden />
+                            ) : null}
+                          </div>
+                          <article className="min-w-0 flex-1 pb-10 last:pb-0">
+                            <div className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)]">
+                              <div className="flex flex-wrap items-baseline gap-2 gap-y-1">
+                                <h3 className="font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian">
                                   {day.dayHeading}
                                 </h3>
-                                {day.dateLabel && (
-                                  <span className="text-[13px] font-medium text-terracotta">
+                                {day.dateLabel ? (
+                                  <span className="text-[12px] font-semibold uppercase tracking-[0.16em] text-terracotta">
                                     {day.dateLabel}
                                   </span>
-                                )}
+                                ) : null}
                               </div>
-                              {dayImgs.length > 0 && (
-                                <ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+                              {dayImgs.length > 0 ? (
+                                <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
                                   {dayImgs.map((src, j) => (
                                     <li
                                       key={`${day.id}-img-${j}`}
-                                      className="relative aspect-[4/3] overflow-hidden rounded-[12px] border border-bone bg-parchment"
+                                      className="relative aspect-[4/3] overflow-hidden rounded-xl border border-bone bg-parchment"
                                     >
                                       <Image
                                         src={src}
@@ -437,16 +483,16 @@ export default async function TripDetailsPage({ params }: PageProps) {
                                     </li>
                                   ))}
                                 </ul>
-                              )}
-                              {day.description && (
+                              ) : null}
+                              {day.description ? (
                                 <div
-                                  className="prose prose-sm mt-2 max-w-none text-[#7A7060] prose-p:mb-2 prose-ul:list-disc prose-ul:pl-5"
+                                  className="prose prose-sm mt-4 max-w-none text-[15px] leading-[1.65] text-[#7A7060] prose-headings:font-[family-name:var(--font-cormorant)] prose-p:mb-2 prose-ul:list-disc prose-ul:pl-5 prose-li:marker:text-terracotta"
                                   dangerouslySetInnerHTML={{ __html: day.description }}
                                 />
-                              )}
+                              ) : null}
                             </div>
-                          </div>
-                        </article>
+                          </article>
+                        </div>
                       );
                     })}
                   </div>
@@ -454,20 +500,26 @@ export default async function TripDetailsPage({ params }: PageProps) {
               </section>
 
               <section className="grid gap-6 md:grid-cols-2" aria-labelledby="trip-inclusions-heading">
-                <div className="rounded-[20px] border border-bone bg-parchment/60 p-6">
+                <div className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)]">
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+                    Quota
+                  </p>
                   <h2
                     id="trip-inclusions-heading"
-                    className="mb-2 font-[family-name:var(--font-cormorant)] text-[20px] font-medium leading-snug text-obsidian"
+                    className="mb-3 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian"
                   >
-                    Included in the price
+                    Incluso nella quota
                   </h2>
                   <p className="whitespace-pre-line text-[14px] leading-[1.65] text-[#7A7060]">
                     {trip.included}
                   </p>
                 </div>
-                <div className="rounded-[20px] border border-bone bg-parchment/60 p-6">
-                  <h2 className="mb-2 font-[family-name:var(--font-cormorant)] text-[20px] font-medium leading-snug text-obsidian">
-                    Not included
+                <div className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)]">
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+                    Extra
+                  </p>
+                  <h2 className="mb-3 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian">
+                    Non incluso
                   </h2>
                   <p className="whitespace-pre-line text-[14px] leading-[1.65] text-[#7A7060]">
                     {trip.excluded}
@@ -477,41 +529,41 @@ export default async function TripDetailsPage({ params }: PageProps) {
 
               <section
                 className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)]"
-                aria-label="Cancellation penalties"
+                aria-label="Penali di cancellazione"
               >
                 <CancellationPenaltiesBlock data={cancellationPolicy} />
               </section>
             </div>
 
-            {/* Right column */}
-            <aside className="space-y-5 self-start md:sticky md:top-24">
-              <div className="rounded-[20px] border border-bone bg-parchment/60 p-6 shadow-[var(--shadow-sm)]">
+            {/* Right column — booking bar style (design system) */}
+            <aside className="space-y-4 self-start md:sticky md:top-[calc(var(--header-height)+1rem)] md:space-y-5">
+              <div className="rounded-[20px] border border-bone bg-white p-4 shadow-[var(--shadow-md)] sm:p-5">
                 <div>
                   <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#7A7060]">
-                    Price from
+                    Da
                   </p>
-                  <p className="mt-1 font-[family-name:var(--font-cormorant)] text-[32px] font-medium leading-tight text-obsidian">
+                  <p className="mt-1 font-[family-name:var(--font-cormorant)] text-[clamp(28px,5vw,36px)] font-medium leading-tight text-obsidian">
                     {formatPrice(Number(trip.basePrice))}
-                    <span className="ml-1 text-[13px] font-normal opacity-60">per person</span>
+                    <span className="ml-1 text-[13px] font-normal opacity-60">a pers.</span>
                   </p>
                   {trip.singleSupplement != null && (
                     <p className="mt-2 text-[14px] leading-relaxed text-[#7A7060]">
-                      Single supplement: {formatPrice(Number(trip.singleSupplement))}
+                      Suppl. singola: {formatPrice(Number(trip.singleSupplement))}
                     </p>
                   )}
                 </div>
 
                 {(trip.bookingDeadline || trip.availableSeats != null) && (
-                  <div className="mt-5 space-y-2 border-t border-bone/70 pt-5">
+                  <div className="mt-5 space-y-2 border-t border-bone pt-5">
                     {trip.bookingDeadline && (
                       <p className="text-[14px] leading-relaxed text-[#7A7060]">
-                        <span className="font-medium text-obsidian">Booking deadline:</span>{" "}
+                        <span className="font-medium text-obsidian">Scadenza iscrizioni:</span>{" "}
                         {trip.bookingDeadline}
                       </p>
                     )}
                     {trip.availableSeats != null && (
                       <p className="text-[14px] leading-relaxed text-[#7A7060]">
-                        <span className="font-medium text-obsidian">Available seats:</span>{" "}
+                        <span className="font-medium text-obsidian">Posti disponibili:</span>{" "}
                         {trip.availableSeats}
                       </p>
                     )}
@@ -519,25 +571,25 @@ export default async function TripDetailsPage({ params }: PageProps) {
                 )}
 
                 {(trip.depositLabel || trip.balanceDeadline) && (
-                  <div className="mt-5 space-y-1 border-t border-bone/70 pt-5">
+                  <div className="mt-5 space-y-1 border-t border-bone pt-5">
                     {trip.depositLabel && (
                       <p className="text-[14px] leading-relaxed text-[#7A7060]">
-                        <span className="font-medium text-obsidian">Deposit:</span>{" "}
+                        <span className="font-medium text-obsidian">Acconto:</span>{" "}
                         {trip.depositLabel}
                       </p>
                     )}
                     {trip.balanceDeadline && (
                       <p className="text-[14px] leading-relaxed text-[#7A7060]">
-                        <span className="font-medium text-obsidian">Balance:</span> {trip.balanceDeadline}
+                        <span className="font-medium text-obsidian">Saldo:</span> {trip.balanceDeadline}
                       </p>
                     )}
                   </div>
                 )}
 
                 {trip.childPolicy && (
-                  <div className="mt-5 border-t border-bone/70 pt-5">
-                    <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-terracotta">
-                      Children & pricing
+                  <div className="mt-5 border-t border-bone pt-5">
+                    <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+                      Bambini e tariffe
                     </p>
                     <p className="whitespace-pre-line text-[14px] leading-relaxed text-[#7A7060]">
                       {trip.childPolicy}
@@ -546,16 +598,16 @@ export default async function TripDetailsPage({ params }: PageProps) {
                 )}
 
                 {(trip.mandatoryInsurance || trip.optionalInsurance) && (
-                  <div className="mt-5 space-y-1 border-t border-bone/70 pt-5">
+                  <div className="mt-5 space-y-1 border-t border-bone pt-5">
                     {trip.mandatoryInsurance && (
                       <p className="text-[14px] leading-relaxed text-[#7A7060]">
-                        <span className="font-medium text-obsidian">Mandatory insurance:</span>{" "}
+                        <span className="font-medium text-obsidian">Assicurazione obbligatoria:</span>{" "}
                         {trip.mandatoryInsurance}
                       </p>
                     )}
                     {trip.optionalInsurance && (
                       <p className="text-[14px] leading-relaxed text-[#7A7060]">
-                        <span className="font-medium text-obsidian">Optional insurance:</span>{" "}
+                        <span className="font-medium text-obsidian">Assicurazione facoltativa:</span>{" "}
                         {trip.optionalInsurance}
                       </p>
                     )}
@@ -567,28 +619,31 @@ export default async function TripDetailsPage({ params }: PageProps) {
                     href={trip.programPdfUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-5 inline-flex w-full items-center justify-center rounded-full border border-bone bg-white px-5 py-2.5 text-[13px] font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-travertine"
+                    className="mt-5 inline-flex min-h-[44px] w-full items-center justify-center rounded-full border-[1.5px] border-bone bg-parchment px-5 py-2.5 text-[13px] font-medium tracking-[0.04em] text-siena transition-colors duration-[var(--dur-fast)] hover:bg-bone/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-oro focus-visible:outline-offset-[3px] active:scale-[0.97]"
                   >
-                    Download itinerary (PDF)
+                    Scarica programma (PDF)
                   </a>
                 )}
               </div>
 
-              <div className="rounded-[20px] border border-bone bg-parchment/60 p-6 shadow-[var(--shadow-sm)]">
-                <h2 className="mb-4 font-[family-name:var(--font-cormorant)] text-[20px] font-medium leading-snug text-obsidian">
-                  Participation request
+              <div className="rounded-[20px] border border-bone bg-parchment/80 p-4 shadow-[var(--shadow-sm)] sm:p-5">
+                <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+                  Iscrizione
+                </p>
+                <h2 className="mb-3 font-[family-name:var(--font-cormorant)] text-[clamp(1.125rem,2.5vw,1.375rem)] font-medium leading-snug tracking-tight text-obsidian">
+                  Richiesta di partecipazione
                 </h2>
 
                 {userId && existingBooking ? (
-                  <div className="space-y-2 rounded-[20px] border border-bone bg-white p-4">
-                    <p className="text-[14px] font-medium text-[#7A7060]">
-                      You have already submitted a request for this trip.
+                  <div className="space-y-3 rounded-[20px] border border-bone bg-white p-4 shadow-[var(--shadow-sm)]">
+                    <p className="text-[14px] font-medium leading-relaxed text-[#7A7060]">
+                      Hai già inviato una richiesta per questo viaggio.
                     </p>
                     <Link
                       href="/profile"
-                      className="inline-flex w-full items-center justify-center rounded-full border border-bone bg-white px-5 py-2.5 text-[13px] font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-travertine"
+                      className="inline-flex min-h-[44px] w-full items-center justify-center rounded-full border-[1.5px] border-bone bg-white px-5 py-2.5 text-[13px] font-medium tracking-[0.04em] text-obsidian transition-colors duration-[var(--dur-fast)] hover:bg-travertine focus-visible:outline focus-visible:outline-2 focus-visible:outline-oro focus-visible:outline-offset-[3px]"
                     >
-                      View in profile
+                      Vedi nel profilo
                     </Link>
                   </div>
                 ) : trip.status === "OPEN" ? (
@@ -605,36 +660,45 @@ export default async function TripDetailsPage({ params }: PageProps) {
                     userProfile={userProfile}
                   />
                 ) : (
-                  <div className="space-y-2 rounded-[20px] border border-bone bg-white p-4">
-                    <p className="text-[14px] font-medium text-[#7A7060]">
-                      Booking for this trip is not available right now.
+                  <div className="space-y-2 rounded-[20px] border border-bone bg-white p-4 shadow-[var(--shadow-sm)]">
+                    <p className="text-[14px] font-medium leading-relaxed text-[#7A7060]">
+                      Le iscrizioni per questo viaggio non sono al momento disponibili.
                     </p>
                     <p className="text-[13px] text-[#B5A890]">
                       {trip.status === "SOLD_OUT"
-                        ? "This trip is sold out."
-                        : "Booking will open soon."}
+                        ? "Questo viaggio è esaurito."
+                        : "Le iscrizioni apriranno a breve."}
                     </p>
                   </div>
                 )}
               </div>
 
               {hasContact && (
-                <div className="rounded-[20px] border border-bone bg-parchment/60 p-6">
-                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-terracotta">
-                    Contact for this tour
+                <div className="rounded-[20px] border border-bone bg-white p-4 shadow-[var(--shadow-sm)] sm:p-5">
+                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
+                    Contatto
                   </p>
+                  <h3 className="mb-3 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian">
+                    Riferimento per questo tour
+                  </h3>
                   <div className="space-y-1 text-[14px] leading-relaxed text-[#7A7060]">
                     {trip.contactStaffName && <p>{trip.contactStaffName}</p>}
                     {trip.contactPhone && (
                       <p>
-                        <a href={`tel:${trip.contactPhone.replace(/\s/g, "")}`} className="underline-offset-2 hover:underline">
+                        <a
+                          href={`tel:${trip.contactPhone.replace(/\s/g, "")}`}
+                          className="text-azure underline-offset-2 transition-colors hover:text-adriatic hover:underline"
+                        >
                           {trip.contactPhone}
                         </a>
                       </p>
                     )}
                     {trip.contactEmail && (
                       <p>
-                        <a href={`mailto:${trip.contactEmail}`} className="underline-offset-2 hover:underline">
+                        <a
+                          href={`mailto:${trip.contactEmail}`}
+                          className="text-azure underline-offset-2 transition-colors hover:text-adriatic hover:underline"
+                        >
                           {trip.contactEmail}
                         </a>
                       </p>

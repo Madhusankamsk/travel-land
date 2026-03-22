@@ -2,6 +2,8 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { buildMagicLinkEmail } from "@/lib/email-templates/magic-link-email";
+import { getAllowedNext } from "@/lib/auth-redirect";
 
 function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
@@ -18,17 +20,6 @@ function getOriginFromRequest(request: Request) {
   const host = headers.get("x-forwarded-host") ?? headers.get("host");
   if (!host) return "";
   return `${proto}://${host}`;
-}
-
-function getAllowedNext(next: unknown): string {
-  const s = typeof next === "string" ? next : "";
-  if (!s.startsWith("/")) return "/membership?callback=1";
-  if (s.startsWith("/membership")) return s;
-  if (s.startsWith("/dashboard")) return s;
-  if (s.startsWith("/profile")) return s;
-  if (s.startsWith("/login")) return s;
-  if (s.startsWith("/signup")) return s;
-  return "/membership?callback=1";
 }
 
 async function sendMagicEmail(toEmail: string, verifyUrl: string) {
@@ -60,19 +51,14 @@ async function sendMagicEmail(toEmail: string, verifyUrl: string) {
     auth: { user: smtpUser, pass: smtpPass },
   });
 
-  // Keep content simple; avoid including user-provided data in headers/subject.
+  const { subject, text, html } = buildMagicLinkEmail(verifyUrl);
+
   await transporter.sendMail({
     from: smtpFrom,
     to: toEmail,
-    subject: "Your sign-in link",
-    text: `Click to sign in: ${verifyUrl}\nIf you did not request this, you can ignore this email.`,
-    html: `
-      <div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.4;">
-        <p>Click the button below to sign in:</p>
-        <p><a href="${verifyUrl}" style="display:inline-block;padding:10px 16px;background:#111827;color:#fff;text-decoration:none;border-radius:8px;">Sign in</a></p>
-        <p style="color:#6B7280;font-size:12px;">This link will expire shortly. If you did not request this, you can ignore this email.</p>
-      </div>
-    `,
+    subject,
+    text,
+    html,
   });
 }
 

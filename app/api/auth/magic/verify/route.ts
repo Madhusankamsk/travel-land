@@ -1,33 +1,12 @@
 import crypto from "crypto";
-import { cookies, headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { hash as bcryptHash } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
-
-const AUTH_COOKIE = "auth_session";
-const AUTH_ROLE_COOKIE = "auth_role";
-const AUTH_USER_ID_COOKIE = "auth_user_id";
+import { getAllowedNext } from "@/lib/auth-redirect";
+import { setAuthSessionCookies } from "@/lib/auth";
 
 function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
-}
-
-function getAllowedNext(next: unknown): string {
-  const s = typeof next === "string" ? next : "";
-  if (!s.startsWith("/")) return "/membership?callback=1";
-  if (s.startsWith("/membership")) return s;
-  if (s.startsWith("/dashboard")) return s;
-  if (s.startsWith("/profile")) return s;
-  if (s.startsWith("/login")) return s;
-  if (s.startsWith("/signup")) return s;
-  return "/membership?callback=1";
-}
-
-async function getSecureCookieFlag(): Promise<boolean> {
-  if (process.env.NODE_ENV !== "production") return false;
-  const headersList = await headers();
-  const proto = headersList.get("x-forwarded-proto") ?? headersList.get("x-forwarded-ssl");
-  return proto === "https" || proto === "on";
 }
 
 export async function GET(request: Request) {
@@ -80,31 +59,9 @@ export async function GET(request: Request) {
     });
   }
 
-  const secure = await getSecureCookieFlag();
-  const cookieStore = await cookies();
-  cookieStore.set(AUTH_COOKIE, "true", {
-    path: "/",
-    maxAge: 60 * 60 * 24,
-    httpOnly: false,
-    sameSite: "lax",
-    secure,
-  });
-  cookieStore.set(AUTH_ROLE_COOKIE, user.role, {
-    path: "/",
-    maxAge: 60 * 60 * 24,
-    httpOnly: false,
-    sameSite: "lax",
-    secure,
-  });
-  cookieStore.set(AUTH_USER_ID_COOKIE, user.id, {
-    path: "/",
-    maxAge: 60 * 60 * 24,
-    httpOnly: false,
-    sameSite: "lax",
-    secure,
-  });
+  await setAuthSessionCookies(user.id, user.role);
 
-  const redirectTo = next.startsWith("/") ? next : "/membership?callback=1";
+  const redirectTo = next.startsWith("/") ? next : "/profile";
   return NextResponse.redirect(new URL(redirectTo, requestUrl.origin));
 }
 

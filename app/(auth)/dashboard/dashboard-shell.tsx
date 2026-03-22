@@ -23,8 +23,8 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   const { dark } = useDashboardTheme();
   const childArray = React.Children.toArray(children);
   const headerRight = childArray[0];
-  const sidebar = childArray[1] as React.ReactElement;
-  const main = childArray[2] as React.ReactElement;
+  const sidebar = childArray[1] as React.ReactElement<{ className?: string }>;
+  const main = childArray[2] as React.ReactElement<{ className?: string }>;
 
   return (
     <DashboardSidebarContext.Provider value={{ open, setOpen }}>
