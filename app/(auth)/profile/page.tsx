@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentUserId } from "@/lib/auth";
+import { authLoginSearchParams } from "@/lib/auth-url";
 import { prisma } from "@/lib/prisma";
 import { ProfileView } from "@/components/profile-view";
 import { cookies } from "next/headers";
@@ -9,7 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function ProfilePage() {
   const userId = await getCurrentUserId();
   if (!userId) {
-    redirect("/login?from=/profile");
+    redirect(`/?${authLoginSearchParams({ from: "/profile" })}`);
   }
 
   const user = await prisma.user.findUnique({
@@ -22,7 +23,7 @@ export default async function ProfilePage() {
     cookieStore.delete("auth_user_id");
     cookieStore.delete("auth_session");
     cookieStore.delete("auth_role");
-    redirect("/login?from=/profile");
+    redirect(`/?${authLoginSearchParams({ from: "/profile" })}`);
   }
 
   const [bookings, membershipBookings, upcomingTours] = await Promise.all([

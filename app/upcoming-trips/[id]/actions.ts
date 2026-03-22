@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/auth";
+import { authLoginSearchParams } from "@/lib/auth-url";
 
 // Temporary cast until Prisma client is regenerated with the Booking model
 const bookingClient = prisma as any;
@@ -16,7 +17,7 @@ export async function requestToBookAction(formData: FormData): Promise<void> {
 
   const userId = await getCurrentUserId();
   if (!userId) {
-    redirect("/login");
+    redirect(`/?${authLoginSearchParams({})}`);
   }
 
   const tour = await prisma.tour.findUnique({

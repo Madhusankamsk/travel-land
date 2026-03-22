@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useAuthModal } from "@/components/auth-modal-provider";
 
 const AUTH_COOKIE = "auth_session";
 const AUTH_ROLE_COOKIE = "auth_role";
@@ -29,6 +30,7 @@ export function AuthNavButton() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [role, setRole] = useState<string | null>(null);
   const pathname = usePathname();
+  const { openLogin } = useAuthModal();
 
   useEffect(() => {
     setIsAuthenticated(hasAuthCookie());
@@ -51,11 +53,12 @@ export function AuthNavButton() {
   }
 
   return (
-    <Link
-      href="/login"
+    <button
+      type="button"
+      onClick={() => openLogin()}
       className="inline-flex items-center gap-2 rounded-full bg-oro px-5 py-2.5 text-sm font-medium tracking-wide text-obsidian transition-all duration-150 hover:bg-bronze hover:text-white hover:shadow-[var(--shadow-gold)]"
     >
       Login
-    </Link>
+    </button>
   );
 }

@@ -43,7 +43,7 @@ export function MembershipMagicCallbackBanner() {
         if (result.error === "Please sign in to continue.") {
           setBanner({
             kind: "error",
-            text: "Accesso richiesto. Torna al modulo iscrizione e richiedi un nuovo link.",
+            text: "Accesso richiesto. Accedi con Google o email e password, poi invia di nuovo dal modulo iscrizione.",
           });
         } else {
           setBanner({ kind: "error", text: result.error });

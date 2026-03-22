@@ -3,6 +3,8 @@
 import { hash } from "bcryptjs";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { setAuthSessionCookies } from "@/lib/auth";
+import { getAllowedNext } from "@/lib/auth-redirect";
 
 type SignupState = {
   error?: string;
@@ -44,7 +46,7 @@ export async function signupAction(
 
   const passwordHash = await hash(password, 10);
 
-  await prisma.user.create({
+  const user = await prisma.user.create({
     data: {
       email,
       password: passwordHash,
@@ -56,6 +58,14 @@ export async function signupAction(
     } as any,
   });
 
-  redirect("/login");
+  await setAuthSessionCookies(user.id, user.role);
+
+  const defaultRedirect = user.role === "admin" ? "/dashboard" : "/profile";
+  const rawFrom = (formData.get("from") as string | null)?.trim();
+  const target =
+    rawFrom && rawFrom.startsWith("/") && !rawFrom.startsWith("//")
+      ? getAllowedNext(rawFrom)
+      : defaultRedirect;
+  redirect(target);
 }
 

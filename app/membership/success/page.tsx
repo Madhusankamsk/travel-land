@@ -5,6 +5,7 @@ import { CheckCircle2, Mail, MapPin, Calendar } from "lucide-react";
 import type { Decimal } from "@prisma/client/runtime/library";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/auth";
+import { authLoginSearchParams } from "@/lib/auth-url";
 import { InnerPageHero } from "@/components/inner-page-hero";
 
 export const dynamic = "force-dynamic";
@@ -57,7 +58,9 @@ export default async function MembershipSuccessPage({ searchParams }: PageProps)
   const userId = await getCurrentUserId();
   if (!userId) {
     redirect(
-      `/login?next=${encodeURIComponent(`/membership/success?ref=${encodeURIComponent(refTrimmed)}`)}`
+      `/?${authLoginSearchParams({
+        next: `/membership/success?ref=${encodeURIComponent(refTrimmed)}`,
+      })}`
     );
   }
 

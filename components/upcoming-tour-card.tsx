@@ -29,7 +29,9 @@ export function UpcomingTourCard({ tour }: UpcomingTourCardProps) {
         href={`/upcoming-trips/${tour.id}`}
         className="absolute inset-0 z-[1] rounded-[20px] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-oro focus-visible:outline-offset-[3px]"
         aria-label={`Vedi dettagli: ${tour.title}`}
-      />
+      >
+        <span className="sr-only">Vedi dettagli</span>
+      </LangLink>
 
       <div className="pointer-events-none relative z-0">
         <div className="relative h-[220px] overflow-hidden">

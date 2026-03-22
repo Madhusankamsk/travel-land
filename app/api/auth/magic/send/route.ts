@@ -3,6 +3,7 @@ import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { buildMagicLinkEmail } from "@/lib/email-templates/magic-link-email";
+import { getAllowedNext } from "@/lib/auth-redirect";
 
 function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
@@ -19,17 +20,6 @@ function getOriginFromRequest(request: Request) {
   const host = headers.get("x-forwarded-host") ?? headers.get("host");
   if (!host) return "";
   return `${proto}://${host}`;
-}
-
-function getAllowedNext(next: unknown): string {
-  const s = typeof next === "string" ? next : "";
-  if (!s.startsWith("/")) return "/profile";
-  if (s.startsWith("/membership")) return s;
-  if (s.startsWith("/dashboard")) return s;
-  if (s.startsWith("/profile")) return s;
-  if (s.startsWith("/login")) return s;
-  if (s.startsWith("/signup")) return s;
-  return "/profile";
 }
 
 async function sendMagicEmail(toEmail: string, verifyUrl: string) {

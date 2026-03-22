@@ -15,6 +15,8 @@ import {
   saveStoredMembershipDraft,
 } from "@/lib/membership-draft-storage";
 import { MAGIC_LINK_MEMBERSHIP_NEXT } from "@/lib/membership-magic";
+import { useAuthModal } from "@/components/auth-modal-provider";
+import { emailHasAccount } from "@/lib/email-account-check";
 
 function getDefaultDraft(profile?: { firstName: string; lastName: string; email: string }): MembershipDraft {
   return {
@@ -55,44 +57,18 @@ export function MembershipPageClient({
   tourIdParam,
 }: MembershipPageClientProps) {
   const router = useRouter();
+  const { openLogin, openSignup } = useAuthModal();
   const [data, setData] = useState<MembershipDraft>(() =>
     getDefaultDraft(userProfile ?? undefined)
   );
   const [errors, setErrors] = useState<Partial<Record<keyof MembershipDraft, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [magicLinkError, setMagicLinkError] = useState<string | null>(null);
+  const [signInError, setSignInError] = useState<string | null>(null);
   const mounted = useRef(false);
 
   const persistDraft = useCallback((d: MembershipDraft) => {
     setData(d);
     saveStoredMembershipDraft(d);
-  }, []);
-
-  const sendMagicLink = useCallback(async (email: string): Promise<boolean> => {
-    setMagicLinkError(null);
-    const trimmed = email.trim();
-    if (!trimmed) {
-      setMagicLinkError("Please enter your email.");
-      return false;
-    }
-    try {
-      const res = await fetch("/api/auth/magic/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed, next: MAGIC_LINK_MEMBERSHIP_NEXT }),
-      });
-
-      if (!res.ok) {
-        const errBody = (await res.json().catch(() => null)) as { error?: string } | null;
-        setMagicLinkError(errBody?.error ?? "Failed to send magic link");
-        return false;
-      }
-
-      return true;
-    } catch (e) {
-      setMagicLinkError(e instanceof Error ? e.message : "Failed to send link");
-      return false;
-    }
   }, []);
 
   useEffect(() => {
@@ -142,11 +118,16 @@ export function MembershipPageClient({
         setIsSubmitting(true);
         try {
           saveStoredMembershipDraft(data);
-          const ok = await sendMagicLink(data.email);
-          if (ok) {
-            router.push(
-              `/membership/check-email?next=${encodeURIComponent(MAGIC_LINK_MEMBERSHIP_NEXT)}`
-            );
+          const trimmed = data.email.trim();
+          if (!trimmed) {
+            setSignInError("Please enter a valid email on the form before submitting.");
+            return;
+          }
+          const exists = await emailHasAccount(trimmed);
+          if (exists) {
+            openLogin({ from: MAGIC_LINK_MEMBERSHIP_NEXT, email: trimmed });
+          } else {
+            openSignup({ from: MAGIC_LINK_MEMBERSHIP_NEXT, email: trimmed });
           }
         } finally {
           setIsSubmitting(false);
@@ -154,8 +135,7 @@ export function MembershipPageClient({
         return;
       }
 
-      // If authenticated, clear any prior auth UI state.
-      setMagicLinkError(null);
+      setSignInError(null);
 
       setIsSubmitting(true);
       const result: SubmitResult = await submitMembershipBookingAction(null, data);
@@ -164,7 +144,7 @@ export function MembershipPageClient({
       if (result.error) {
         if (result.error === "Please sign in to continue.") {
           saveStoredMembershipDraft(data);
-          setMagicLinkError("Please submit again to receive a magic link.");
+          setSignInError("Please sign in with Google or email and password, then submit again.");
           return;
         }
         setErrors({ firstName: result.error });
@@ -177,18 +157,18 @@ export function MembershipPageClient({
       }
       router.push(`/membership/success?ref=${encodeURIComponent(result.reference ?? "")}`);
     },
-    [data, isAuthenticated, router, sendMagicLink]
+    [data, isAuthenticated, openLogin, openSignup, router]
   );
 
   return (
     <div className="min-h-screen bg-[var(--color-travertine)] py-10">
       <div className="mx-auto max-w-[720px] px-4">
-        {magicLinkError && !isAuthenticated && (
+        {signInError && !isAuthenticated && (
           <div
             className="mb-6 rounded-xl border border-[var(--color-error)] bg-[var(--color-error-bg)] px-4 py-3 text-sm text-[var(--color-error)]"
             role="alert"
           >
-            {magicLinkError}
+            {signInError}
           </div>
         )}
         {errorParam && (
@@ -198,7 +178,7 @@ export function MembershipPageClient({
           >
             {errorParam === "auth_failed" && "Sign-in failed. Please try again."}
             {errorParam === "no_email" && "No email from sign-in. Please use another method."}
-            {errorParam === "callback_config" && "Magic-link auth is not configured. Check your SMTP_* env vars and restart the dev server (npm run dev)."}
+            {errorParam === "callback_config" && "Sign-in is not fully configured. Contact support or try again later."}
             {!["auth_failed", "no_email", "callback_config"].includes(errorParam) && "Something went wrong."}
           </div>
         )}
@@ -207,7 +187,7 @@ export function MembershipPageClient({
             Travel membership form
           </h1>
           <p className="mt-2 text-[#7A7060]">
-            Complete the form below. You can sign in at the end to submit — your answers will be saved.
+            Complete the form below. To submit, sign in with Google or email and password — your answers stay saved in this browser.
           </p>
         </header>
         <MembershipForm

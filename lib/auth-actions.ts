@@ -12,5 +12,5 @@ export async function logoutAction(): Promise<never> {
   cookieStore.set(AUTH_COOKIE, "", { path: "/", maxAge: 0 });
   cookieStore.set(AUTH_ROLE_COOKIE, "", { path: "/", maxAge: 0 });
   cookieStore.set(AUTH_USER_ID_COOKIE, "", { path: "/", maxAge: 0 });
-  redirect("/login");
+  redirect("/");
 }
