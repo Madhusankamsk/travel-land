@@ -2,6 +2,7 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { buildMagicLinkEmail } from "@/lib/email-templates/magic-link-email";
 
 function normalizeEmail(email: string) {
   return email.trim().toLowerCase();
@@ -60,19 +61,14 @@ async function sendMagicEmail(toEmail: string, verifyUrl: string) {
     auth: { user: smtpUser, pass: smtpPass },
   });
 
-  // Keep content simple; avoid including user-provided data in headers/subject.
+  const { subject, text, html } = buildMagicLinkEmail(verifyUrl);
+
   await transporter.sendMail({
     from: smtpFrom,
     to: toEmail,
-    subject: "Your sign-in link",
-    text: `Click to sign in: ${verifyUrl}\nIf you did not request this, you can ignore this email.`,
-    html: `
-      <div style="font-family: Arial, Helvetica, sans-serif; line-height: 1.4;">
-        <p>Click the button below to sign in:</p>
-        <p><a href="${verifyUrl}" style="display:inline-block;padding:10px 16px;background:#111827;color:#fff;text-decoration:none;border-radius:8px;">Sign in</a></p>
-        <p style="color:#6B7280;font-size:12px;">This link will expire shortly. If you did not request this, you can ignore this email.</p>
-      </div>
-    `,
+    subject,
+    text,
+    html,
   });
 }
 
