@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/auth";
 import { TripMembershipPanel } from "./trip-membership-panel";
+import { TripGalleryCarousel } from "@/components/trip-gallery-carousel";
 import { InnerPageHero } from "@/components/inner-page-hero";
 import { CancellationPenaltiesBlock } from "@/components/cancellation-penalties-block";
 import { mergeCancellationPenalties } from "@/lib/cancellation-penalties";
@@ -234,23 +235,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
                   >
                     Galleria
                   </h2>
-                  <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                    {galleryUrls.map((src, i) => (
-                      <li
-                        key={`${src}-${i}`}
-                        className="relative aspect-[4/3] overflow-hidden rounded-xl border border-bone bg-white shadow-[var(--shadow-sm)]"
-                      >
-                        <Image
-                          src={src}
-                          alt=""
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 640px) 50vw, 33vw"
-                          unoptimized
-                        />
-                      </li>
-                    ))}
-                  </ul>
+                  <TripGalleryCarousel images={galleryUrls} />
                 </section>
               )}
 

@@ -262,8 +262,12 @@ export function TripForm({
       <section className="rounded-xl border border-zinc-200 bg-white p-6">
         <h2 className="mb-4 text-lg font-semibold text-zinc-900">Photo & Media Content</h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          <div>
+          <div className="sm:col-span-2">
             <label className="mb-1 block text-sm font-medium text-zinc-700">Trip gallery images</label>
+            <p className="mb-2 text-xs text-zinc-500">
+              Select multiple files in one go (Ctrl/Cmd+click), or use several rows below to add more batches.
+              All chosen files are uploaded together when you save.
+            </p>
             <input
               name="galleryImages"
               type="file"
@@ -271,8 +275,27 @@ export function TripForm({
               accept="image/*"
               className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 file:mr-2 file:rounded file:border-0 file:bg-zinc-100 file:px-3 file:py-1 file:text-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
             />
+            <input
+              name="galleryImages"
+              type="file"
+              multiple
+              accept="image/*"
+              className="mt-2 w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 file:mr-2 file:rounded file:border-0 file:bg-zinc-100 file:px-3 file:py-1 file:text-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
+              aria-label="Additional gallery images (second batch)"
+            />
+            <input
+              name="galleryImages"
+              type="file"
+              multiple
+              accept="image/*"
+              className="mt-2 w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 file:mr-2 file:rounded file:border-0 file:bg-zinc-100 file:px-3 file:py-1 file:text-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
+              aria-label="Additional gallery images (third batch)"
+            />
             {initial?.galleryImageUrls?.length ? (
-              <p className="mt-1 text-xs text-zinc-500">Current: {initial.galleryImageUrls.length} images</p>
+              <p className="mt-2 text-xs text-zinc-500">
+                Already saved: {initial.galleryImageUrls.length} image
+                {initial.galleryImageUrls.length === 1 ? "" : "s"} (new uploads are added to these on edit).
+              </p>
             ) : null}
           </div>
           <div>

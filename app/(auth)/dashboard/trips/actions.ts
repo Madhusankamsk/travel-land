@@ -329,11 +329,13 @@ export async function updateTrip(tourId: string, formData: FormData) {
     programPdfUrl = await saveTourFiles([pdfFile], "program").then((arr) => arr[0] ?? programPdfUrl);
   }
 
-  let galleryImageUrls = parseJsonStringArray(existing.galleryImageUrls);
+  const existingGallery = parseJsonStringArray(existing.galleryImageUrls) ?? [];
+  let galleryImageUrls: string[] | null = existingGallery.length ? [...existingGallery] : null;
   const galleryFiles = formData.getAll("galleryImages").filter((v): v is File => v instanceof File);
   if (galleryFiles.length > 0) {
     const urls = await saveTourFiles(galleryFiles, "gallery");
-    galleryImageUrls = urls.length ? urls : null;
+    const merged = [...existingGallery, ...urls];
+    galleryImageUrls = merged.length ? merged : null;
   }
 
   const tripVideoUrl = (formData.get("tripVideoUrl") as string | null)?.trim() || null;
@@ -348,11 +350,13 @@ export async function updateTrip(tourId: string, formData: FormData) {
   const dayImageUrlsByOrder: (string[] | null)[] = [];
   for (let i = 0; i < daysData.length; i++) {
     const files = formData.getAll(`dayImages_${i}`).filter((v): v is File => v instanceof File);
+    const existingUrls = existingDaysByOrder.get(i + 1) ?? [];
     if (files.length > 0) {
       const urls = await saveTourFiles(files, `day-${i + 1}`);
-      dayImageUrlsByOrder.push(urls.length ? urls : null);
+      const merged = [...existingUrls, ...urls];
+      dayImageUrlsByOrder.push(merged.length ? merged : null);
     } else {
-      dayImageUrlsByOrder.push(existingDaysByOrder.get(i + 1) ?? null);
+      dayImageUrlsByOrder.push(existingUrls.length ? existingUrls : null);
     }
   }
 
