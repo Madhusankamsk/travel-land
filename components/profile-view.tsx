@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useI18n } from "@/components/i18n-provider";
 import { logoutAction } from "@/lib/auth-actions";
 import { InnerPageHero } from "@/components/inner-page-hero";
-import { BookingProgressStepper } from "./booking-progress-stepper";
+import { BookingProgressInteractive } from "./booking-progress-stepper";
 import { MembershipMagicCallbackBanner } from "./membership-magic-callback";
 
 type UserData = {
@@ -138,7 +138,10 @@ export function ProfileView({ user, bookings, upcomingTours }: ProfileViewProps)
                     <p className="mt-2 text-[13px] text-[#7A7060]">{booking.tour.durationLabel}</p>
                   </div>
                   <div className="px-6 py-5 sm:px-8 sm:py-6">
-                    <BookingProgressStepper status={booking.status as import("@prisma/client").BookingStatus} />
+                    <BookingProgressInteractive
+                      instanceId={booking.id}
+                      status={booking.status as import("@prisma/client").BookingStatus}
+                    />
                   </div>
                 </li>
               ))}

@@ -80,6 +80,12 @@
   "profile.step.depositPaid": "Deposit paid",
   "profile.step.paid": "Paid",
   "profile.step.completed": "Complete",
+  "profile.stepDetail.requested": "We have received your trip request. Our team will review it and contact you with the next steps.",
+  "profile.stepDetail.confirmed": "Your booking is confirmed. Follow the payment instructions we sent you to pay the deposit and secure your place.",
+  "profile.stepDetail.depositPaid": "We have registered your deposit. Your seat is reserved. Please complete the remaining balance by the agreed date.",
+  "profile.stepDetail.paid": "Full payment has been received. You will get final travel documents and practical information before departure.",
+  "profile.stepDetail.completed": "This trip is completed. Thank you for traveling with us.",
+  "profile.stepDetail.upcoming": "This stage comes later. The text above describes what happens when your booking reaches this step.",
 
   "language.it": "Italian",
   "language.en": "English",

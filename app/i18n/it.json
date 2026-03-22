@@ -80,6 +80,12 @@
   "profile.step.depositPaid": "Acconto",
   "profile.step.paid": "Saldo",
   "profile.step.completed": "Completato",
+  "profile.stepDetail.requested": "Abbiamo ricevuto la tua richiesta di prenotazione. Il nostro team la esaminerà e ti contatterà con i prossimi passaggi.",
+  "profile.stepDetail.confirmed": "La prenotazione è confermata. Segui le istruzioni di pagamento che ti abbiamo inviato per versare l’acconto e bloccare il posto.",
+  "profile.stepDetail.depositPaid": "Abbiamo registrato il pagamento dell’acconto. Il posto è riservato. Completa il saldo entro la data concordata.",
+  "profile.stepDetail.paid": "Abbiamo ricevuto il saldo. Riceverai i documenti di viaggio definitivi e le informazioni pratiche prima della partenza.",
+  "profile.stepDetail.completed": "Il viaggio risulta concluso. Grazie per aver viaggiato con noi.",
+  "profile.stepDetail.upcoming": "Questa fase arriverà più avanti. Il testo sopra descrive cosa succede quando la prenotazione raggiunge questo passaggio.",
 
   "language.it": "Italiano",
   "language.en": "Inglese",
