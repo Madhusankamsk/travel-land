@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ClipboardList, LayoutDashboard, MapPin } from "lucide-react";
+import { LayoutDashboard, MapPin } from "lucide-react";
+import { DashboardApplicationsIcon } from "@/components/dashboard-applications-icon";
 import { useDashboardSidebar } from "./dashboard-shell";
 
 const links = [
   { href: "/dashboard", label: "Overview", exact: true, icon: LayoutDashboard },
   { href: "/dashboard/trips", label: "Trips", exact: false, icon: MapPin },
-  { href: "/dashboard/applications", label: "Applications", exact: true, icon: ClipboardList },
+  { href: "/dashboard/applications", label: "Applications", exact: true, icon: DashboardApplicationsIcon },
 ] as const;
 
 export function DashboardNav() {

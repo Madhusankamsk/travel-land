@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { MapPin, Calendar, Archive, FileText, PlusCircle, ClipboardList } from "lucide-react";
+import { MapPin, Calendar, Archive, FileText, PlusCircle } from "lucide-react";
+import { DashboardApplicationsIcon } from "@/components/dashboard-applications-icon";
 
 export const dynamic = "force-dynamic";
 
@@ -123,7 +124,7 @@ export default async function DashboardPage() {
         <StatCard
           label="Trip applications"
           value={tripApplications}
-          icon={ClipboardList}
+          icon={DashboardApplicationsIcon}
           href="/dashboard/applications"
         />
       </section>
