@@ -10,6 +10,7 @@ import {
   getDefaultCancellationPenalties,
   parseCancellationPenaltiesFromForm,
 } from "@/lib/cancellation-penalties";
+import { normalizeUrlList, parseUrlArrayFromFormField } from "@/lib/trip-media";
 
 function parseDecimal(value: string | null): number | null {
   if (value == null || value === "") return null;
@@ -58,13 +59,6 @@ async function saveTourFiles(files: File[], prefix: string): Promise<string[]> {
     }
   }
   return out;
-}
-
-function parseJsonStringArray(value: unknown): string[] | null {
-  if (value == null) return null;
-  if (!Array.isArray(value)) return null;
-  if (value.every((v) => typeof v === "string")) return value as string[];
-  return null;
 }
 
 const VALID_TOUR_STATUSES: TourStatus[] = ["UPCOMING", "OPEN", "SOLD_OUT", "COMPLETED"];
@@ -329,12 +323,14 @@ export async function updateTrip(tourId: string, formData: FormData) {
     programPdfUrl = await saveTourFiles([pdfFile], "program").then((arr) => arr[0] ?? programPdfUrl);
   }
 
-  const existingGallery = parseJsonStringArray(existing.galleryImageUrls) ?? [];
-  let galleryImageUrls: string[] | null = existingGallery.length ? [...existingGallery] : null;
+  const galleryFromForm = parseUrlArrayFromFormField(formData, "existingGalleryImageUrls");
+  const galleryFromDb = normalizeUrlList(existing.galleryImageUrls);
+  const baseGallery = galleryFromForm !== null ? galleryFromForm : galleryFromDb;
+  let galleryImageUrls: string[] | null = baseGallery.length ? [...baseGallery] : null;
   const galleryFiles = formData.getAll("galleryImages").filter((v): v is File => v instanceof File);
   if (galleryFiles.length > 0) {
     const urls = await saveTourFiles(galleryFiles, "gallery");
-    const merged = [...existingGallery, ...urls];
+    const merged = [...baseGallery, ...urls];
     galleryImageUrls = merged.length ? merged : null;
   }
 
@@ -342,21 +338,23 @@ export async function updateTrip(tourId: string, formData: FormData) {
 
   const daysData = parseDaysJson(formData.get("days") as string | null);
 
-  const existingDaysByOrder = new Map<number, string[] | null>();
+  const existingDaysByOrder = new Map<number, string[]>();
   for (const d of existing.days) {
-    existingDaysByOrder.set(d.order, parseJsonStringArray(d.dayImageUrls));
+    existingDaysByOrder.set(d.order, normalizeUrlList(d.dayImageUrls));
   }
 
   const dayImageUrlsByOrder: (string[] | null)[] = [];
   for (let i = 0; i < daysData.length; i++) {
     const files = formData.getAll(`dayImages_${i}`).filter((v): v is File => v instanceof File);
-    const existingUrls = existingDaysByOrder.get(i + 1) ?? [];
+    const dayFromForm = parseUrlArrayFromFormField(formData, `existingDayImageUrls_${i}`);
+    const dayFromDb = existingDaysByOrder.get(i + 1) ?? [];
+    const baseDayUrls = dayFromForm !== null ? dayFromForm : dayFromDb;
     if (files.length > 0) {
       const urls = await saveTourFiles(files, `day-${i + 1}`);
-      const merged = [...existingUrls, ...urls];
+      const merged = [...baseDayUrls, ...urls];
       dayImageUrlsByOrder.push(merged.length ? merged : null);
     } else {
-      dayImageUrlsByOrder.push(existingUrls.length ? existingUrls : null);
+      dayImageUrlsByOrder.push(baseDayUrls.length ? baseDayUrls : null);
     }
   }
 

@@ -1,12 +1,19 @@
 "use client";
 
+import Image from "next/image";
 import { useActionState, useState, useRef, useEffect } from "react";
 import { toast } from "@/lib/toast";
 import type { CancellationPenalties } from "@/lib/cancellation-penalties";
 import { mergeCancellationPenalties } from "@/lib/cancellation-penalties";
 import { CancellationPenaltiesEditor } from "@/components/cancellation-penalties-editor";
 
-export type TripDay = { dayHeading: string; dateLabel: string; description: string };
+export type TripDay = {
+  dayHeading: string;
+  dateLabel: string;
+  description: string;
+  /** Saved image URLs for this day (edit mode); round-tripped via hidden fields */
+  imageUrls?: string[];
+};
 
 type TripFormProps = {
   mode: "create" | "edit";
@@ -68,11 +75,23 @@ export function TripForm({
   createAction,
   updateAction,
 }: TripFormProps) {
-  const [days, setDays] = useState<TripDay[]>(
-    initial?.days?.length
-      ? [...initial.days]
-      : [{ dayHeading: "", dateLabel: "", description: "" }]
+  const [galleryUrls, setGalleryUrls] = useState<string[]>(() =>
+    mode === "edit" && initial?.galleryImageUrls?.length
+      ? [...initial.galleryImageUrls]
+      : []
   );
+
+  const [days, setDays] = useState<TripDay[]>(() => {
+    if (initial?.days?.length) {
+      return initial.days.map((d) => ({
+        dayHeading: d.dayHeading,
+        dateLabel: d.dateLabel,
+        description: d.description,
+        imageUrls: d.imageUrls?.length ? [...d.imageUrls] : [],
+      }));
+    }
+    return [{ dayHeading: "", dateLabel: "", description: "", imageUrls: [] }];
+  });
   const [cancellationPenalties, setCancellationPenalties] = useState<CancellationPenalties>(() =>
     mergeCancellationPenalties(initial?.cancellationPenalties ?? null)
   );
@@ -93,7 +112,7 @@ export function TripForm({
   }, [state]);
 
   function addDay() {
-    setDays((d) => [...d, { dayHeading: "", dateLabel: "", description: "" }]);
+    setDays((d) => [...d, { dayHeading: "", dateLabel: "", description: "", imageUrls: [] }]);
   }
 
   function removeDay(i: number) {
@@ -108,6 +127,19 @@ export function TripForm({
     });
   }
 
+  function removeGalleryImage(url: string) {
+    setGalleryUrls((prev) => prev.filter((u) => u !== url));
+  }
+
+  function removeDayImage(dayIndex: number, url: string) {
+    setDays((d) => {
+      const next = [...d];
+      const imgs = (next[dayIndex].imageUrls ?? []).filter((u) => u !== url);
+      next[dayIndex] = { ...next[dayIndex], imageUrls: imgs };
+      return next;
+    });
+  }
+
   return (
     <form
       ref={formRef}
@@ -116,6 +148,19 @@ export function TripForm({
     >
       <input type="hidden" name="days" value={JSON.stringify(days)} />
       <input type="hidden" name="cancellationPenaltiesJson" value={JSON.stringify(cancellationPenalties)} />
+      {mode === "edit" && tourId ? (
+        <>
+          <input type="hidden" name="existingGalleryImageUrls" value={JSON.stringify(galleryUrls)} />
+          {days.map((day, i) => (
+            <input
+              key={`existing-day-imgs-${i}`}
+              type="hidden"
+              name={`existingDayImageUrls_${i}`}
+              value={JSON.stringify(day.imageUrls ?? [])}
+            />
+          ))}
+        </>
+      ) : null}
 
       {state?.error && (
         <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
@@ -265,8 +310,8 @@ export function TripForm({
           <div className="sm:col-span-2">
             <label className="mb-1 block text-sm font-medium text-zinc-700">Trip gallery images</label>
             <p className="mb-2 text-xs text-zinc-500">
-              Select multiple files in one go (Ctrl/Cmd+click), or use several rows below to add more batches.
-              All chosen files are uploaded together when you save.
+              Choose one or many images in a single selection (Ctrl/Cmd+click). New uploads are added when
+              you save. On edit, remove thumbnails with the × button to drop them from the trip.
             </p>
             <input
               name="galleryImages"
@@ -275,28 +320,52 @@ export function TripForm({
               accept="image/*"
               className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 file:mr-2 file:rounded file:border-0 file:bg-zinc-100 file:px-3 file:py-1 file:text-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
             />
-            <input
-              name="galleryImages"
-              type="file"
-              multiple
-              accept="image/*"
-              className="mt-2 w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 file:mr-2 file:rounded file:border-0 file:bg-zinc-100 file:px-3 file:py-1 file:text-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
-              aria-label="Additional gallery images (second batch)"
-            />
-            <input
-              name="galleryImages"
-              type="file"
-              multiple
-              accept="image/*"
-              className="mt-2 w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 file:mr-2 file:rounded file:border-0 file:bg-zinc-100 file:px-3 file:py-1 file:text-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
-              aria-label="Additional gallery images (third batch)"
-            />
-            {initial?.galleryImageUrls?.length ? (
+            {mode === "edit" && galleryUrls.length > 0 ? (
+              <div className="mt-4 rounded-lg border border-zinc-200 bg-zinc-50/80 p-4">
+                <p className="mb-3 text-xs font-medium text-zinc-700">
+                  Gallery ({galleryUrls.length}) — × removes from this trip on save. New files above are
+                  appended.
+                </p>
+                <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                  {galleryUrls.map((url, idx) => (
+                    <li
+                      key={`${url}-${idx}`}
+                      className="overflow-hidden rounded-lg border border-zinc-200 bg-white shadow-sm"
+                    >
+                      <div className="relative aspect-[4/3] w-full">
+                        <Image
+                          src={url}
+                          alt=""
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 50vw, 180px"
+                          unoptimized
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeGalleryImage(url)}
+                          className="absolute right-1 top-1 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-zinc-900/65 text-[15px] font-light leading-none text-white shadow-sm transition-colors hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-zinc-400"
+                          aria-label="Remove image from gallery"
+                        >
+                          ×
+                        </button>
+                      </div>
+                      <p className="truncate p-1.5 text-[10px] leading-tight text-zinc-500" title={url}>
+                        {url}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : mode === "create" ? (
               <p className="mt-2 text-xs text-zinc-500">
-                Already saved: {initial.galleryImageUrls.length} image
-                {initial.galleryImageUrls.length === 1 ? "" : "s"} (new uploads are added to these on edit).
+                After upload, images appear on the public trip page gallery.
               </p>
-            ) : null}
+            ) : (
+              <p className="mt-2 text-xs text-zinc-500">
+                No gallery images saved yet for this trip. Upload above to add some.
+              </p>
+            )}
           </div>
           <div>
             <label className="mb-1 block text-sm font-medium text-zinc-700">Optional video URL</label>
@@ -375,6 +444,39 @@ export function TripForm({
                 accept="image/*"
                 className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-zinc-900 file:mr-2 file:rounded file:border-0 file:bg-zinc-100 file:px-3 file:py-1 file:text-sm focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
               />
+              {mode === "edit" && (day.imageUrls?.length ?? 0) > 0 ? (
+                <div className="rounded-md border border-zinc-200 bg-white p-3">
+                  <p className="mb-2 text-xs font-medium text-zinc-600">
+                    Saved images for this day ({day.imageUrls!.length}) — × removes on save; new files above
+                    are added.
+                  </p>
+                  <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                    {day.imageUrls!.map((url, j) => (
+                      <li
+                        key={`${url}-${j}`}
+                        className="relative aspect-[4/3] overflow-hidden rounded-lg border border-zinc-100"
+                      >
+                        <Image
+                          src={url}
+                          alt=""
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 50vw, 120px"
+                          unoptimized
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeDayImage(i, url)}
+                          className="absolute right-1 top-1 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-zinc-900/65 text-[15px] font-light leading-none text-white shadow-sm transition-colors hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-zinc-400"
+                          aria-label="Remove image from this day"
+                        >
+                          ×
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
             </div>
           </div>
         ))}

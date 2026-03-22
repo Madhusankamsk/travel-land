@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { normalizeUrlList } from "@/lib/trip-media";
 import { TripForm } from "@/components/trip-form";
 import { createTrip, updateTrip } from "../../actions";
 
@@ -30,7 +31,7 @@ export default async function EditTripPage({
     destinationCities: tour.destinationCities,
     tripCategory: tour.tripCategory,
     heroImageUrl: tour.heroImageUrl,
-    galleryImageUrls: (tour.galleryImageUrls as unknown as string[] | null) ?? null,
+    galleryImageUrls: normalizeUrlList(tour.galleryImageUrls),
     tripVideoUrl: tour.tripVideoUrl,
     introText: tour.introText,
 
@@ -70,6 +71,7 @@ export default async function EditTripPage({
       dayHeading: d.dayHeading,
       dateLabel: d.dateLabel ?? "",
       description: d.description,
+      imageUrls: normalizeUrlList(d.dayImageUrls),
     })),
   };
 
