@@ -218,18 +218,20 @@ export function BookingDatePicker({ searchExpanded, isSelected, onOpenChange }: 
             </div>
           </div>
           <div className="p-4">
-            <div className="grid grid-cols-7 gap-1">
-              {DOW.map((day) => (
+            <div className="mb-1 grid grid-cols-7 gap-1">
+              {DOW.map((day, i) => (
                 <div
-                  key={day}
-                  className="py-2 text-center text-[11px] font-semibold uppercase tracking-wider text-[#7A7060]"
+                  key={`dow-${i}`}
+                  className="min-w-0 py-2 text-center text-[11px] font-semibold uppercase tracking-wide text-[#7A7060]"
                 >
-                  {day}
+                  <span className="block whitespace-nowrap">{day}</span>
                 </div>
               ))}
+            </div>
+            <div className="grid grid-cols-7 gap-1">
               {cells.map((day, i) => {
                 if (day === null) {
-                  return <div key={`empty-${i}`} />;
+                  return <div key={`pad-${view.year}-${view.month}-${i}`} className="min-h-9" aria-hidden />;
                 }
                 const date = new Date(view.year, view.month, day);
                 const isPast = date.getTime() < today.getTime();
@@ -244,11 +246,11 @@ export function BookingDatePicker({ searchExpanded, isSelected, onOpenChange }: 
 
                 return (
                   <button
-                    key={day}
+                    key={`${view.year}-${view.month}-${day}`}
                     type="button"
                     disabled={isPast}
                     onClick={() => !isPast && handleSelect(day)}
-                    className={`flex h-9 items-center justify-center rounded-md text-[13px] transition-colors ${
+                    className={`flex min-h-9 min-w-0 items-center justify-center rounded-md text-[13px] transition-colors ${
                       isPast
                         ? "cursor-not-allowed text-[#B5A890]/40"
                         : "cursor-pointer hover:bg-parchment"

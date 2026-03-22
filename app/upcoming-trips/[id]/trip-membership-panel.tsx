@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MembershipForm, type PackageOption } from "@/components/membership-form";
 import {
   submitMembershipBookingAction,
@@ -51,15 +51,14 @@ export function TripMembershipPanel({
   const draftKey = `${DRAFT_KEY_PREFIX}${selectedPackage.id}`;
   const searchParams = useSearchParams();
   const pathname = usePathname();
+  const router = useRouter();
 
   const [data, setData] = useState<MembershipDraft>(() =>
     getDefaultDraft(selectedPackage, userProfile ?? undefined)
   );
   const [errors, setErrors] = useState<Partial<Record<keyof MembershipDraft, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [magicLinkSent, setMagicLinkSent] = useState(false);
   const [magicLinkError, setMagicLinkError] = useState<string | null>(null);
-  const [successRef, setSuccessRef] = useState<string | null>(null);
   const mounted = useRef(false);
   const autoSubmitted = useRef(false);
 
@@ -133,45 +132,53 @@ export function TripMembershipPanel({
     return () => clearTimeout(t);
   }, [data, saveDraft]);
 
-  async function sendMagicLink(email: string) {
-    setMagicLinkError(null);
-    const trimmed = email.trim();
-    if (!trimmed) {
-      setMagicLinkError("Please enter your email.");
-      return;
-    }
-
-    try {
-      const next = `${pathname}?callback=1`;
-      const res = await fetch("/api/auth/magic/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed, next }),
-      });
-
-      if (!res.ok) {
-        const body = (await res.json().catch(() => null)) as { error?: string } | null;
-        setMagicLinkError(body?.error ?? "Failed to send magic link");
-        return;
+  const sendMagicLink = useCallback(
+    async (email: string): Promise<boolean> => {
+      setMagicLinkError(null);
+      const trimmed = email.trim();
+      if (!trimmed) {
+        setMagicLinkError("Please enter your email.");
+        return false;
       }
-      setMagicLinkSent(true);
-    } catch (e) {
-      setMagicLinkError(e instanceof Error ? e.message : "Failed to send magic link");
-    }
-  }
+
+      try {
+        const next = `${pathname}?callback=1`;
+        const res = await fetch("/api/auth/magic/send", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: trimmed, next }),
+        });
+
+        if (!res.ok) {
+          const body = (await res.json().catch(() => null)) as { error?: string } | null;
+          setMagicLinkError(body?.error ?? "Failed to send magic link");
+          return false;
+        }
+        return true;
+      } catch (e) {
+        setMagicLinkError(e instanceof Error ? e.message : "Failed to send magic link");
+        return false;
+      }
+    },
+    [pathname]
+  );
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
       setErrors({});
-      setSuccessRef(null);
 
       if (!isAuthenticated) {
         setIsSubmitting(true);
         try {
           saveDraft(data);
-          setMagicLinkSent(false);
-          await sendMagicLink(data.email);
+          const ok = await sendMagicLink(data.email);
+          if (ok) {
+            const afterLogin = `${pathname}?callback=1`;
+            router.push(
+              `/membership/check-email?next=${encodeURIComponent(afterLogin)}`
+            );
+          }
         } finally {
           setIsSubmitting(false);
         }
@@ -179,7 +186,6 @@ export function TripMembershipPanel({
       }
 
       setMagicLinkError(null);
-      setMagicLinkSent(false);
 
       setIsSubmitting(true);
       const result: SubmitResult = await submitMembershipBookingAction(null, data);
@@ -188,7 +194,6 @@ export function TripMembershipPanel({
       if (result.error) {
         if (result.error === "Please sign in to continue.") {
           saveDraft(data);
-          setMagicLinkSent(false);
           setMagicLinkError("Please submit again to receive a magic link.");
           return;
         }
@@ -196,14 +201,16 @@ export function TripMembershipPanel({
         return;
       }
 
-      setSuccessRef(result.reference ?? "Submitted");
       try {
         localStorage.removeItem(draftKey);
       } catch {
         // ignore
       }
+      if (result.reference) {
+        router.push(`/membership/success?ref=${encodeURIComponent(result.reference)}`);
+      }
     },
-    [data, draftKey, isAuthenticated, saveDraft, pathname]
+    [data, draftKey, isAuthenticated, router, saveDraft, pathname, sendMagicLink]
   );
 
   useEffect(() => {
@@ -218,20 +225,21 @@ export function TripMembershipPanel({
       setIsSubmitting(false);
 
       if (result.error === "Please sign in to continue.") {
-        setMagicLinkSent(false);
         setMagicLinkError("Sign-in required. Please submit again to receive a magic link.");
         return;
       }
       if (result.error) return;
 
-      setSuccessRef(result.reference ?? "Submitted");
       try {
         localStorage.removeItem(draftKey);
       } catch {
         // ignore
       }
+      if (result.reference) {
+        router.replace(`/membership/success?ref=${encodeURIComponent(result.reference)}`);
+      }
     })();
-  }, [callbackParam, draftKey, isAuthenticated, loadDraft]);
+  }, [callbackParam, draftKey, isAuthenticated, loadDraft, router]);
 
   return (
     <div className="space-y-4">
@@ -243,14 +251,6 @@ export function TripMembershipPanel({
           {magicLinkError}
         </p>
       )}
-      {magicLinkSent && !isAuthenticated && (
-        <p
-          className="rounded-lg bg-[var(--color-success-bg)] px-3 py-2 text-sm text-[var(--color-success)]"
-          role="status"
-        >
-          Check your email for a sign-in link. After clicking it, your booking will continue here.
-        </p>
-      )}
       {errorParam === "auth_failed" && (
         <p
           className="rounded-lg border border-[var(--color-error)] bg-[var(--color-error-bg)] px-3 py-2 text-sm text-[var(--color-error)]"
@@ -259,22 +259,13 @@ export function TripMembershipPanel({
           Sign-in failed. Please request a new magic link.
         </p>
       )}
-      {successRef && (
-        <p
-          className="rounded-lg bg-[var(--color-success-bg)] px-3 py-2 text-sm text-[var(--color-success)]"
-          role="status"
-        >
-          Membership form submitted successfully. Reference: {successRef}
-        </p>
-      )}
-
       <MembershipForm
         data={data}
         onChange={setData}
         packages={[selectedPackage]}
         errors={errors}
         onSubmit={handleSubmit}
-        isSubmitting={isSubmitting || (magicLinkSent && !isAuthenticated)}
+        isSubmitting={isSubmitting}
         compact
       />
     </div>

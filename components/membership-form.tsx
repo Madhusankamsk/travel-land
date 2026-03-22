@@ -1,6 +1,7 @@
 "use client";
 
 import type { MembershipDraft } from "@/app/membership/actions";
+import { BirthDatePicker } from "@/components/birth-date-picker";
 
 export type PackageOption = {
   id: string;
@@ -14,8 +15,16 @@ const ROOM_TYPES = ["Double", "Double Shared", "Single", "Triple", "Triple Share
 
 const inputClass =
   "w-full min-h-[44px] rounded-lg border-[1.5px] border-[var(--color-bone)] bg-[var(--color-travertine)] px-4 py-3 text-[15px] leading-normal text-[var(--color-obsidian)] placeholder-[#B5A890] transition-colors hover:border-[#C0B098] focus:border-[var(--color-obsidian)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-obsidian)]/8";
+/** Tighter fields when embedded in sidebar (still ≥44px touch height) */
+const inputClassCompact =
+  "w-full min-h-11 rounded-lg border-[1.5px] border-[var(--color-bone)] bg-white px-3 py-2.5 text-[14px] leading-normal text-[var(--color-obsidian)] placeholder-[#B5A890] transition-colors hover:border-[#C0B098] focus:border-[var(--color-obsidian)] focus:outline-none focus:ring-[3px] focus:ring-[var(--color-obsidian)]/8";
 const labelClass =
   "mb-1 block text-xs font-medium uppercase tracking-wider text-[var(--color-terracotta)]";
+/** Section stack inside trip sidebar — no nested card (parent already provides surface) */
+const compactSectionClass =
+  "space-y-3 border-t border-[var(--color-bone)] pt-4 first:border-t-0 first:pt-0";
+const compactHeadingClass =
+  "mb-3 font-[var(--font-display)] text-[17px] font-medium leading-snug text-[var(--color-obsidian)]";
 
 type MembershipFormProps = {
   data: MembershipDraft;
@@ -60,13 +69,20 @@ export function MembershipForm({
   const totalMatches = Math.abs(total - data.totalQuota) < 0.02;
   const activePackage = packages.find((p) => p.title === data.packageName);
   const programPdfUrl = activePackage?.programPdfUrl ?? null;
+  const fieldInput = compact ? inputClassCompact : inputClass;
+  const tableMoneyInput = compact
+    ? "w-[4.5rem] max-w-full rounded border border-[var(--color-bone)] bg-white px-1.5 py-1 text-right text-xs text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none"
+    : "w-24 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none";
+  const tableBaseQuotaInput = compact
+    ? "w-[4.5rem] max-w-full rounded border border-[var(--color-bone)] bg-parchment/50 px-1.5 py-1 text-right text-xs text-[var(--color-obsidian)]"
+    : "w-28 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none";
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col">
       <div
         className={
           compact
-            ? "flex flex-col gap-6 sm:gap-8 rounded-[20px] border border-[var(--color-bone)] bg-white p-4 sm:p-6 shadow-[var(--shadow-sm)]"
+            ? "flex flex-col gap-0"
             : "flex flex-col gap-6 sm:gap-8"
         }
       >
@@ -74,16 +90,22 @@ export function MembershipForm({
         <section
           className={
             compact
-              ? "space-y-5"
+              ? compactSectionClass
               : "rounded-[20px] border border-[var(--color-bone)] bg-white p-4 sm:p-6 shadow-[var(--shadow-sm)]"
           }
         >
-          <h2 className="mb-4 font-[var(--font-display)] text-[clamp(1.125rem,2.5vw,1.375rem)] font-medium leading-snug text-[var(--color-obsidian)] sm:mb-5">
+          <h2
+            className={
+              compact
+                ? compactHeadingClass
+                : "mb-4 font-[var(--font-display)] text-[clamp(1.125rem,2.5vw,1.375rem)] font-medium leading-snug text-[var(--color-obsidian)] sm:mb-5"
+            }
+          >
             Personal Information
           </h2>
-          <div className="flex flex-col gap-4 sm:gap-5">
+          <div className={compact ? "flex flex-col gap-3" : "flex flex-col gap-4 sm:gap-5"}>
             {/* First name, then last name — stacked (last name under first name) */}
-            <div className="flex flex-col gap-4">
+            <div className={compact ? "flex flex-col gap-3" : "flex flex-col gap-4"}>
               <div className="w-full">
                 <label htmlFor="membership-firstName" className={labelClass}>
                   First Name
@@ -95,7 +117,7 @@ export function MembershipForm({
                   onChange={(e) => set("firstName", e.target.value)}
                   required
                   autoComplete="given-name"
-                  className={inputClass}
+                  className={fieldInput}
                   placeholder="Maria"
                 />
                 {errors.firstName && (
@@ -115,7 +137,7 @@ export function MembershipForm({
                   onChange={(e) => set("lastName", e.target.value)}
                   required
                   autoComplete="family-name"
-                  className={inputClass}
+                  className={fieldInput}
                   placeholder="Rossi"
                 />
                 {errors.lastName && (
@@ -130,13 +152,12 @@ export function MembershipForm({
               <label htmlFor="membership-dateOfBirth" className={labelClass}>
                 Date of Birth (dob)
               </label>
-              <input
+              <BirthDatePicker
                 id="membership-dateOfBirth"
-                type="date"
                 value={data.dateOfBirth}
-                onChange={(e) => set("dateOfBirth", e.target.value)}
+                onChange={(iso) => set("dateOfBirth", iso)}
                 required
-                className={inputClass}
+                triggerClassName={`${fieldInput}${errors.dateOfBirth ? " border-[var(--color-error)] ring-[3px] ring-[var(--color-error)]/15" : ""}`}
               />
               {errors.dateOfBirth && (
                 <p className="mt-1 text-xs text-[var(--color-error)]" role="alert">
@@ -156,7 +177,7 @@ export function MembershipForm({
                 onChange={(e) => set("address", e.target.value)}
                 required
                 autoComplete="street-address"
-                className={inputClass}
+                className={fieldInput}
                 placeholder="Street, city, postal code, country"
               />
               {errors.address && (
@@ -176,7 +197,7 @@ export function MembershipForm({
                 onChange={(e) => set("taxCode", e.target.value)}
                 required
                 autoComplete="off"
-                className={inputClass}
+                className={fieldInput}
                 placeholder="e.g. RSSMRA80A41H501X"
               />
               {errors.taxCode && (
@@ -196,7 +217,7 @@ export function MembershipForm({
                 onChange={(e) => set("email", e.target.value)}
                 required
                 autoComplete="email"
-                className={inputClass}
+                className={fieldInput}
                 placeholder="you@example.com"
               />
               {errors.email && (
@@ -216,7 +237,7 @@ export function MembershipForm({
                 onChange={(e) => set("telephone", e.target.value)}
                 required
                 autoComplete="tel"
-                className={inputClass}
+                className={fieldInput}
                 placeholder="+39 123 456 7890"
               />
               {errors.telephone && (
@@ -232,15 +253,15 @@ export function MembershipForm({
         <section
           className={
             compact
-              ? "space-y-5"
-              : "rounded-[20px] border border-[var(--color-bone)] bg-white p-6 shadow-[var(--shadow-sm)]"
+              ? compactSectionClass
+              : "rounded-[20px] border border-[var(--color-bone)] bg-white p-4 sm:p-6 shadow-[var(--shadow-sm)]"
           }
         >
-          <h2 className="mb-5 font-[var(--font-display)] text-[22px] font-medium text-[var(--color-obsidian)]">
+          <h2 className={compact ? compactHeadingClass : "mb-5 font-[var(--font-display)] text-[22px] font-medium text-[var(--color-obsidian)]"}>
             Travel Details
           </h2>
-          <div className={`grid gap-4 ${compact ? "" : "sm:grid-cols-2"}`}>
-            <div className="sm:col-span-2">
+          <div className="flex flex-col gap-3 sm:gap-4">
+            <div className="w-full min-w-0">
               <label htmlFor="membership-packageName" className={labelClass}>
                 Travel Package Name For (Travel Program Attached)
               </label>
@@ -251,7 +272,7 @@ export function MembershipForm({
                   readOnly
                   value={data.packageName}
                   required
-                  className={inputClass}
+                  className={`${fieldInput} cursor-default bg-parchment/50`}
                 />
               ) : (
                 <select
@@ -273,7 +294,7 @@ export function MembershipForm({
                     }
                   }}
                   required
-                  className={inputClass}
+                  className={fieldInput}
                 >
                   <option value="">Select a package</option>
                   {packages.map((p) => (
@@ -306,7 +327,7 @@ export function MembershipForm({
                   });
                 }}
                 required
-                className={inputClass}
+                className={fieldInput}
               >
                 <option value="">Select room type</option>
                 {ROOM_TYPES.map((room) => (
@@ -331,14 +352,26 @@ export function MembershipForm({
         <section
           className={
             compact
-              ? "space-y-5"
+              ? compactSectionClass
               : "rounded-[20px] border border-[var(--color-bone)] bg-white p-4 sm:p-6 shadow-[var(--shadow-sm)]"
           }
         >
-          <h2 className="mb-4 font-[var(--font-display)] text-[clamp(1.125rem,2.5vw,1.375rem)] font-medium leading-snug text-[var(--color-obsidian)] sm:mb-5">
+          <h2
+            className={
+              compact
+                ? compactHeadingClass
+                : "mb-4 font-[var(--font-display)] text-[clamp(1.125rem,2.5vw,1.375rem)] font-medium leading-snug text-[var(--color-obsidian)] sm:mb-5"
+            }
+          >
             Cost Breakdown
           </h2>
-          <div className="-mx-1 overflow-x-auto px-1 sm:mx-0 sm:px-0">
+          <div
+            className={
+              compact
+                ? "overflow-x-auto text-[11px] leading-snug sm:text-xs"
+                : "-mx-1 overflow-x-auto px-1 sm:mx-0 sm:px-0"
+            }
+          >
             <table className="w-full min-w-0 table-fixed text-left text-xs sm:text-sm">
               <tbody>
                 <tr className="border-b border-[var(--color-bone)]">
@@ -352,7 +385,7 @@ export function MembershipForm({
                       step="0.01"
                       readOnly
                       value={data.baseQuota ?? ""}
-                      className="w-28 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none"
+                      className={tableBaseQuotaInput}
                     />
                   </td>
                 </tr>
@@ -373,7 +406,7 @@ export function MembershipForm({
                         if (Number.isNaN(v)) return;
                         patch({ supplementsVarious: v });
                       }}
-                      className="w-24 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none"
+                      className={tableMoneyInput}
                     />
                   </td>
                 </tr>
@@ -394,7 +427,7 @@ export function MembershipForm({
                         if (Number.isNaN(v)) return;
                         patch({ mandatoryMedicalBaggageInsuranceAmount: v });
                       }}
-                      className="w-24 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none"
+                      className={tableMoneyInput}
                     />
                   </td>
                 </tr>
@@ -415,7 +448,7 @@ export function MembershipForm({
                         if (Number.isNaN(v)) return;
                         patch({ travelCancellationInsuranceAmount: v });
                       }}
-                      className="w-24 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none"
+                      className={tableMoneyInput}
                     />
                   </td>
                 </tr>
@@ -434,7 +467,7 @@ export function MembershipForm({
                         if (Number.isNaN(v)) return;
                         patch({ registrationFee: v });
                       }}
-                      className="w-24 rounded border border-[var(--color-bone)] bg-[var(--color-travertine)] px-2 py-1.5 text-right text-[var(--color-obsidian)] focus:border-[var(--color-obsidian)] focus:outline-none"
+                      className={tableMoneyInput}
                     />
                   </td>
                 </tr>
@@ -442,7 +475,9 @@ export function MembershipForm({
                   <td className="py-2 pr-2 align-top font-medium text-[var(--color-obsidian)] break-words sm:py-3 sm:pr-4">
                     TOTAL QUOTA per person including taxes and supplements (€):
                   </td>
-                  <td className="py-2 text-right align-top font-[var(--font-display)] text-base font-medium text-[var(--color-obsidian)] sm:py-3 sm:text-lg">
+                  <td
+                    className={`py-2 text-right align-top font-[var(--font-display)] font-medium text-[var(--color-obsidian)] sm:py-3 ${compact ? "text-sm" : "text-base sm:text-lg"}`}
+                  >
                     €{(totalMatches ? total : data.totalQuota).toFixed(2)}
                   </td>
                 </tr>
@@ -460,14 +495,20 @@ export function MembershipForm({
         <section
           className={
             compact
-              ? "space-y-5"
+              ? compactSectionClass
               : "rounded-[20px] border border-[var(--color-bone)] bg-white p-4 sm:p-6 shadow-[var(--shadow-sm)]"
           }
         >
-          <h2 className="mb-4 font-[var(--font-display)] text-[clamp(1.125rem,2.5vw,1.375rem)] font-medium leading-snug text-[var(--color-obsidian)] sm:mb-5">
+          <h2
+            className={
+              compact
+                ? compactHeadingClass
+                : "mb-4 font-[var(--font-display)] text-[clamp(1.125rem,2.5vw,1.375rem)] font-medium leading-snug text-[var(--color-obsidian)] sm:mb-5"
+            }
+          >
             Declaration and Data Consent
           </h2>
-          <div className="space-y-4">
+          <div className={compact ? "space-y-3" : "space-y-4"}>
             <label className="flex cursor-pointer items-start gap-3 sm:gap-4">
               <input
                 type="checkbox"
@@ -476,7 +517,9 @@ export function MembershipForm({
                 required
                 className="mt-1 size-[1.125rem] shrink-0 rounded border-[var(--color-bone)] text-[var(--color-obsidian)] focus:ring-2 focus:ring-[var(--color-oro)] focus:ring-offset-2"
               />
-              <span className="min-w-0 flex-1 text-sm leading-relaxed text-[var(--color-obsidian)]">
+              <span
+                className={`min-w-0 flex-1 leading-relaxed text-[var(--color-obsidian)] ${compact ? "text-xs" : "text-sm"}`}
+              >
                 I declare that I have read and accepted the{" "}
                 {programPdfUrl ? (
                   <a
@@ -515,7 +558,9 @@ export function MembershipForm({
                 required
                 className="mt-1 size-[1.125rem] shrink-0 rounded border-[var(--color-bone)] text-[var(--color-obsidian)] focus:ring-2 focus:ring-[var(--color-oro)] focus:ring-offset-2"
               />
-              <span className="min-w-0 flex-1 text-sm leading-relaxed text-[var(--color-obsidian)]">
+              <span
+                className={`min-w-0 flex-1 leading-relaxed text-[var(--color-obsidian)] ${compact ? "text-xs" : "text-sm"}`}
+              >
                 I authorize the processing of my personal data (in accordance with Regulation (EU) 679/2016).
               </span>
             </label>
@@ -528,7 +573,13 @@ export function MembershipForm({
         </section>
 
         {/* 5. Submit */}
-        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <div
+          className={
+            compact
+              ? "flex flex-col gap-3 border-t border-[var(--color-bone)] pt-4 sm:flex-row sm:flex-wrap"
+              : "flex flex-col gap-3 sm:flex-row sm:flex-wrap"
+          }
+        >
           <button
             type="submit"
             disabled={isSubmitting}

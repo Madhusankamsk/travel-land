@@ -53,7 +53,12 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default async function TripDetailsPage({ params }: PageProps) {
-  const { id } = await params;
+  const resolved = await params;
+  const id = typeof resolved.id === "string" ? resolved.id.trim() : "";
+  if (!id) {
+    notFound();
+  }
+
   const userId = await getCurrentUserId();
 
   const trip = await prisma.tour.findUnique({
@@ -625,7 +630,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
                 <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
                   Iscrizione
                 </p>
-                <h2 className="mb-4 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian">
+                <h2 className="mb-3 font-[family-name:var(--font-cormorant)] text-[clamp(1.125rem,2.5vw,1.375rem)] font-medium leading-snug tracking-tight text-obsidian">
                   Richiesta di partecipazione
                 </h2>
 

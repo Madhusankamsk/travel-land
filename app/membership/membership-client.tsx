@@ -107,7 +107,6 @@ export function MembershipPageClient({
   );
   const [errors, setErrors] = useState<Partial<Record<keyof MembershipDraft, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [magicLinkSent, setMagicLinkSent] = useState(false);
   const [magicLinkError, setMagicLinkError] = useState<string | null>(null);
   const mounted = useRef(false);
 
@@ -116,12 +115,12 @@ export function MembershipPageClient({
     saveDraft(d);
   }, []);
 
-  async function sendMagicLink(email: string) {
+  const sendMagicLink = useCallback(async (email: string): Promise<boolean> => {
     setMagicLinkError(null);
     const trimmed = email.trim();
     if (!trimmed) {
       setMagicLinkError("Please enter your email.");
-      return;
+      return false;
     }
     try {
       const res = await fetch("/api/auth/magic/send", {
@@ -131,16 +130,17 @@ export function MembershipPageClient({
       });
 
       if (!res.ok) {
-        const data = (await res.json().catch(() => null)) as { error?: string } | null;
-        setMagicLinkError(data?.error ?? "Failed to send magic link");
-        return;
+        const errBody = (await res.json().catch(() => null)) as { error?: string } | null;
+        setMagicLinkError(errBody?.error ?? "Failed to send magic link");
+        return false;
       }
 
-      setMagicLinkSent(true);
+      return true;
     } catch (e) {
       setMagicLinkError(e instanceof Error ? e.message : "Failed to send link");
+      return false;
     }
-  }
+  }, []);
 
   useEffect(() => {
     if (!mounted.current && packages.length >= 0) {
@@ -189,8 +189,12 @@ export function MembershipPageClient({
         setIsSubmitting(true);
         try {
           saveDraft(data);
-          setMagicLinkSent(false);
-          await sendMagicLink(data.email);
+          const ok = await sendMagicLink(data.email);
+          if (ok) {
+            router.push(
+              `/membership/check-email?next=${encodeURIComponent(MEMBERSHIP_NEXT)}`
+            );
+          }
         } finally {
           setIsSubmitting(false);
         }
@@ -199,7 +203,6 @@ export function MembershipPageClient({
 
       // If authenticated, clear any prior auth UI state.
       setMagicLinkError(null);
-      setMagicLinkSent(false);
 
       setIsSubmitting(true);
       const result: SubmitResult = await submitMembershipBookingAction(null, data);
@@ -208,7 +211,6 @@ export function MembershipPageClient({
       if (result.error) {
         if (result.error === "Please sign in to continue.") {
           saveDraft(data);
-          setMagicLinkSent(false);
           setMagicLinkError("Please submit again to receive a magic link.");
           return;
         }
@@ -222,7 +224,7 @@ export function MembershipPageClient({
       }
       router.push(`/membership/success?ref=${encodeURIComponent(result.reference ?? "")}`);
     },
-    [data, isAuthenticated, router]
+    [data, isAuthenticated, router, sendMagicLink]
   );
 
   const autoSubmitted = useRef(false);
@@ -261,11 +263,6 @@ export function MembershipPageClient({
             {magicLinkError}
           </div>
         )}
-        {magicLinkSent && !isAuthenticated && (
-          <div className="mb-6 rounded-xl bg-[var(--color-success-bg)] px-4 py-3 text-sm text-[var(--color-success)]" role="status">
-            Check your email for a sign-in link. After you click it, we will continue your booking automatically.
-          </div>
-        )}
         {errorParam && (
           <div
             className="mb-6 rounded-xl border border-[var(--color-error)] bg-[var(--color-error-bg)] px-4 py-3 text-sm text-[var(--color-error)]"
@@ -291,7 +288,7 @@ export function MembershipPageClient({
           packages={packages}
           errors={errors}
           onSubmit={handleSubmit}
-          isSubmitting={isSubmitting || (magicLinkSent && !isAuthenticated)}
+          isSubmitting={isSubmitting}
         />
       </div>
     </div>
