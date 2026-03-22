@@ -3,6 +3,7 @@
 import { useActionState, useEffect } from "react";
 import { toast } from "@/lib/toast";
 import { signupAction } from "@/app/signup/actions";
+import { GoogleAuthStack } from "@/components/google-sign-in-button";
 
 type SignupState = {
   error?: string;
@@ -63,6 +64,11 @@ export function SignupModal({
             ×
           </button>
         </div>
+
+        <GoogleAuthStack
+          returnPath={defaultFrom || "/profile"}
+          dividerLabel="Or sign up with email"
+        />
 
         <form action={formAction} className="flex flex-col gap-4">
           {defaultFrom ? <input type="hidden" name="from" value={defaultFrom} /> : null}

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useAuthModal } from "@/components/auth-modal-provider";
+import { useI18n } from "@/components/i18n-provider";
+import { logoutAction } from "@/lib/auth-actions";
 
 const AUTH_COOKIE = "auth_session";
 const AUTH_ROLE_COOKIE = "auth_role";
@@ -31,6 +33,7 @@ export function AuthNavButton() {
   const [role, setRole] = useState<string | null>(null);
   const pathname = usePathname();
   const { openLogin } = useAuthModal();
+  const { t } = useI18n();
 
   useEffect(() => {
     setIsAuthenticated(hasAuthCookie());
@@ -39,6 +42,21 @@ export function AuthNavButton() {
 
   if (isAuthenticated) {
     const isAdmin = role === "admin";
+    const onProfilePage = pathname === "/profile";
+
+    if (!isAdmin && onProfilePage) {
+      return (
+        <form action={logoutAction} className="inline-block">
+          <button
+            type="submit"
+            className="inline-flex items-center gap-2 rounded-full bg-obsidian px-5 py-2.5 text-sm font-medium tracking-wide text-[#F0EAE0] transition-all duration-150 hover:bg-[#2E2921] hover:shadow-[var(--shadow-md)]"
+          >
+            {t("profile.logOut")}
+          </button>
+        </form>
+      );
+    }
+
     const targetHref = isAdmin ? "/dashboard" : "/profile";
     const label = isAdmin ? "Dashboard" : "Profile";
 

@@ -5,11 +5,17 @@ import { signOAuthState } from "@/lib/google-oauth-state";
 export async function GET(request: Request) {
   const clientId =
     process.env.GOOGLE_CLIENT_ID ?? process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+  const requestUrl = new URL(request.url);
+
   if (!clientId) {
-    return NextResponse.json({ error: "Google sign-in is not configured." }, { status: 503 });
+    const fromRaw = requestUrl.searchParams.get("from") ?? "/profile";
+    const err = new URL("/", requestUrl.origin);
+    err.searchParams.set("auth", "login");
+    err.searchParams.set("error", "google_config");
+    err.searchParams.set("from", fromRaw);
+    return NextResponse.redirect(err);
   }
 
-  const requestUrl = new URL(request.url);
   const fromRaw = requestUrl.searchParams.get("from") ?? "/profile";
   const origin = getOriginFromRequest(request);
   if (!origin) {
