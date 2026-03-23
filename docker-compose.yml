@@ -17,7 +17,7 @@ services:
       retries: 5
 
   app:
-    image: travel-land-app:0.2.5
+    image: travel-land-app:0.2.6
     build: .
     restart: unless-stopped
     depends_on:
