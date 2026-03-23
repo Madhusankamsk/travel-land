@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { CheckCircle2, Mail, MapPin, Calendar } from "lucide-react";
-import type { Decimal } from "@prisma/client/runtime/library";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUserId } from "@/lib/auth";
 import { authLoginSearchParams } from "@/lib/auth-url";
@@ -28,7 +28,7 @@ const ROOM_IT: Record<string, string> = {
   "Triple Shared": "Tripla in condivisione",
 };
 
-function formatEur(value: Decimal | number): string {
+function formatEur(value: Prisma.Decimal | number): string {
   const n = typeof value === "number" ? value : Number(value);
   return new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" }).format(n);
 }

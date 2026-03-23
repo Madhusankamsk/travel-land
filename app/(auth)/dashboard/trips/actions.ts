@@ -143,7 +143,9 @@ export async function createTrip(formData: FormData) {
 
   const galleryFiles = formData.getAll("galleryImages").filter((v): v is File => v instanceof File);
   const galleryUploadUrls = await saveTourFiles(galleryFiles, "gallery");
-  const galleryImageUrlsComputed = galleryUploadUrls.length ? galleryUploadUrls : null;
+  const galleryImageUrlsComputed: string[] | undefined = galleryUploadUrls.length
+    ? galleryUploadUrls
+    : undefined;
 
   // Program PDF
   let programPdfUrl: string | null = null;
@@ -155,11 +157,11 @@ export async function createTrip(formData: FormData) {
   const tripVideoUrl = (formData.get("tripVideoUrl") as string | null)?.trim() || null;
 
   const daysData = parseDaysJson(formData.get("days") as string | null);
-  const dayImageUrlsByOrder: (string[] | null)[] = [];
+  const dayImageUrlsByOrder: (string[] | undefined)[] = [];
   for (let i = 0; i < daysData.length; i++) {
     const files = formData.getAll(`dayImages_${i}`).filter((v): v is File => v instanceof File);
     const urls = await saveTourFiles(files, `day-${i + 1}`);
-    dayImageUrlsByOrder.push(urls.length ? urls : null);
+    dayImageUrlsByOrder.push(urls.length ? urls : undefined);
   }
 
   if (!introText || !included || !excluded) {
@@ -231,7 +233,7 @@ export async function createTrip(formData: FormData) {
           dayHeading: d.dayHeading,
           dateLabel: d.dateLabel,
           description: d.description,
-          dayImageUrls: dayImageUrlsByOrder[i] ?? null,
+          dayImageUrls: dayImageUrlsByOrder[i],
         })),
       },
     },
@@ -326,12 +328,12 @@ export async function updateTrip(tourId: string, formData: FormData) {
   const galleryFromForm = parseUrlArrayFromFormField(formData, "existingGalleryImageUrls");
   const galleryFromDb = normalizeUrlList(existing.galleryImageUrls);
   const baseGallery = galleryFromForm !== null ? galleryFromForm : galleryFromDb;
-  let galleryImageUrls: string[] | null = baseGallery.length ? [...baseGallery] : null;
+  let galleryImageUrls: string[] | undefined = baseGallery.length ? [...baseGallery] : undefined;
   const galleryFiles = formData.getAll("galleryImages").filter((v): v is File => v instanceof File);
   if (galleryFiles.length > 0) {
     const urls = await saveTourFiles(galleryFiles, "gallery");
     const merged = [...baseGallery, ...urls];
-    galleryImageUrls = merged.length ? merged : null;
+    galleryImageUrls = merged.length ? merged : undefined;
   }
 
   const tripVideoUrl = (formData.get("tripVideoUrl") as string | null)?.trim() || null;
@@ -343,7 +345,7 @@ export async function updateTrip(tourId: string, formData: FormData) {
     existingDaysByOrder.set(d.order, normalizeUrlList(d.dayImageUrls));
   }
 
-  const dayImageUrlsByOrder: (string[] | null)[] = [];
+  const dayImageUrlsByOrder: (string[] | undefined)[] = [];
   for (let i = 0; i < daysData.length; i++) {
     const files = formData.getAll(`dayImages_${i}`).filter((v): v is File => v instanceof File);
     const dayFromForm = parseUrlArrayFromFormField(formData, `existingDayImageUrls_${i}`);
@@ -352,9 +354,9 @@ export async function updateTrip(tourId: string, formData: FormData) {
     if (files.length > 0) {
       const urls = await saveTourFiles(files, `day-${i + 1}`);
       const merged = [...baseDayUrls, ...urls];
-      dayImageUrlsByOrder.push(merged.length ? merged : null);
+      dayImageUrlsByOrder.push(merged.length ? merged : undefined);
     } else {
-      dayImageUrlsByOrder.push(baseDayUrls.length ? baseDayUrls : null);
+      dayImageUrlsByOrder.push(baseDayUrls.length ? baseDayUrls : undefined);
     }
   }
 
@@ -432,7 +434,7 @@ export async function updateTrip(tourId: string, formData: FormData) {
       dayHeading: d.dayHeading,
       dateLabel: d.dateLabel,
       description: d.description,
-      dayImageUrls: dayImageUrlsByOrder[i] ?? null,
+      dayImageUrls: dayImageUrlsByOrder[i],
     })),
   });
 

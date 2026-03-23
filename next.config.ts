@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    /** Avoid resolving deps from a parent folder when multiple lockfiles exist (see Next warning). */
+    root: projectRoot,
+  },
   output: "standalone",
   images: {
     remotePatterns: [
@@ -24,8 +32,10 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
+    /** Dev/proxy can cap bodies below serverActions; truncation mid-multipart causes "Unexpected end of form". */
+    proxyClientMaxBodySize: "50mb",
     serverActions: {
-      bodySizeLimit: "10mb",
+      bodySizeLimit: "50mb",
     },
   },
 };
