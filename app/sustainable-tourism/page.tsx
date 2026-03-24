@@ -50,7 +50,7 @@ export default function SustainableTourismPage() {
 
             <div className="relative h-[260px] overflow-hidden rounded-[24px] border border-bone bg-obsidian/80 shadow-[var(--shadow-lg)] md:h-[320px]">
               <Image
-                src="/sustainable-tourism.jpeg"
+                src="/sustainable-tourism-01.jpeg"
                 alt="Terraced vineyards and coastal landscape in Italy at golden hour"
                 fill
                 priority={false}
@@ -121,19 +121,19 @@ export default function SustainableTourismPage() {
                 className="h-auto w-[160px] sm:w-[200px] lg:w-[220px]"
               />
             </div>
-            <h2
-              id="our-commitment-title"
-              className="mb-3 font-[family-name:var(--font-cormorant)] text-[28px] font-medium leading-snug text-obsidian"
+            <h1
+              id="sustainable-tourism-heading"
+              className="mb-4 text-center font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,40px)] font-medium leading-tight tracking-tight text-obsidian"
             >
               Our Commitment
-            </h2>
-            <p className="mb-5 text-[15px] leading-relaxed text-obsidian/80">
+            </h1>
+            <p className="mb-4 text-center text-[15px] leading-relaxed text-obsidian/80">
               Travel Land is committed to promoting responsible tourism through sustainable
               practices and ethical partnerships. Every itinerary is designed to balance discovery,
               comfort, and care for the destinations we love.
             </p>
             <div className="grid gap-4 md:grid-cols-2">
-              <div className="rounded-[16px] bg-white/80 p-4">
+              <div className="rounded-[16px] bg-white/80 p-4 text-center">
                 <h3 className="mb-1 text-[14px] font-semibold text-obsidian">
                   🌿 Environmental Protection
                 </h3>
@@ -142,7 +142,7 @@ export default function SustainableTourismPage() {
                   and protect wildlife habitats.
                 </p>
               </div>
-              <div className="rounded-[16px] bg-white/80 p-4">
+              <div className="rounded-[16px] bg-white/80 p-4 text-center">
                 <h3 className="mb-1 text-[14px] font-semibold text-obsidian">
                   🤝 Supporting Local Communities
                 </h3>
@@ -151,7 +151,7 @@ export default function SustainableTourismPage() {
                   to strengthen local economies.
                 </p>
               </div>
-              <div className="rounded-[16px] bg-white/80 p-4">
+              <div className="rounded-[16px] bg-white/80 p-4 text-center">
                 <h3 className="mb-1 text-[14px] font-semibold text-obsidian">
                   🏛 Respect for Culture and Heritage
                 </h3>
@@ -160,7 +160,7 @@ export default function SustainableTourismPage() {
                   and historical heritage.
                 </p>
               </div>
-              <div className="rounded-[16px] bg-white/80 p-4">
+              <div className="rounded-[16px] bg-white/80 p-4 text-center">
                 <h3 className="mb-1 text-[14px] font-semibold text-obsidian">
                   🌍 Sustainable Tourism Development
                 </h3>
@@ -174,107 +174,90 @@ export default function SustainableTourismPage() {
         </div>
       </section>
 
-      <section className="bg-parchment py-16 lg:py-24" aria-labelledby="how-we-practice-title">
-        <div className="mx-auto max-w-[1200px] px-6 lg:px-20">
-          <div className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)] lg:p-8">
-            <h2
-              id="how-we-practice-title"
-              className="mb-3 font-[family-name:var(--font-cormorant)] text-[28px] font-medium leading-snug text-obsidian"
-            >
-              How We Put This Into Action
-            </h2>
-            <p className="mb-5 text-[15px] leading-relaxed text-obsidian/80">
-              Travel Land applies responsible tourism principles through several concrete initiatives
-              in the way we design, operate, and continually refine our journeys.
-            </p>
-            <ul className="mb-4 list-disc space-y-2 pl-5 text-[14px] leading-relaxed text-[#7A7060]">
-              <li>Working with local tour operators and small businesses</li>
-              <li>Choosing eco-friendly hotels and accommodations</li>
-              <li>Encouraging low-impact travel experiences</li>
-              <li>Supporting community-based tourism projects</li>
-              <li>
-                Partnering with organizations that contribute to local schools, hospitals, and
-                development programs
-              </li>
-            </ul>
-            <p className="text-[14px] leading-relaxed text-obsidian/80">
-              We also encourage travelers to be mindful of their environmental and social impact
-              during their journeys, so that every trip leaves destinations better than we found
-              them.
-            </p>
+      <section className="relative overflow-hidden py-16 lg:py-24" aria-labelledby="how-we-practice-title">
+        <Image
+          src="/sustainable-tourism-02.jpeg"
+          alt="Terraced vineyards and coastal landscape in Italy at golden hour"
+          fill
+          priority={false}
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-obsidian/65" aria-hidden="true" />
+        <div className="relative z-10">
+          <div className="mx-auto max-w-[1200px] px-6 lg:px-20">
+            <div className="mx-auto max-w-[860px] text-center">
+              <h1
+                id="sustainable-tourism-heading"
+                className="mb-4 text-center font-[family-name:var(--font-cormorant)] text-[clamp(28px,4vw,40px)] font-medium leading-tight tracking-tight text-[#F0EAE0]"
+              >
+                How We Put This Into Action
+              </h1>
+              <p className="mb-5 text-[15px] leading-relaxed text-[#fffbf3]">
+                Travel Land applies responsible tourism principles through several concrete initiatives
+                in the way we design, operate, and continually refine our journeys.
+              </p>
+              <ul className="mx-auto mb-4 max-w-[760px] list-disc space-y-2 rounded-[16px] border border-white/25 bg-white/10 p-5 pl-10 text-left text-[14px] leading-relaxed text-[#F0EAE0]/90 shadow-[0_8px_30px_rgba(0,0,0,0.22)] backdrop-blur-md marker:text-[#F0EAE0]/60">
+                <li>Working with local tour operators and small businesses</li>
+                <li>Choosing eco-friendly hotels and accommodations</li>
+                <li>Encouraging low-impact travel experiences</li>
+                <li>Supporting community-based tourism projects</li>
+                <li>
+                  Partnering with organizations that contribute to local schools, hospitals, and
+                  development programs
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
       <section className="bg-travertine py-16 lg:py-24" aria-labelledby="partners-title">
         <div className="mx-auto max-w-[1200px] px-6 lg:px-20">
-          <div className="rounded-[20px] border border-bone bg-parchment/70 p-6 shadow-[var(--shadow-sm)] lg:p-8">
-            <h2
-              id="partners-title"
-              className="mb-3 font-[family-name:var(--font-cormorant)] text-[28px] font-medium leading-snug text-obsidian"
-            >
-              Our Sustainable Tourism Partners
-            </h2>
-            <div className="rounded-[16px] bg-white/80 p-5 lg:p-6">
-              <h3 className="mb-2 font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug text-obsidian">
+          <div className="rounded-[24px] border border-bone bg-parchment p-6 lg:p-10">
+            <div className="mb-6 text-center lg:mb-8">
+              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-terracotta">
+                Trusted Collaboration
+              </p>
+              <h2
+                id="partners-title"
+                className="font-[family-name:var(--font-cormorant)] text-[clamp(30px,4vw,42px)] font-medium leading-tight tracking-tight text-obsidian"
+              >
+                Our Sustainable Tourism Partners
+              </h2>
+            </div>
+
+            <article className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-md)] lg:p-8">
+              <p className="mb-3 inline-flex rounded-full border border-oro/40 bg-oro/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#8B6914]">
+                Featured Partner
+              </p>
+              <h3 className="mb-3 font-[family-name:var(--font-cormorant)] text-[28px] font-medium leading-snug text-obsidian">
                 IBO Italia
               </h3>
-              <p className="mb-3 text-[14px] leading-relaxed text-obsidian/80">
+              <p className="mb-4 text-[15px] leading-relaxed text-[#7A7060]">
                 IBO Italia is a Christian-inspired non-governmental organization dedicated to
                 national and international volunteer work.
               </p>
-              <p className="mb-3 text-[14px] leading-relaxed text-obsidian/80">
+              <p className="mb-4 text-[15px] leading-relaxed text-[#7A7060]">
                 Founded in Northern Europe in 1953, the organization began with work camps helping
                 rebuild homes for refugees after the Second World War. IBO stands for{" "}
                 <em>Internationale Bouworde</em>, meaning International Building Partners.
               </p>
-              <p className="mb-3 text-[14px] leading-relaxed text-obsidian/80">
+              <p className="mb-4 text-[15px] leading-relaxed text-[#7A7060]">
                 The organization has been active in Italy since 1957 and was officially established
                 as an association in 1968. IBO Italia is recognized by the Italian Ministry of
                 Foreign Affairs for its work in international cooperation and is part of the CCIVS -
                 Coordination Committee for International Civil Service at UNESCO.
               </p>
-              <p className="text-[14px] leading-relaxed text-obsidian/80">
+              <p className="rounded-[12px] border-l-2 border-terracotta bg-travertine px-4 py-3 text-[14px] leading-relaxed text-obsidian/80">
                 Through partnerships with organizations like IBO, Travel Land supports initiatives
                 that promote social development and community empowerment.
               </p>
-            </div>
+            </article>
           </div>
         </div>
       </section>
 
-      <section className="bg-parchment py-16 lg:py-24" aria-labelledby="guidelines-title">
-        <div className="mx-auto max-w-[1200px] px-6 lg:px-20">
-          <div className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)] lg:p-8">
-            <h2
-              id="guidelines-title"
-              className="mb-3 font-[family-name:var(--font-cormorant)] text-[28px] font-medium leading-snug text-obsidian"
-            >
-              How You Can Travel Responsibly
-            </h2>
-            <p className="mb-5 text-[15px] leading-relaxed text-obsidian/80">
-              We invite every traveler to become an active partner in sustainable tourism by
-              embracing a few simple, thoughtful practices.
-            </p>
-            <ul className="space-y-2 text-[14px] leading-relaxed text-[#16513A]">
-              <li>✔ Respect local traditions and cultural practices</li>
-              <li>✔ Reduce plastic waste and litter</li>
-              <li>✔ Support local businesses and artisans</li>
-              <li>✔ Protect wildlife and natural habitats</li>
-              <li>✔ Conserve water and energy</li>
-              <li>
-                ✔ Report environmental or social issues observed during your travels to local
-                authorities or your Travel Land contact
-              </li>
-            </ul>
-            <p className="mt-5 text-[14px] leading-relaxed text-obsidian/80">
-              Together, we can create a positive impact on the places we visit and ensure that
-              future generations can experience the same beauty, culture, and generosity that make
-              travel so transformative.
-            </p>
-          </div>
-        </div>
-      </section>
 
       {/* CTA — cinematic banner encouraging responsible travel enquiries */}
       <section
