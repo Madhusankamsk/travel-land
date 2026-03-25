@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronRight, Mail, MessageCircle } from "lucide-react";
+import { ChevronRight, Facebook, Instagram, Mail, MessageCircle, Youtube } from "lucide-react";
 import { LangLink } from "@/components/lang-link";
 import { useI18n } from "@/components/i18n-provider";
 
@@ -35,94 +35,43 @@ export function SiteFooter() {
               <br />
               Sede legale: Viale Edison 666, Sesto San Giovanni (MI)
             </p>
-            <p className="mb-2 max-w-[360px] text-[13px] italic leading-relaxed text-[#7A7060]">
-              {t("footer.quote.text")}
-              <br />
-              <span className="mt-1 inline-block">{t("footer.quote.author")}</span>
-            </p>
-            <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-champagne/80">
-              {t("footer.appointmentNote")}
-            </p>
-            <p className="text-[13px] text-[#7A7060]">{t("footer.openingHours")}</p>
+            <div className="mb-4">
+              <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-champagne/70">
+                {t("footer.social.label")}
+              </p>
+              <div className="flex flex-wrap items-center gap-3 text-[13px] text-[#7A7060]">
+                <a
+                  href="https://www.facebook.com/travelland"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-[#F0EAE0]"
+                >
+                  <Facebook size={14} aria-hidden="true" />
+                  <span>Facebook</span>
+                </a>
+                <a
+                  href="https://www.instagram.com/travelland"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-[#F0EAE0]"
+                >
+                  <Instagram size={14} aria-hidden="true" />
+                  <span>Instagram</span>
+                </a>
+                <a
+                  href="https://www.youtube.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-[#F0EAE0]"
+                >
+                  <Youtube size={14} aria-hidden="true" />
+                  <span>YouTube</span>
+                </a>
+              </div>
+            </div>
+
           </div>
 
-          <div>
-            <h4 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-champagne/70">
-              {t("footer.section.quickLinks")}
-            </h4>
-            <ul className="flex flex-col gap-0">
-              <li>
-                <LangLink
-                  href="/upcoming-trips"
-                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
-                >
-                  <ChevronRight size={12} aria-hidden="true" />
-                  <span>{t("footer.link.tripHistory")}</span>
-                </LangLink>
-              </li>
-              <li>
-                <LangLink
-                  href="/upcoming-trips"
-                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
-                >
-                  <ChevronRight size={12} aria-hidden="true" />
-                  <span>{t("footer.link.allTours")}</span>
-                </LangLink>
-              </li>
-              <li>
-                <LangLink
-                  href="/catalogs"
-                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
-                >
-                  <ChevronRight size={12} aria-hidden="true" />
-                  <span>{t("footer.link.catalogs")}</span>
-                </LangLink>
-              </li>
-              <li>
-                <LangLink
-                  href="/who-we-are"
-                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
-                >
-                  <ChevronRight size={12} aria-hidden="true" />
-                  <span>{t("footer.link.whoWeAre")}</span>
-                </LangLink>
-              </li>
-              <li>
-                <LangLink
-                  href="/sustainable-tourism"
-                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
-                >
-                  <ChevronRight size={12} aria-hidden="true" />
-                  <span>{t("footer.link.sustainableTourism")}</span>
-                </LangLink>
-              </li>
-              <li>
-                <LangLink
-                  href="/contacts"
-                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
-                >
-                  <ChevronRight size={12} aria-hidden="true" />
-                  <span>{t("footer.link.contacts")}</span>
-                </LangLink>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-champagne/70">
-              {t("footer.section.catalog")}
-            </h4>
-            <ul className="flex flex-col gap-3">
-              <li>
-                <LangLink
-                  href="/catalogs"
-                  className="text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
-                >
-                  {t("footer.link.catalogs")}
-                </LangLink>
-              </li>
-            </ul>
-          </div>
 
           <div>
             <h4 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-champagne/70">
@@ -206,6 +155,99 @@ export function SiteFooter() {
               </div>
             </div>
           </div>
+
+
+          <div>
+            <h4 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-champagne/70">
+              {t("footer.section.quickLinks")}
+            </h4>
+            <ul className="flex flex-col gap-0">
+              <li>
+                <LangLink
+                  href="/upcoming-trips"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                >
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.tripHistory")}</span>
+                </LangLink>
+              </li>
+              <li>
+                <LangLink
+                  href="/upcoming-trips"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                >
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.allTours")}</span>
+                </LangLink>
+              </li>
+              <li>
+                <LangLink
+                  href="/catalogs"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                >
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.catalogs")}</span>
+                </LangLink>
+              </li>
+              <li>
+                <LangLink
+                  href="/who-we-are"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                >
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.whoWeAre")}</span>
+                </LangLink>
+              </li>
+              <li>
+                <LangLink
+                  href="/sustainable-tourism"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                >
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.sustainableTourism")}</span>
+                </LangLink>
+              </li>
+              <li>
+                <LangLink
+                  href="/contacts"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                >
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.contacts")}</span>
+                </LangLink>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-champagne/70">
+              Newsletter
+            </h4>
+            <p className="mb-3 max-w-[280px] text-[12px] leading-relaxed text-[#7A7060]">
+              Get travel inspiration, curated offers, and upcoming departures in your inbox.
+            </p>
+            <form className="flex flex-col gap-2">
+              <label htmlFor="footer-newsletter-email" className="sr-only">
+                Email
+              </label>
+              <input
+                id="footer-newsletter-email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                placeholder="Your email"
+                className="w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-[13px] text-[#F0EAE0] placeholder:text-[#7A7060] focus:border-champagne/60 focus:outline-none"
+              />
+              <button
+                type="button"
+                className="inline-flex w-fit items-center justify-center rounded-full border border-champagne/40 bg-transparent px-4 py-2 text-[12px] font-medium uppercase tracking-[0.08em] text-champagne/90 transition-colors duration-150 hover:bg-champagne/10 hover:text-[#F0EAE0]"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+
+          
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/8 pt-8 sm:flex-row">
