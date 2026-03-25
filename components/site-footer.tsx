@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Mail, MessageCircle } from "lucide-react";
+import { ChevronRight, Mail, MessageCircle } from "lucide-react";
 import { LangLink } from "@/components/lang-link";
 import { useI18n } from "@/components/i18n-provider";
 
@@ -48,23 +48,61 @@ export function SiteFooter() {
 
           <div>
             <h4 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-champagne/70">
-              {t("footer.section.upcoming")}
+              {t("footer.section.quickLinks")}
             </h4>
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-0">
               <li>
                 <LangLink
                   href="/upcoming-trips"
-                  className="text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
                 >
-                  {t("footer.link.tripHistory")}
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.tripHistory")}</span>
                 </LangLink>
               </li>
               <li>
                 <LangLink
                   href="/upcoming-trips"
-                  className="text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
                 >
-                  {t("footer.link.allTours")}
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.allTours")}</span>
+                </LangLink>
+              </li>
+              <li>
+                <LangLink
+                  href="/catalogs"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                >
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.catalogs")}</span>
+                </LangLink>
+              </li>
+              <li>
+                <LangLink
+                  href="/who-we-are"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                >
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.whoWeAre")}</span>
+                </LangLink>
+              </li>
+              <li>
+                <LangLink
+                  href="/sustainable-tourism"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                >
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.sustainableTourism")}</span>
+                </LangLink>
+              </li>
+              <li>
+                <LangLink
+                  href="/contacts"
+                  className="inline-flex items-center gap-1 text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
+                >
+                  <ChevronRight size={12} aria-hidden="true" />
+                  <span>{t("footer.link.contacts")}</span>
                 </LangLink>
               </li>
             </ul>
