@@ -48,6 +48,8 @@
   "footer.link.contacts": "Contatti",
   "footer.whatsapp.label": "Scrivici su WhatsApp",
   "footer.email.label": "Scrivici via email",
+  "footer.newsletter.termsPrefix": "Iscrivendoti, accetti i nostri",
+  "footer.newsletter.termsLink": "Termini e Condizioni",
 
   "footer.appointmentNote": "Si riceve su appuntamento",
   "footer.openingHours": "Lun–Ven 10:00–19:00",

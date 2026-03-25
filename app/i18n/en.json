@@ -49,6 +49,8 @@
   "footer.whatsapp.label": "Message us on WhatsApp",
   "footer.email.label": "Email us",
   "footer.social.label": "Follow us",
+  "footer.newsletter.termsPrefix": "By subscribing, you agree to our",
+  "footer.newsletter.termsLink": "Terms & Conditions",
 
   "footer.appointmentNote": "By appointment only",
   "footer.openingHours": "Mon–Fri 10:00–19:00",

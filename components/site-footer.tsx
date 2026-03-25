@@ -226,7 +226,7 @@ export function SiteFooter() {
             <p className="mb-3 max-w-[280px] text-[12px] leading-relaxed text-[#7A7060]">
               Get travel inspiration, curated offers, and upcoming departures in your inbox.
             </p>
-            <form className="flex flex-col gap-2">
+            <form className="flex items-center overflow-hidden rounded-full border border-white/12 bg-[#242019] p-1">
               <label htmlFor="footer-newsletter-email" className="sr-only">
                 Email
               </label>
@@ -235,25 +235,41 @@ export function SiteFooter() {
                 name="email"
                 type="email"
                 autoComplete="email"
-                placeholder="Your email"
-                className="w-full rounded-md border border-white/15 bg-white/5 px-3 py-2 text-[13px] text-[#F0EAE0] placeholder:text-[#7A7060] focus:border-champagne/60 focus:outline-none"
+                placeholder="Email Address"
+                className="min-w-0 flex-1 bg-transparent px-3 py-2 text-[13px] text-[#F0EAE0] placeholder:text-[#7A7060] focus:outline-none"
               />
               <button
                 type="button"
-                className="inline-flex w-fit items-center justify-center rounded-full border border-champagne/40 bg-transparent px-4 py-2 text-[12px] font-medium uppercase tracking-[0.08em] text-champagne/90 transition-colors duration-150 hover:bg-champagne/10 hover:text-[#F0EAE0]"
+                className="inline-flex shrink-0 items-center justify-center rounded-full bg-oro px-5 py-2 text-[13px] font-semibold text-obsidian transition-colors duration-150 hover:bg-bronze hover:text-[#F0EAE0]"
               >
-                Subscribe
+                Join
               </button>
             </form>
+            <p className="mt-3 max-w-[280px] text-[11px] leading-relaxed text-[#7A7060]">
+              {t("footer.newsletter.termsPrefix")}{" "}
+              <LangLink
+                href="/terms-and-conditions"
+                className="inline-block text-[#7A7060] underline underline-offset-2 hover:text-[#F0EAE0]"
+              >
+                {t("footer.newsletter.termsLink")}
+              </LangLink>
+              .
+            </p>
+            
           </div>
 
           
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/8 pt-8 sm:flex-row">
-          <span className="text-xs text-[#7A7060]">
-            {t("footer.copyright", { year })}
-          </span>
+        <div className="mt-12 flex flex-col items-center justify-center gap-4 border-t border-white/8 pt-8 sm:flex-row sm:justify-center">
+          <div className="flex items-center gap-2 text-xs text-[#7A7060]">
+            <span>
+              ©
+            </span>
+            <span>
+              {year} Travel Land. All Right Reserved. Developed by AlteredMinds.co
+            </span>
+          </div>
         </div>
       </div>
     </footer>
