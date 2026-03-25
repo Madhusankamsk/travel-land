@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Mail, MessageCircle } from "lucide-react";
 import { LangLink } from "@/components/lang-link";
 import { useI18n } from "@/components/i18n-provider";
 
@@ -20,7 +21,7 @@ export function SiteFooter() {
               height={60}
               className="mb-4 h-14 w-auto brightness-0 invert"
             />
-            <p className="mb-2 font-[family-name:var(--font-cormorant)] text-base italic text-[#7A7060]">
+            <p className="mb-2 font-(family-name:--font-cormorant) text-base italic text-[#7A7060]">
               {t("footer.brand.tagline")}
             </p>
             <p className="mb-4 max-w-[320px] text-[13px] leading-relaxed text-[#7A7060]">
@@ -89,74 +90,83 @@ export function SiteFooter() {
             <h4 className="mb-4 text-[10px] font-semibold uppercase tracking-[0.16em] text-champagne/70">
               {t("footer.section.contacts")}
             </h4>
-            <ul className="flex flex-col gap-3">
-              <li>
-                <LangLink
-                  href="/who-we-are"
-                  className="text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
-                >
-                  {t("footer.link.whoWeAre")}
-                </LangLink>
-              </li>
-              <li>
-                <LangLink
-                  href="/sustainable-tourism"
-                  className="text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
-                >
-                  {t("footer.link.sustainableTourism")}
-                </LangLink>
-              </li>
-              <li>
-                <LangLink
-                  href="/contacts"
-                  className="text-[13px] text-[#7A7060] transition-colors duration-150 hover:text-[#F0EAE0]"
-                >
-                  {t("footer.link.contacts")}
-                </LangLink>
-              </li>
-            </ul>
-            <p className="mt-3 text-[12px] text-[#7A7060]">
-              🟢 {t("footer.whatsapp.label")}
-              <br />
-              <a
-                href="https://wa.me/393284292203"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#F0EAE0]"
-              >
-                +39 328 429 2203
-              </a>{" "}
-              ·{" "}
-              <a
-                href="https://wa.me/393384571070"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#F0EAE0]"
-              >
-                +39 338 457 1070
-              </a>{" "}
-              Eleonora
-              <br />
-              <a
-                href="https://wa.me/393249241395"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#F0EAE0]"
-              >
-                +39 324 924 1395
-              </a>{" "}
-              Sisira
-              <br />
-              <a
-                href="https://wa.me/393201668589"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-[#F0EAE0]"
-              >
-                +39 320 166 8589
-              </a>{" "}
-              Romeo
-            </p>
+
+            <div className="mt-3 space-y-4 text-[12px] text-[#7A7060]">
+              <div>
+                <p className="mb-2 inline-flex items-center gap-2">
+                  <MessageCircle size={14} className="text-champagne/70" aria-hidden="true" />
+                  <span>{t("footer.whatsapp.label")}</span>
+                </p>
+                <div className="space-y-1">
+                  <p>
+                    <a
+                      href="https://wa.me/393284292203"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-[#F0EAE0]"
+                    >
+                      +39 328 429 2203
+                    </a>{" "}
+                    ·{" "}
+                    <a
+                      href="https://wa.me/393384571070"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-[#F0EAE0]"
+                    >
+                      +39 338 457 1070
+                    </a>{" "}
+                    Eleonora
+                  </p>
+                  <p>
+                    <a
+                      href="https://wa.me/393249241395"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-[#F0EAE0]"
+                    >
+                      +39 324 924 1395
+                    </a>{" "}
+                    Sisira
+                  </p>
+                  <p>
+                    <a
+                      href="https://wa.me/393201668589"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-[#F0EAE0]"
+                    >
+                      +39 320 166 8589
+                    </a>{" "}
+                    Romeo
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <p className="mb-2 inline-flex items-center gap-2">
+                  <Mail size={14} className="text-champagne/70" aria-hidden="true" />
+                  <span>{t("footer.email.label")}</span>
+                </p>
+                <div className="space-y-1">
+                  <p>
+                    <a href="mailto:info@travel-land.it" className="hover:text-[#F0EAE0]">
+                      info@travel-land.it
+                    </a>
+                  </p>
+                  <p>
+                    <a href="mailto:gruppi@travel-land.it" className="hover:text-[#F0EAE0]">
+                      gruppi@travel-land.it
+                    </a>
+                  </p>
+                  <p>
+                    <a href="mailto:eleonora@travel-land.it" className="hover:text-[#F0EAE0]">
+                      eleonora@travel-land.it
+                    </a>
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
