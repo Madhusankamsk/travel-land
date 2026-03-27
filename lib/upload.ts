@@ -1,13 +1,13 @@
 import fs from "fs";
 import path from "path";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { getR2Client, getR2PublicUrlBase, isR2Configured } from "./r2";
+import { isCloudinaryConfigured, uploadBufferToCloudinary } from "./cloudinary";
 
 const LOCAL_UPLOADS_DIR = "public/uploads";
 
 /**
- * Save a tour file (hero image or program PDF). Tries Cloudflare R2 first when
- * configured; falls back to local public/uploads.
+ * Save a tour file (hero image, gallery/day image, or program PDF).
+ * Uses Cloudinary when configured and falls back to local public/uploads
+ * in development.
  * Returns the public URL, or null only if no file was provided.
  */
 export async function saveTourFile(
@@ -20,29 +20,29 @@ export async function saveTourFile(
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  // Try Cloudflare R2 first when configured
-  if (isR2Configured()) {
-    try {
-      const contentType = file.type || (ext === ".pdf" ? "application/pdf" : "image/jpeg");
-      const r2 = getR2Client();
-      const bucket = process.env.R2_BUCKET as string;
-      await r2.send(
-        new PutObjectCommand({
-          Bucket: bucket,
-          Key: objectPath,
-          Body: buffer,
-          ContentType: contentType,
-        })
-      );
+  const isDev = process.env.NODE_ENV !== "production";
+  const cloudinaryFolder = prefix === "program" ? "tours/program" : "tours/images";
 
-      const baseUrl = getR2PublicUrlBase();
-      return `${baseUrl}/${objectPath}`;
-    } catch {
-      // R2 unreachable or misconfigured — fall through to local
+  if (isCloudinaryConfigured()) {
+    try {
+      const result = await uploadBufferToCloudinary({
+        buffer,
+        mimeType: file.type || (ext === ".pdf" ? "application/pdf" : "image/jpeg"),
+        folder: cloudinaryFolder,
+        fileNameBase: prefix,
+      });
+      return result.secure_url;
+    } catch (error) {
+      if (!isDev) {
+        throw error;
+      }
+      // Cloudinary upload failed in development; fall through to local.
     }
+  } else if (!isDev) {
+    throw new Error("Cloudinary is not configured in production.");
   }
 
-  // Fallback: save to local public/uploads (useful for local dev).
+  // Fallback: save to local public/uploads (useful for local development).
   const dir = path.join(process.cwd(), LOCAL_UPLOADS_DIR);
   fs.mkdirSync(dir, { recursive: true });
   const filePath = path.join(dir, objectPath);

@@ -1,6 +1,6 @@
 # Connect Travel-Land to Supabase Cloud
 
-This project uses **Prisma** for the database (PostgreSQL) and **Supabase JS** for Storage (and optional server-side features). To use **Supabase Cloud** instead of local Supabase, follow these steps.
+This project uses **Prisma** for the database (PostgreSQL). Uploads (images/PDFs) are handled by **Cloudinary**. To use **Supabase Cloud** for database hosting, follow these steps.
 
 ---
 
@@ -15,12 +15,12 @@ This project uses **Prisma** for the database (PostgreSQL) and **Supabase JS** f
 
 ## 2. Get connection details from the Supabase dashboard
 
-### 2.1 Project URL and API keys (for Storage / server-side Supabase client)
+### 2.1 Project URL and API keys
 
 1. In the dashboard, open **Project Settings** (gear icon) → **API**.
 2. Copy:
-   - **Project URL** → you will use this for `SUPABASE_URL`.
-   - **Project API keys** → **service_role** (secret) → you will use this for `SUPABASE_SERVICE_ROLE_KEY`.  
+   - **Project URL** (used only if you have Supabase-integrated features outside Prisma).
+   - **Project API keys** → **service_role** (secret) if needed by those features.  
      ⚠️ Never expose the service role key in the browser or in client-side code.
 
 ### 2.2 Membership form auth (Magic Link only)
@@ -118,7 +118,7 @@ npx prisma db seed
 ## 5. Verify the connection
 
 - **Database:** Run the app and use a feature that reads/writes (e.g. login, tours, bookings). You can also open **Table Editor** in the Supabase dashboard and check `users`, `tours`, `bookings`, etc.
-- **Storage:** If you use Supabase Storage (e.g. uploads in `lib/upload.ts`), test an upload; it uses `getSupabaseServer()` which reads `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
+- **Uploads:** Test trip image/PDF upload with Cloudinary env configured (`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`).
 
 ---
 
@@ -137,10 +137,10 @@ To keep using **local Supabase** (Docker) for development and only use Cloud in 
 | Step | Action |
 |------|--------|
 | 1 | Create a Supabase Cloud project and save the DB password. |
-| 2 | Copy **Project URL** and **service_role** key → `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`. |
+| 2 | Copy **Project URL** (and optional **service_role** key only if required by non-Prisma features). |
 | 3 | Copy **Direct** and **Connection pooling (Transaction)** URIs, replace password, add SSL if needed → `DIRECT_URL`, `DATABASE_URL`. |
 | 4 | Update `.env` (or deployment env) with these four variables. |
 | 5 | Run `npx prisma migrate deploy` (and optionally `npx prisma db seed`). |
 | 6 | Test app and Storage against the cloud project. |
 
-Your app already uses `DIRECT_URL` for migrations (in `prisma.config.ts`) and `DATABASE_URL` for the Prisma client at runtime (`lib/prisma.ts`), and Supabase only on the server (`lib/supabase-server.ts`), so no code changes are required—only environment configuration.
+Your app already uses `DIRECT_URL` for migrations (in `prisma.config.ts`) and `DATABASE_URL` for the Prisma client at runtime (`lib/prisma.ts`). Uploads are configured separately via Cloudinary environment variables.

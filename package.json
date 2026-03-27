@@ -13,6 +13,7 @@
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "db:studio": "prisma studio",
+    "media:migrate:cloudinary": "npx tsx scripts/migrate-assets-to-cloudinary.ts",
     "docker:up": "docker compose up -d",
     "docker:up:open": "docker compose up -d && node -e \"setTimeout(() => { require('child_process').execSync(process.platform === 'win32' ? 'start http://localhost:54323' : 'open http://localhost:54323', { stdio: 'inherit' }); }, 12000);\"",
     "docker:seed": "docker compose exec app npx prisma db seed"
@@ -21,9 +22,9 @@
     "seed": "npx tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.1012.0",
     "@prisma/adapter-pg": "^7.4.2",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.9.0",
     "dotenv": "^17.3.1",
     "lucide-react": "^0.577.0",
     "next": "16.1.6",

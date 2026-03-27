@@ -18,7 +18,10 @@ Run Supabase (Postgres, Studio, API) locally so you don’t need the cloud and a
    - `DIRECT_URL` and `DATABASE_URL`: `postgresql://postgres:postgres@localhost:54322/postgres`
    - `SUPABASE_URL`: `http://127.0.0.1:54321`
    - `SUPABASE_SERVICE_ROLE_KEY`: run `npm run supabase:status` and copy the `service_role` key (or use the default from `.env.example`).
-3. **Storage:** In Supabase Studio (http://localhost:54323), go to **Storage**, create a bucket named **tours**, and set it to **Public** so hero images and program PDFs work.
+3. **Cloudinary (uploads):** Add these env vars in `.env` (or `.env.local`) so hero images and program PDFs upload correctly:
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
 
 ## Daily workflow
 
@@ -65,15 +68,14 @@ Run Supabase (Postgres, Studio, API) locally so you don’t need the cloud and a
 **Start all services (including Supabase dashboard):**  
 `docker compose up -d`  
 Then open **Supabase Studio** at **http://localhost:54323** to browse the database (Table Editor, SQL, etc.). The dashboard uses the same Postgres as the app (`db`).  
-**Note:** The Storage tab in this Studio will show "Failed to retrieve buckets" because Docker Compose does not run the Supabase Storage API (only Postgres + Studio UI). Use **Table Editor** or **SQL** for data. For Storage (image/PDF uploads), run full Supabase on the host (see "Image & PDF uploads" below).
+**Note:** Docker Compose in this repo runs Postgres + Studio UI. File uploads are handled by Cloudinary directly from the app server and do not depend on Supabase Storage.
 
-**Image & PDF uploads in Docker:** The app container is configured to use the host’s Supabase API at `http://host.docker.internal:54321`. For uploads to work:
+**Image & PDF uploads in Docker:** Set Cloudinary env vars for the app container, then restart it:
 
-1. On the **host** (not in Docker), start Supabase: `npm run supabase:start`
-2. Ensure the **tours** Storage bucket exists in that Supabase (Studio → Storage → create bucket `tours`, set Public)
-3. Restart the app container so it picks up env: `docker compose up -d app`
+1. Configure `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET`.
+2. Restart app container so it picks up env: `docker compose up -d app`
 
-If Supabase is not running on the host, uploads are skipped and trips still save without hero image/PDF.
+If Cloudinary env is missing, uploads fall back to local `public/uploads` only in development.
 
 ## Troubleshooting
 
