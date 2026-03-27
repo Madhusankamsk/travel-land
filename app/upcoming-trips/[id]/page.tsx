@@ -311,58 +311,133 @@ export default async function TripDetailsPage({ params }: PageProps) {
                   <dl className="grid gap-3 text-[14px] leading-relaxed text-[#7A7060] sm:grid-cols-2">
                     {trip.startLocation && (
                       <div>
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <circle cx="10" cy="10" r="6.5" />
+                            <path d="M10 5.5v4l2.5 2.5" />
+                          </svg>
                           Partenza
                         </dt>
-                        <dd>{trip.startLocation}</dd>
+                        <dd className="ml-5">{trip.startLocation}</dd>
                       </div>
                     )}
                     {trip.endLocation && (
                       <div>
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <path d="M10 18s5-5.2 5-9a5 5 0 1 0-10 0c0 3.8 5 9 5 9Z" />
+                            <circle cx="10" cy="9" r="1.8" />
+                          </svg>
                           Fine tour
                         </dt>
-                        <dd>{trip.endLocation}</dd>
+                        <dd className="ml-5">{trip.endLocation}</dd>
                       </div>
                     )}
                     {trip.meetingPoint && (
                       <div className="sm:col-span-2">
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <path d="M10 18s5-5.2 5-9a5 5 0 1 0-10 0c0 3.8 5 9 5 9Z" />
+                            <circle cx="10" cy="9" r="1.8" />
+                          </svg>
                           Punto d&apos;incontro
                         </dt>
-                        <dd>{trip.meetingPoint}</dd>
+                        <dd className="ml-5">{trip.meetingPoint}</dd>
                       </div>
                     )}
                     {trip.transportUsed && (
                       <div>
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <path d="M3 12.5h14M5 7.5h10M7 15.5h6" />
+                            <circle cx="6.2" cy="13.8" r="1.1" />
+                            <circle cx="13.8" cy="13.8" r="1.1" />
+                          </svg>
                           Trasporti
                         </dt>
-                        <dd>{trip.transportUsed}</dd>
+                        <dd className="ml-5">{trip.transportUsed}</dd>
                       </div>
                     )}
                     {trip.accommodationType && (
                       <div>
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <path d="M3.5 16.5v-6h13v6M3.5 10.5l6.5-5 6.5 5M7 16.5v-3h6v3" />
+                          </svg>
                           Tipo di alloggio
                         </dt>
-                        <dd>{trip.accommodationType}</dd>
+                        <dd className="ml-5">{trip.accommodationType}</dd>
                       </div>
                     )}
                     {trip.hotelCategory && (
                       <div>
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <path d="M10 3.5l1.8 3.6 4 .6-2.9 2.9.7 4-3.6-1.9-3.6 1.9.7-4-2.9-2.9 4-.6L10 3.5Z" />
+                          </svg>
                           Categoria hotel
                         </dt>
-                        <dd>{trip.hotelCategory}</dd>
+                        <dd className="ml-5">{trip.hotelCategory}</dd>
                       </div>
                     )}
                     {trip.roomType && (
                       <div>
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <path d="M3.5 12.5h13v4h-13zM3.5 12.5V9.8a2.3 2.3 0 0 1 2.3-2.3h8.4a2.3 2.3 0 0 1 2.3 2.3v2.7M6 10.5h2.5M11.5 10.5H14" />
+                          </svg>
                           Camera (riferimento)
                         </dt>
-                        <dd>{trip.roomType}</dd>
+                        <dd className="ml-5">{trip.roomType}</dd>
                       </div>
                     )}
                   </dl>
@@ -386,42 +461,99 @@ export default async function TripDetailsPage({ params }: PageProps) {
                   <dl className="grid gap-3 text-[14px] leading-relaxed text-[#7A7060] sm:grid-cols-2">
                     {trip.minParticipants != null && (
                       <div>
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <circle cx="7" cy="7" r="2.2" />
+                            <path d="M3.8 14.8c.6-2 2-3.1 3.2-3.1S9.6 12.8 10.2 14.8" />
+                            <circle cx="13.5" cy="8" r="1.7" />
+                            <path d="M11.4 14.8c.5-1.5 1.6-2.4 2.6-2.4s2.1.9 2.6 2.4" />
+                          </svg>
                           Partecipanti min.
                         </dt>
-                        <dd>{trip.minParticipants}</dd>
+                        <dd className="ml-5">{trip.minParticipants}</dd>
                       </div>
                     )}
                     {trip.maxGroupSize != null && (
                       <div>
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <circle cx="6.5" cy="7" r="2" />
+                            <circle cx="13.5" cy="7" r="2" />
+                            <path d="M3.6 14.8c.5-1.9 1.8-3 2.9-3s2.4 1.1 2.9 3M10.6 14.8c.5-1.9 1.8-3 2.9-3s2.4 1.1 2.9 3" />
+                          </svg>
                           Partecipanti max.
                         </dt>
-                        <dd>{trip.maxGroupSize}</dd>
+                        <dd className="ml-5">{trip.maxGroupSize}</dd>
                       </div>
                     )}
                     {trip.ageRestrictions && (
                       <div className="sm:col-span-2">
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <circle cx="10" cy="10" r="6.5" />
+                            <path d="M10 6.8v3.4l2.2 1.8" />
+                          </svg>
                           Età / limitazioni
                         </dt>
-                        <dd>{trip.ageRestrictions}</dd>
+                        <dd className="ml-5">{trip.ageRestrictions}</dd>
                       </div>
                     )}
                     {trip.difficultyLevel && (
                       <div>
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <path d="M3.5 15.5h13M5.5 15.5l3.5-7 2.4 3.2 2.1-4.2 1.9 2.3" />
+                          </svg>
                           Difficoltà
                         </dt>
-                        <dd>{trip.difficultyLevel}</dd>
+                        <dd className="ml-5">{trip.difficultyLevel}</dd>
                       </div>
                     )}
                     {trip.requiresWalkingKmPerDay && (
                       <div className="sm:col-span-2">
-                        <dt className="text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                        <dt className="flex items-center gap-1.5 text-[12px] font-medium uppercase tracking-[0.08em] text-obsidian">
+                          <svg
+                            aria-hidden
+                            viewBox="0 0 20 20"
+                            className="h-3.5 w-3.5 text-terracotta"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                          >
+                            <circle cx="12" cy="4.8" r="1.6" />
+                            <path d="M6.5 10.2 9.4 8l2.1 1.1 2.1 2.6M8.8 9.6l-1.7 3.1M11.6 11.5l-.9 3.7M6.6 15.5h2.2M10.2 15.5h2.2" />
+                          </svg>
                           Camminata giornaliera (circa)
                         </dt>
-                        <dd>{trip.requiresWalkingKmPerDay}</dd>
+                        <dd className="ml-5">{trip.requiresWalkingKmPerDay}</dd>
                       </div>
                     )}
                   </dl>
