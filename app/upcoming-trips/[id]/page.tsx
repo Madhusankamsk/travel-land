@@ -450,7 +450,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
                     {trip.days.map((day, idx) => {
                       const dayImgs = parseImageUrlList(day.dayImageUrls);
                       return (
-                        <div key={day.id} className="flex gap-5 md:gap-6">
+                        <div key={day.id} className="mb-8 flex gap-5 last:mb-0 md:gap-6">
                           <div className="flex w-11 flex-shrink-0 flex-col items-center">
                             <div className="z-10 flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full bg-obsidian text-[13px] font-semibold tracking-wide text-[#F0EAE0]">
                               {idx + 1}
@@ -459,7 +459,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
                               <div className="w-px flex-1 min-h-[32px] bg-bone" aria-hidden />
                             ) : null}
                           </div>
-                          <article className="min-w-0 flex-1 pb-10 last:pb-0">
+                          <article className="min-w-0 flex-1">
                             <div className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)]">
                               <div className="flex flex-wrap items-baseline gap-2 gap-y-1">
                                 <h3 className="font-[family-name:var(--font-cormorant)] text-[22px] font-medium leading-snug tracking-tight text-obsidian">
