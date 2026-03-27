@@ -64,25 +64,31 @@ export default async function MembershipSuccessPage({ searchParams }: PageProps)
     );
   }
 
-  const booking = await prisma.membershipBooking.findFirst({
-    where: { reference: refTrimmed, userId },
-  });
-
-  const tour =
-    booking?.tourId != null
-      ? await prisma.tour.findUnique({
-          where: { id: booking.tourId },
-          select: {
-            id: true,
-            title: true,
-            durationLabel: true,
-            durationDaysNights: true,
-            destinationCountry: true,
-            destinationCities: true,
-            tripCode: true,
-          },
-        })
-      : null;
+  let booking: Awaited<ReturnType<typeof prisma.membershipBooking.findFirst>> = null;
+  let tour: Awaited<ReturnType<typeof prisma.tour.findUnique>> = null;
+  try {
+    booking = await prisma.membershipBooking.findFirst({
+      where: { reference: refTrimmed, userId },
+    });
+    tour =
+      booking?.tourId != null
+        ? await prisma.tour.findUnique({
+            where: { id: booking.tourId },
+            select: {
+              id: true,
+              title: true,
+              durationLabel: true,
+              durationDaysNights: true,
+              destinationCountry: true,
+              destinationCities: true,
+              tripCode: true,
+            },
+          })
+        : null;
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : "Unknown database error";
+    console.warn(`[membership/success] Failed to load booking summary: ${reason}`);
+  }
 
   if (!booking) {
     return (

@@ -5,19 +5,26 @@ import { MembershipApplicationsList } from "@/components/dashboard-membership-ap
 export const dynamic = "force-dynamic";
 
 export default async function DashboardApplicationsPage() {
-  const rows = await prisma.membershipBooking.findMany({
-    orderBy: { createdAt: "desc" },
-    take: 200,
-  });
+  let rows: Awaited<ReturnType<typeof prisma.membershipBooking.findMany>> = [];
+  let tours: Array<{ id: string; title: string }> = [];
+  try {
+    rows = await prisma.membershipBooking.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 200,
+    });
+    const tourIds = [...new Set(rows.map((r) => r.tourId).filter((id): id is string => Boolean(id)))];
+    tours =
+      tourIds.length > 0
+        ? await prisma.tour.findMany({
+            where: { id: { in: tourIds } },
+            select: { id: true, title: true },
+          })
+        : [];
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : "Unknown database error";
+    console.warn(`[dashboard/applications] Failed to load data: ${reason}`);
+  }
 
-  const tourIds = [...new Set(rows.map((r) => r.tourId).filter((id): id is string => Boolean(id)))];
-  const tours =
-    tourIds.length > 0
-      ? await prisma.tour.findMany({
-          where: { id: { in: tourIds } },
-          select: { id: true, title: true },
-        })
-      : [];
   const tourTitleById = new Map(tours.map((t) => [t.id, t.title]));
 
   const applications = rows.map((m) => ({
