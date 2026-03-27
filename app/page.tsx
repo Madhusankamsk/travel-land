@@ -5,11 +5,16 @@ import { getTourEyebrow } from "@/lib/tour-eyebrow";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const trips = await prisma.tour.findMany({
-    where: { status: { in: ["UPCOMING", "OPEN"] } },
-    orderBy: { updatedAt: "desc" },
-    take: 6,
-  });
+  let trips: Awaited<ReturnType<typeof prisma.tour.findMany>> = [];
+  try {
+    trips = await prisma.tour.findMany({
+      where: { status: { in: ["UPCOMING", "OPEN"] } },
+      orderBy: { updatedAt: "desc" },
+      take: 6,
+    });
+  } catch (error) {
+    console.error("[home] Failed to load tours from database", error);
+  }
 
   const upcomingTrips = trips.map((trip) => ({
     id: trip.id,

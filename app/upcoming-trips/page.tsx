@@ -11,10 +11,15 @@ export const metadata = {
 };
 
 export default async function UpcomingTripsPage() {
-  const trips = await prisma.tour.findMany({
-    where: { status: { in: ["UPCOMING", "OPEN"] } },
-    orderBy: { updatedAt: "desc" },
-  });
+  let trips: Awaited<ReturnType<typeof prisma.tour.findMany>> = [];
+  try {
+    trips = await prisma.tour.findMany({
+      where: { status: { in: ["UPCOMING", "OPEN"] } },
+      orderBy: { updatedAt: "desc" },
+    });
+  } catch (error) {
+    console.error("[upcoming-trips] Failed to load tours from database", error);
+  }
 
   return (
     <main className="min-h-screen bg-travertine">
