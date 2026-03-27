@@ -144,8 +144,6 @@ export function TripForm({
     <form
       ref={formRef}
       action={formAction}
-      method="post"
-      encType="multipart/form-data"
       className="flex flex-col gap-10"
     >
       <input type="hidden" name="days" value={JSON.stringify(days)} />
