@@ -39,6 +39,7 @@
   "footer.section.upcoming": "Prossimi viaggi",
   "footer.section.catalog": "Catalogo",
   "footer.section.contacts": "Contatti",
+  "footer.section.quickLinks": "Link rapidi",
   "footer.link.tripHistory": "Storico Viaggi",
   "footer.link.allTours": "Tutti i tour",
   "footer.link.catalogs": "Cataloghi viaggi",
@@ -46,6 +47,9 @@
   "footer.link.sustainableTourism": "Turismo sostenibile",
   "footer.link.contacts": "Contatti",
   "footer.whatsapp.label": "Scrivici su WhatsApp",
+  "footer.email.label": "Scrivici via email",
+  "footer.newsletter.termsPrefix": "Iscrivendoti, accetti i nostri",
+  "footer.newsletter.termsLink": "Termini e Condizioni",
 
   "footer.appointmentNote": "Si riceve su appuntamento",
   "footer.openingHours": "Lun–Ven 10:00–19:00",
