@@ -53,6 +53,13 @@ const STATUS_LABELS: Record<string, string> = {
   COMPLETED: "Concluso",
 };
 
+const STATUS_STYLES: Record<string, string> = {
+  OPEN: "border-[#2D6A4F]/35 bg-[#D8EFE4] text-[#2D6A4F]",
+  SOLD_OUT: "border-[#8B2E2E]/35 bg-[#F5DEDE] text-[#8B2E2E]",
+  UPCOMING: "border-[#92641A]/30 bg-[#FBF0DC] text-[#92641A]",
+  COMPLETED: "border-[#2E5B8B]/30 bg-[#D8E8F5] text-[#2E5B8B]",
+};
+
 export default async function TripDetailsPage({ params }: PageProps) {
   const resolved = await params;
   const id = typeof resolved.id === "string" ? resolved.id.trim() : "";
@@ -174,7 +181,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
               ← Prossimi viaggi
             </Link>
             <span
-              className="rounded-full border border-bone bg-white px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#7A7060]"
+              className={`rounded-full border px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] ${STATUS_STYLES[trip.status] ?? "border-bone bg-white text-[#7A7060]"}`}
               title="Stato viaggio"
             >
               {STATUS_LABELS[trip.status] ?? trip.status}
@@ -289,7 +296,7 @@ export default async function TripDetailsPage({ params }: PageProps) {
 
               {hasLogistics && (
                 <section
-                  className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)]"
+                  className="relative isolate overflow-hidden rounded-[20px] border border-white/65 bg-gradient-to-br from-white/60 via-white/35 to-white/20 p-6 shadow-[0_18px_50px_rgba(26,23,20,0.16),inset_0_1px_0_rgba(255,255,255,0.95),inset_0_-1px_0_rgba(255,255,255,0.5)] ring-1 ring-white/35 backdrop-blur-2xl before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(140%_85%_at_8%_0%,rgba(255,255,255,0.72)_0%,rgba(255,255,255,0.14)_45%,rgba(255,255,255,0)_70%)] after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-20 after:bg-[linear-gradient(to_top,rgba(255,255,255,0.28),rgba(255,255,255,0))] supports-[backdrop-filter]:bg-white/28"
                   aria-labelledby="trip-logistics-heading"
                 >
                   <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
@@ -364,8 +371,8 @@ export default async function TripDetailsPage({ params }: PageProps) {
 
               {hasGroupInfo && (
                 <section
-                  className="rounded-[20px] border border-bone bg-white p-6 shadow-[var(--shadow-sm)]"
-                  aria-labelledby="trip-group-heading"
+                className="relative isolate overflow-hidden rounded-[20px] border border-white/65 bg-gradient-to-br from-white/60 via-white/35 to-white/20 p-6 shadow-[0_18px_50px_rgba(26,23,20,0.16),inset_0_1px_0_rgba(255,255,255,0.95),inset_0_-1px_0_rgba(255,255,255,0.5)] ring-1 ring-white/35 backdrop-blur-2xl before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(140%_85%_at_8%_0%,rgba(255,255,255,0.72)_0%,rgba(255,255,255,0.14)_45%,rgba(255,255,255,0)_70%)] after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-20 after:bg-[linear-gradient(to_top,rgba(255,255,255,0.28),rgba(255,255,255,0))] supports-[backdrop-filter]:bg-white/28"
+                aria-labelledby="trip-group-heading"
                 >
                   <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-terracotta">
                     Gruppo
