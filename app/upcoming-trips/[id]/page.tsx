@@ -62,14 +62,23 @@ export default async function TripDetailsPage({ params }: PageProps) {
 
   const userId = await getCurrentUserId();
 
-  const trip = await prisma.tour.findUnique({
+  let trip: Awaited<ReturnType<typeof prisma.tour.findUnique>> = null;
+  const tripQuery = {
     where: { id },
     include: {
       days: {
-        orderBy: { order: "asc" },
+        orderBy: { order: "asc" as const },
       },
     },
-  });
+  } as const;
+
+  try {
+    trip = await prisma.tour.findUnique(tripQuery);
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : "Unknown database error";
+    console.warn(`[upcoming-trips/${id}] Failed to load trip: ${reason}`);
+    notFound();
+  }
 
   if (
     !trip ||
@@ -81,23 +90,28 @@ export default async function TripDetailsPage({ params }: PageProps) {
   let existingBooking: { id: string } | null = null;
   let userProfile: { firstName: string; lastName: string; email: string } | null = null;
   if (userId) {
-    const [booking, user] = await Promise.all([
-      prisma.membershipBooking.findFirst({
-        where: { userId, tourId: id },
-        select: { id: true },
-      }),
-      prisma.user.findUnique({
-        where: { id: userId },
-        select: { firstName: true, lastName: true, email: true },
-      }),
-    ]);
-    existingBooking = booking;
-    if (user?.email) {
-      userProfile = {
-        firstName: user.firstName ?? "",
-        lastName: user.lastName ?? "",
-        email: user.email,
-      };
+    try {
+      const [booking, user] = await Promise.all([
+        prisma.membershipBooking.findFirst({
+          where: { userId, tourId: id },
+          select: { id: true },
+        }),
+        prisma.user.findUnique({
+          where: { id: userId },
+          select: { firstName: true, lastName: true, email: true },
+        }),
+      ]);
+      existingBooking = booking;
+      if (user?.email) {
+        userProfile = {
+          firstName: user.firstName ?? "",
+          lastName: user.lastName ?? "",
+          email: user.email,
+        };
+      }
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : "Unknown database error";
+      console.warn(`[upcoming-trips/${id}] Failed to load user booking state: ${reason}`);
     }
   }
 

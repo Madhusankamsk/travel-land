@@ -18,7 +18,8 @@ export default async function UpcomingTripsPage() {
       orderBy: { updatedAt: "desc" },
     });
   } catch (error) {
-    console.error("[upcoming-trips] Failed to load tours from database", error);
+    const reason = error instanceof Error ? error.message : "Unknown database error";
+    console.warn(`[upcoming-trips] Failed to load tours from database: ${reason}`);
   }
 
   return (

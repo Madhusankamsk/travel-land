@@ -20,12 +20,11 @@ function isRecoverableConnectionError(error: unknown) {
 function normalizeConnectionString(rawConnectionString: string) {
   try {
     const parsed = new URL(rawConnectionString);
-    const isSupabasePooler =
-      parsed.hostname.endsWith(".pooler.supabase.com") && parsed.port === "6543";
-    if (isSupabasePooler && !parsed.searchParams.has("sslmode")) {
+    const isSupabaseHost = parsed.hostname.endsWith(".pooler.supabase.com");
+    if (isSupabaseHost && !parsed.searchParams.has("sslmode")) {
       parsed.searchParams.set("sslmode", "require");
-      return parsed.toString();
     }
+    return parsed.toString();
   } catch {
     // Keep the original string; Prisma/pg will provide the validation error.
   }
@@ -33,12 +32,16 @@ function normalizeConnectionString(rawConnectionString: string) {
 }
 
 function createPrisma() {
-  const rawConnectionString = process.env.DATABASE_URL;
-  if (!rawConnectionString) {
+  const rawDatabaseUrl = process.env.DATABASE_URL;
+  const rawDirectUrl = process.env.DIRECT_URL;
+  if (!rawDatabaseUrl && !rawDirectUrl) {
     throw new Error("DATABASE_URL is not set");
   }
 
-  const connectionString = normalizeConnectionString(rawConnectionString);
+  // Prefer DIRECT_URL when available; pooled endpoints can intermittently close
+  // long-lived app connections in local development.
+  const preferredRawConnectionString = rawDirectUrl ?? rawDatabaseUrl!;
+  const connectionString = normalizeConnectionString(preferredRawConnectionString);
   const pool =
     globalForPrisma.pgPool ??
     new Pool({

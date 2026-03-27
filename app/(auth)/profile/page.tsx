@@ -13,10 +13,16 @@ export default async function ProfilePage() {
     redirect(`/?${authLoginSearchParams({ from: "/profile" })}`);
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { firstName: true, lastName: true, email: true, mobile: true },
-  });
+  let user: Awaited<ReturnType<typeof prisma.user.findUnique>> = null;
+  try {
+    user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { firstName: true, lastName: true, email: true, mobile: true },
+    });
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : "Unknown database error";
+    console.warn(`[profile] Failed to load user: ${reason}`);
+  }
 
   if (!user) {
     const cookieStore = await cookies();
@@ -26,35 +32,49 @@ export default async function ProfilePage() {
     redirect(`/?${authLoginSearchParams({ from: "/profile" })}`);
   }
 
-  const [bookings, membershipBookings, upcomingTours] = await Promise.all([
-    prisma.booking.findMany({
-      where: { userId },
-      include: { tour: true },
-      orderBy: { createdAt: "desc" },
-    }),
-    prisma.membershipBooking.findMany({
-      where: { userId },
-      select: { id: true, reference: true, tourId: true, createdAt: true },
-      orderBy: { createdAt: "desc" },
-    }),
-    prisma.tour.findMany({
-      where: { status: { in: ["UPCOMING", "OPEN"] } },
-      select: { id: true, title: true, durationLabel: true, basePrice: true },
-      take: 10,
-      orderBy: { createdAt: "desc" },
-    }),
-  ]);
+  let bookings: Awaited<ReturnType<typeof prisma.booking.findMany>> = [];
+  let membershipBookings: Awaited<ReturnType<typeof prisma.membershipBooking.findMany>> = [];
+  let upcomingTours: Awaited<ReturnType<typeof prisma.tour.findMany>> = [];
+  try {
+    [bookings, membershipBookings, upcomingTours] = await Promise.all([
+      prisma.booking.findMany({
+        where: { userId },
+        include: { tour: true },
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.membershipBooking.findMany({
+        where: { userId },
+        select: { id: true, reference: true, tourId: true, createdAt: true },
+        orderBy: { createdAt: "desc" },
+      }),
+      prisma.tour.findMany({
+        where: { status: { in: ["UPCOMING", "OPEN"] } },
+        select: { id: true, title: true, durationLabel: true, basePrice: true },
+        take: 10,
+        orderBy: { createdAt: "desc" },
+      }),
+    ]);
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : "Unknown database error";
+    console.warn(`[profile] Failed to load bookings/tours: ${reason}`);
+  }
 
   const membershipTourIds = membershipBookings
     .map((b) => b.tourId)
     .filter((id): id is string => Boolean(id));
 
-  const membershipTours = membershipTourIds.length
-    ? await prisma.tour.findMany({
+  let membershipTours: Awaited<ReturnType<typeof prisma.tour.findMany>> = [];
+  if (membershipTourIds.length) {
+    try {
+      membershipTours = await prisma.tour.findMany({
         where: { id: { in: membershipTourIds } },
         select: { id: true, title: true, durationLabel: true, basePrice: true },
-      })
-    : [];
+      });
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : "Unknown database error";
+      console.warn(`[profile] Failed to resolve membership tours: ${reason}`);
+    }
+  }
 
   const toursById = new Map(membershipTours.map((t) => [t.id, t]));
 

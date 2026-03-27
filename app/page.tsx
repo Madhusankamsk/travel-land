@@ -13,7 +13,8 @@ export default async function Home() {
       take: 6,
     });
   } catch (error) {
-    console.error("[home] Failed to load tours from database", error);
+    const reason = error instanceof Error ? error.message : "Unknown database error";
+    console.warn(`[home] Failed to load tours from database: ${reason}`);
   }
 
   const upcomingTrips = trips.map((trip) => ({
