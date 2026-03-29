@@ -42,6 +42,31 @@ function createPrisma() {
   // long-lived app connections in local development.
   const preferredRawConnectionString = rawDirectUrl ?? rawDatabaseUrl!;
   const connectionString = normalizeConnectionString(preferredRawConnectionString);
+
+  // Optional opt-in for local/dev environments with corporate/self-signed CAs.
+  // When DB_TLS_INSECURE is set, we relax certificate validation at the driver
+  // level regardless of sslmode in the URL. This should NOT be used in prod.
+  const dbTlsInsecureFlag = String(process.env.DB_TLS_INSECURE ?? "").toLowerCase();
+  const dbTlsInsecure =
+    dbTlsInsecureFlag === "1" ||
+    dbTlsInsecureFlag === "true" ||
+    dbTlsInsecureFlag === "yes";
+
+  // Dev-only: lightweight debug output to validate which connection is used and SSL behavior.
+  if (process.env.NODE_ENV !== "production" && String(process.env.DEBUG_DB).toLowerCase() === "true") {
+    try {
+      const u = new URL(connectionString);
+      if (u.password) u.password = "***";
+      const usingDirect = Boolean(rawDirectUrl);
+      const sslFromUrl = connectionString.includes("sslmode=require");
+      // eslint-disable-next-line no-console
+      console.log(
+        `[db] Using ${usingDirect ? "DIRECT_URL" : "DATABASE_URL"} host=${u.hostname} sslmode=require=${sslFromUrl} DB_TLS_INSECURE=${dbTlsInsecure} conn=${u.toString()}`
+      );
+    } catch {
+      // ignore parse errors here
+    }
+  }
   const pool =
     globalForPrisma.pgPool ??
     new Pool({
@@ -50,7 +75,8 @@ function createPrisma() {
       idleTimeoutMillis: 30_000,
       connectionTimeoutMillis: 10_000,
       keepAlive: true,
-      ssl: connectionString.includes("sslmode=require")
+      ssl:
+        dbTlsInsecure || connectionString.includes("sslmode=require")
         ? { rejectUnauthorized: false }
         : undefined,
     });
